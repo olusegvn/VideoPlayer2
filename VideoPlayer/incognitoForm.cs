@@ -2088,7 +2088,7 @@ namespace VideoPlayer
         }
 
         private void recentlyPlayedFlowLayoutPanel_Paint(object sender, PaintEventArgs e)
-        {2
+        {
 
         }
 

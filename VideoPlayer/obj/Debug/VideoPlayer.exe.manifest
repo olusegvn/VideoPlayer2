@@ -122,7 +122,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>o51l/bxrJc+boPhmJyfPyFN9L7RW7lFjdBWWOBp0o4o=</dsig:DigestValue>
+        <dsig:DigestValue>CZ9CZRye7fZeLexqwMCMHnhYNfdtvneHPFt8yZN6NAc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -163,14 +163,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="VideoPlayer.exe" size="3783040">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="VideoPlayer.exe" size="3782656">
       <assemblyIdentity name="VideoPlayer" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>gJzT1hi7/VgvN9xJaTlLQjHNcZjTW2h4odnSkYX4FE4=</dsig:DigestValue>
+        <dsig:DigestValue>R3ueNC56si3oRGQ8IvhtzIRnCTabK/HSElR+dXNvbyQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

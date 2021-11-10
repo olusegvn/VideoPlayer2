@@ -28,7 +28,7 @@ namespace VideoPlayer
 
             public new void Enqueue(T item)
             {
-                while (Count >= 20)
+                while (Count >= 80)
                 {
                     Dequeue();
 
@@ -450,7 +450,7 @@ namespace VideoPlayer
 
         public void queueRemove(String item)
         {
-            LimitedQueue<string> temp = new LimitedQueue<string>(20);
+            LimitedQueue<string> temp = new LimitedQueue<string>(80);
             foreach (string _item in recentlyPlayedFiles)
             {
                 if (_item != item)
