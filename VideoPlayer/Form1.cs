@@ -111,7 +111,9 @@ namespace VideoPlayer
                 stream1.Close();
                 stream2.Close();
             }
-            catch { }
+            catch {
+                recentlyPlayedFiles = new LimitedQueue<string>(80);
+            }
             
             homeButton_Click(sender, e);
             gotoPanel.Size = new Size(10, 14);
@@ -598,10 +600,11 @@ namespace VideoPlayer
 
                             try { ffMpeg.GetVideoThumbnail(videoFile, output, 35); } catch { }
 
-                            
 
 
-                            Panel pPanel = new Panel {
+
+                            Panel pPanel = new Panel
+                            {
                                 Dock = DockStyle.Top,
                                 Anchor = AnchorStyles.Top,
                                 Size = new Size(265, 140),
@@ -609,7 +612,8 @@ namespace VideoPlayer
                                 Cursor = Cursors.Hand,
 
                             };
-                            PictureBox pPictureBox = new PictureBox {
+                            PictureBox pPictureBox = new PictureBox
+                            {
                                 SizeMode = PictureBoxSizeMode.Zoom,
                                 Size = new Size(215, 100),
                                 Dock = DockStyle.Top,
@@ -619,12 +623,13 @@ namespace VideoPlayer
                             };
                             try { pPictureBox.Image = Image.FromFile(output); } catch { }
 
-                            Label pLabel = new Label {
-                            Text = Path.GetFileNameWithoutExtension(videoFile),
-                            Cursor = Cursors.Hand,
-                            Font = new Font("Microsoft JhengHei Light", 7),
-                            Location = new Point(pPictureBox.Location.X, pPictureBox.Location.Y + pPictureBox.Height + 1),
-                            Size = new Size(265, 140),
+                            Label pLabel = new Label
+                            {
+                                Text = Path.GetFileNameWithoutExtension(videoFile),
+                                Cursor = Cursors.Hand,
+                                Font = new Font("Microsoft JhengHei Light", 7),
+                                Location = new Point(pPictureBox.Location.X, pPictureBox.Location.Y + pPictureBox.Height + 1),
+                                Size = new Size(265, 140),
 
                             };
 
@@ -635,7 +640,7 @@ namespace VideoPlayer
 
 
 
-                            
+
 
                             pPictureBox.Name = videoFile;
                             pPanel.Name = videoFile;
@@ -651,6 +656,7 @@ namespace VideoPlayer
                         break;
 
                 }
+            }
 
                 count = 0;
                 List<int> randoms = new List<int>();
@@ -659,7 +665,9 @@ namespace VideoPlayer
                 Panel[] previewPanels1 = { previewPanel5, previewPanel6, previewPanel7, previewPanel8 };
 
 
-                for (int i = 0; i < nPreviewFiles;)
+            try
+            {
+                for (int i = 0; i < 4;)
                 {
                     var r = new Random().Next(0, favouriteTimes.Count());
                     if (!randoms.Contains(r))
@@ -687,6 +695,7 @@ namespace VideoPlayer
 
                 }
             }
+            catch { }
 
         }
 
