@@ -551,6 +551,17 @@ namespace VideoPlayer
             recentFolders.Controls.Clear();
             if (recentlyPlayedFiles != null)
             {
+                recentFlowLayoutPanel2.Controls.Clear();
+                Label recentsLabel = new Label
+                {
+                    Text = "Recents",
+                    Font = new Font("Microsoft JhengHei Light", 17),
+                    //Location = new Point(pPictureBox.Location.X, 0),
+                    Padding = new Padding(0, 15, 0, 0),
+                    Size = new Size(265, 50),
+
+                };
+                recentFlowLayoutPanel2.Controls.Add(recentsLabel);
                 foreach (string videoFile in recentlyPlayedFiles.Reverse())
                 {
                     vidirectory = Path.GetDirectoryName(videoFile);
@@ -592,7 +603,7 @@ namespace VideoPlayer
                                 Dock = DockStyle.Top,
                                 Anchor = AnchorStyles.Top,
                                 Size = new Size(265, 140),
-                                Padding = new Padding(13, 1, 3, 5),
+                                Padding = new Padding(18, 28, 3, 5),
                                 Cursor = Cursors.Hand,
 
                             };
@@ -1895,7 +1906,8 @@ namespace VideoPlayer
 
         private void axVLCPlugin21_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            descriptionLabel.BringToFront();
+            //descriptionLabel.BringToFront();
+            MessageBox.Show(e.KeyCode.ToString(), "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             if (e.KeyCode.ToString() == "P" && e.Shift)
             {
                 if (MessageBox.Show("Clear Playlist ?", "Playlist", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -1946,7 +1958,7 @@ namespace VideoPlayer
                 axVLCPlugin21.input.time = axVLCPlugin21.input.time - 10;
                 describe("Backward: 10ms");
             }
-            else if (e.KeyCode.ToString() == "Space")
+            else if (e.KeyCode.ToString() == "Space" || e.KeyCode.ToString() == "MediaPlayPause")
                 TogglePause();
             else if (e.KeyCode == Keys.Space)
                 TogglePause();
