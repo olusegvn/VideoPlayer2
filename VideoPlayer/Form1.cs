@@ -69,7 +69,7 @@ namespace VideoPlayer
         Panel p = new Panel();
         int X = 30; int Y = 30;
         int x = 3, y = 1;
-        int nPreviewFiles = 8;
+        int nPreviewFiles = 10;
         int goTo = 0;
         int skipper = 0;
         int goToEnd;
@@ -556,6 +556,7 @@ namespace VideoPlayer
                     vidirectory = Path.GetDirectoryName(videoFile);
                     if (count < nPreviewFiles && count <= recentlyPlayedFiles.Count)
                     {
+
                         if (!fileDirectories.Contains(vidirectory))
                         {
                             Button pButton = new Button
@@ -577,21 +578,58 @@ namespace VideoPlayer
                             recentFolders.Controls.Add(pButton);
                             X += pButton.Width;
 
+
+
                             output = DATABASE + Path.GetFileNameWithoutExtension(videoFile) + ".png";
                             carouselVideos.Add(videoFile);
-                            previewLabels[count].Text = Path.GetFileNameWithoutExtension(videoFile);
 
                             try { ffMpeg.GetVideoThumbnail(videoFile, output, 35); } catch { }
 
-                            try { PreviewBoxes[count].Image = Image.FromFile(output); } catch { }
+                            
 
-                            PreviewBoxes[count].Name = videoFile;
-                            previewPanels[count].Name = videoFile;
-                            previewLabels[count].Name = videoFile;
-                            PreviewBoxes[count].Click += new EventHandler(file_Click);
-                            previewPanels[count].Click += new EventHandler(file_Click);
-                            previewLabels[count].Click += new EventHandler(file_Click);
-                            previewPanels[count].Visible = true;
+
+                            Panel pPanel = new Panel {
+                                Dock = DockStyle.Top,
+                                Anchor = AnchorStyles.Top,
+                                Size = new Size(265, 140),
+                                Padding = new Padding(13, 1, 3, 5),
+                                Cursor = Cursors.Hand,
+
+                            };
+                            PictureBox pPictureBox = new PictureBox {
+                                SizeMode = PictureBoxSizeMode.Zoom,
+                                Size = new Size(215, 100),
+                                Dock = DockStyle.Top,
+                                Anchor = AnchorStyles.Top,
+                                Cursor = Cursors.Hand,
+
+                            };
+                            try { pPictureBox.Image = Image.FromFile(output); } catch { }
+
+                            Label pLabel = new Label {
+                            Text = Path.GetFileNameWithoutExtension(videoFile),
+                            Cursor = Cursors.Hand,
+                            Font = new Font("Microsoft JhengHei Light", 7),
+                            Location = new Point(pPictureBox.Location.X, pPictureBox.Location.Y + pPictureBox.Height + 1),
+                            Size = new Size(265, 140),
+
+                            };
+
+                            pPanel.Controls.Add(pPictureBox);
+                            pPanel.Controls.Add(pLabel);
+                            recentFlowLayoutPanel2.Controls.Add(pPanel);
+
+
+
+
+                            
+
+                            pPictureBox.Name = videoFile;
+                            pPanel.Name = videoFile;
+                            pLabel.Name = videoFile;
+                            pPictureBox.Click += new EventHandler(file_Click);
+                            pPanel.Click += new EventHandler(file_Click);
+                            pLabel.Click += new EventHandler(file_Click);
                             fileDirectories.Add(Path.GetDirectoryName(videoFile));
                             count += 1;
                         }
