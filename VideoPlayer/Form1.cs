@@ -1909,7 +1909,7 @@ namespace VideoPlayer
         private void axVLCPlugin21_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             //descriptionLabel.BringToFront();
-            MessageBox.Show(e.KeyCode.ToString(), "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //MessageBox.Show("", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             switch (e.KeyCode)
             {
                 case Keys.Up:
@@ -1947,7 +1947,7 @@ namespace VideoPlayer
                         describe("Backward: 10ms");
                         break;
                     }
-                case Keys.Space | Keys.MediaPlayPause:
+                case Keys.Space: case Keys.MediaPlayPause:
                     {
                         TogglePause();
                         break;
@@ -1957,7 +1957,8 @@ namespace VideoPlayer
                         fullscreenButton_Click(sender, e);
                         break;
                     }
-                case Keys.Next | Keys.MediaNextTrack:
+                case Keys.Next:
+                case Keys.MediaNextTrack:
                     {
                         nextFile();
                         break;
@@ -1967,9 +1968,10 @@ namespace VideoPlayer
                         playlistButton_Click(sender, e);
                         break;
                     }
-                case Keys.PageUp | Keys.MediaPreviousTrack:
+                case Keys.PageUp:
+                case Keys.MediaPreviousTrack:
                     {
-                        playlistButton_Click(sender, e);
+                        prevFile();
                         break;
                     }
                 case Keys.T:
@@ -2062,6 +2064,12 @@ namespace VideoPlayer
                         break;
                     }
             }
+            try
+            {
+
+                axVLCPlugin21.input.time = (float.Parse(e.KeyCode.ToString()[1].ToString()) / 9) * axVLCPlugin21.input.length;
+            }
+            catch { }
             if (e.KeyCode.ToString() == "P" && e.Shift)
             {
                 if (MessageBox.Show("Clear Playlist ?", "Playlist", MessageBoxButtons.YesNo) == DialogResult.Yes)
