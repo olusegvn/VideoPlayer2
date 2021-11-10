@@ -34,7 +34,7 @@ namespace VideoPlayer
 
             public new void Enqueue(T item)
             {
-                while (Count >= 20)
+                while (Count >= 80)
                 {
                     Dequeue();
 
@@ -366,7 +366,7 @@ namespace VideoPlayer
 
         public void queueRemove(String item)
         {
-            LimitedQueue<string> temp = new LimitedQueue<string>(20);
+            LimitedQueue<string> temp = new LimitedQueue<string>(80);
             foreach (string _item in recentlyPlayedFiles)
             {
                 if (_item != item)
@@ -2088,13 +2088,18 @@ namespace VideoPlayer
         }
 
         private void recentlyPlayedFlowLayoutPanel_Paint(object sender, PaintEventArgs e)
-        {
+        {2
 
         }
 
         private void controlsPanel_MouseLeave(object sender, EventArgs e)
         {
             controlsPanel.Visible = false;
+        }
+
+        private void axVLCPlugin21_Enter(object sender, EventArgs e)
+        {
+
         }
 
         private void axVLCPlugin21_MouseDownEvent(object sender, AxAXVLC.DVLCEvents_MouseDownEvent e)
