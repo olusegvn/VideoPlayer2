@@ -195,7 +195,7 @@
             this.viewerOptionsPanel.Controls.Add(this.appExitButton);
             this.viewerOptionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewerOptionsPanel.Location = new System.Drawing.Point(0, 320);
-            this.viewerOptionsPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.viewerOptionsPanel.Margin = new System.Windows.Forms.Padding(2);
             this.viewerOptionsPanel.Name = "viewerOptionsPanel";
             this.viewerOptionsPanel.Size = new System.Drawing.Size(32, 376);
             this.viewerOptionsPanel.TabIndex = 2;
@@ -493,7 +493,7 @@
             this.panel4.BackColor = System.Drawing.Color.Black;
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel4.Location = new System.Drawing.Point(2, 264);
-            this.panel4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel4.Margin = new System.Windows.Forms.Padding(2);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(172, 1);
             this.panel4.TabIndex = 10;
@@ -560,7 +560,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.carousel.Enabled = true;
             this.carousel.Location = new System.Drawing.Point(161, 55);
-            this.carousel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.carousel.Margin = new System.Windows.Forms.Padding(2);
             this.carousel.Name = "carousel";
             this.carousel.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("carousel.OcxState")));
             this.carousel.Size = new System.Drawing.Size(677, 477);
@@ -576,7 +576,7 @@
             this.label2.Location = new System.Drawing.Point(0, 493);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
-            this.label2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.label2.Padding = new System.Windows.Forms.Padding(2);
             this.label2.Size = new System.Drawing.Size(116, 32);
             this.label2.TabIndex = 3;
             this.label2.Text = "Favourites";
@@ -1071,7 +1071,7 @@
             this.viewerPanel.Controls.Add(this.axVLCPlugin21);
             this.viewerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewerPanel.Location = new System.Drawing.Point(33, 0);
-            this.viewerPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.viewerPanel.Margin = new System.Windows.Forms.Padding(2);
             this.viewerPanel.Name = "viewerPanel";
             this.viewerPanel.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.viewerPanel.Size = new System.Drawing.Size(1008, 696);
@@ -1088,7 +1088,7 @@
             this.descriptionLabel.Location = new System.Drawing.Point(721, 7);
             this.descriptionLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.descriptionLabel.Name = "descriptionLabel";
-            this.descriptionLabel.Padding = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.descriptionLabel.Padding = new System.Windows.Forms.Padding(8);
             this.descriptionLabel.Size = new System.Drawing.Size(85, 43);
             this.descriptionLabel.TabIndex = 7;
             this.descriptionLabel.Text = "label3";
@@ -1101,7 +1101,7 @@
             this.playlistPanel.Controls.Add(this.label3);
             this.playlistPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.playlistPanel.Location = new System.Drawing.Point(806, 2);
-            this.playlistPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.playlistPanel.Margin = new System.Windows.Forms.Padding(2);
             this.playlistPanel.Name = "playlistPanel";
             this.playlistPanel.Size = new System.Drawing.Size(202, 646);
             this.playlistPanel.TabIndex = 6;
@@ -1140,7 +1140,7 @@
             this.controlsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.controlsPanel.ForeColor = System.Drawing.SystemColors.ControlText;
             this.controlsPanel.Location = new System.Drawing.Point(0, 648);
-            this.controlsPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controlsPanel.Margin = new System.Windows.Forms.Padding(2);
             this.controlsPanel.Name = "controlsPanel";
             this.controlsPanel.Size = new System.Drawing.Size(1008, 48);
             this.controlsPanel.TabIndex = 4;
@@ -1154,7 +1154,7 @@
             this.panel3.Controls.Add(this.panel9);
             this.panel3.Controls.Add(this.lengthTime);
             this.panel3.Location = new System.Drawing.Point(523, 17);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(150, 24);
             this.panel3.TabIndex = 10;
@@ -1179,7 +1179,7 @@
             this.panel9.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel9.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.panel9.Location = new System.Drawing.Point(65, 12);
-            this.panel9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel9.Margin = new System.Windows.Forms.Padding(2);
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(8, 1);
             this.panel9.TabIndex = 5;
@@ -1247,7 +1247,7 @@
             this.seekBar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.seekBar.Controls.Add(this.seekpin);
             this.seekBar.Location = new System.Drawing.Point(-1, 0);
-            this.seekBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.seekBar.Margin = new System.Windows.Forms.Padding(2);
             this.seekBar.Name = "seekBar";
             this.seekBar.Size = new System.Drawing.Size(1009, 11);
             this.seekBar.TabIndex = 3;
@@ -1259,7 +1259,7 @@
             // 
             this.seekpin.BackColor = System.Drawing.Color.WhiteSmoke;
             this.seekpin.Location = new System.Drawing.Point(0, -2);
-            this.seekpin.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.seekpin.Margin = new System.Windows.Forms.Padding(2);
             this.seekpin.Name = "seekpin";
             this.seekpin.Size = new System.Drawing.Size(8, 11);
             this.seekpin.TabIndex = 0;
@@ -1269,7 +1269,7 @@
             this.pictureBox7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.pictureBox7.Image = global::VideoPlayer.Properties.Resources.icons8_infinity_50;
             this.pictureBox7.Location = new System.Drawing.Point(190, 21);
-            this.pictureBox7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox7.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(43, 28);
             this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1284,7 +1284,7 @@
             this.randomPictureBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.randomPictureBox.Image = global::VideoPlayer.Properties.Resources.icons8_two_arrows_different_direction_32;
             this.randomPictureBox.Location = new System.Drawing.Point(332, 20);
-            this.randomPictureBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.randomPictureBox.Margin = new System.Windows.Forms.Padding(2);
             this.randomPictureBox.Name = "randomPictureBox";
             this.randomPictureBox.Size = new System.Drawing.Size(43, 28);
             this.randomPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1297,7 +1297,7 @@
             this.pictureBox5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.pictureBox5.Image = global::VideoPlayer.Properties.Resources.icons8_add_to_favorites_50;
             this.pictureBox5.Location = new System.Drawing.Point(284, 21);
-            this.pictureBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox5.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(43, 28);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1310,7 +1310,7 @@
             this.playlistButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.playlistButton.Image = global::VideoPlayer.Properties.Resources.icons8_playlist_50;
             this.playlistButton.Location = new System.Drawing.Point(237, 21);
-            this.playlistButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.playlistButton.Margin = new System.Windows.Forms.Padding(2);
             this.playlistButton.Name = "playlistButton";
             this.playlistButton.Size = new System.Drawing.Size(43, 28);
             this.playlistButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1323,7 +1323,7 @@
             this.pictureBox6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.pictureBox6.Image = global::VideoPlayer.Properties.Resources.icons8_forward_50;
             this.pictureBox6.Location = new System.Drawing.Point(142, 21);
-            this.pictureBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox6.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(43, 28);
             this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1338,7 +1338,7 @@
             this.pictureBox11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.pictureBox11.Image = global::VideoPlayer.Properties.Resources.icons8_rounded_square_38;
             this.pictureBox11.Location = new System.Drawing.Point(48, 22);
-            this.pictureBox11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox11.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox11.Name = "pictureBox11";
             this.pictureBox11.Size = new System.Drawing.Size(43, 27);
             this.pictureBox11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1353,7 +1353,7 @@
             this.playButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.playButton.Image = global::VideoPlayer.Properties.Resources.icons8_play_50;
             this.playButton.Location = new System.Drawing.Point(95, 21);
-            this.playButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.playButton.Margin = new System.Windows.Forms.Padding(2);
             this.playButton.Name = "playButton";
             this.playButton.Size = new System.Drawing.Size(43, 28);
             this.playButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1368,7 +1368,7 @@
             this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.pictureBox1.Image = global::VideoPlayer.Properties.Resources.icons8_back_502;
             this.pictureBox1.Location = new System.Drawing.Point(1, 21);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(43, 28);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1402,7 +1402,7 @@
             this.recentlyPlayedFlowLayoutPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.recentlyPlayedFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.recentlyPlayedFlowLayoutPanel.Location = new System.Drawing.Point(33, 0);
-            this.recentlyPlayedFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.recentlyPlayedFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(2);
             this.recentlyPlayedFlowLayoutPanel.Name = "recentlyPlayedFlowLayoutPanel";
             this.recentlyPlayedFlowLayoutPanel.Size = new System.Drawing.Size(1008, 696);
             this.recentlyPlayedFlowLayoutPanel.TabIndex = 10;
@@ -1416,7 +1416,7 @@
             this.foldersPanel.Controls.Add(this.panel2);
             this.foldersPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.foldersPanel.Location = new System.Drawing.Point(33, 0);
-            this.foldersPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.foldersPanel.Margin = new System.Windows.Forms.Padding(2);
             this.foldersPanel.Name = "foldersPanel";
             this.foldersPanel.Size = new System.Drawing.Size(1008, 696);
             this.foldersPanel.TabIndex = 11;
@@ -1427,7 +1427,7 @@
             this.foldersFlowLayoutPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.foldersFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.foldersFlowLayoutPanel.Location = new System.Drawing.Point(0, 144);
-            this.foldersFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.foldersFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(2);
             this.foldersFlowLayoutPanel.Name = "foldersFlowLayoutPanel";
             this.foldersFlowLayoutPanel.Size = new System.Drawing.Size(1008, 552);
             this.foldersFlowLayoutPanel.TabIndex = 1;
@@ -1437,7 +1437,7 @@
             this.panel8.BackColor = System.Drawing.Color.Black;
             this.panel8.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel8.Location = new System.Drawing.Point(0, 143);
-            this.panel8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel8.Margin = new System.Windows.Forms.Padding(2);
             this.panel8.Name = "panel8";
             this.panel8.Padding = new System.Windows.Forms.Padding(0, 2, 0, 24);
             this.panel8.Size = new System.Drawing.Size(1008, 1);
@@ -1455,7 +1455,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.ForeColor = System.Drawing.Color.White;
             this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1008, 143);
             this.panel2.TabIndex = 0;
@@ -1464,7 +1464,7 @@
             // 
             this.recentFolders.Dock = System.Windows.Forms.DockStyle.Top;
             this.recentFolders.Location = new System.Drawing.Point(0, 0);
-            this.recentFolders.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.recentFolders.Margin = new System.Windows.Forms.Padding(2);
             this.recentFolders.Name = "recentFolders";
             this.recentFolders.Size = new System.Drawing.Size(1008, 50);
             this.recentFolders.TabIndex = 6;
@@ -1476,7 +1476,7 @@
             this.panel7.Controls.Add(this.pictureBox9);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel7.Location = new System.Drawing.Point(0, 92);
-            this.panel7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel7.Margin = new System.Windows.Forms.Padding(2);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(1008, 49);
             this.panel7.TabIndex = 5;
@@ -1527,7 +1527,7 @@
             // 
             this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel6.Location = new System.Drawing.Point(0, 141);
-            this.panel6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel6.Margin = new System.Windows.Forms.Padding(2);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(1008, 2);
             this.panel6.TabIndex = 3;
@@ -1550,7 +1550,7 @@
             this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.panel5.BackColor = System.Drawing.Color.Black;
             this.panel5.Location = new System.Drawing.Point(607, 139);
-            this.panel5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel5.Margin = new System.Windows.Forms.Padding(2);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(398, 1);
             this.panel5.TabIndex = 0;
@@ -1589,7 +1589,7 @@
             this.favouritesFlowLayoutPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.favouritesFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.favouritesFlowLayoutPanel.Location = new System.Drawing.Point(33, 0);
-            this.favouritesFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.favouritesFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(2);
             this.favouritesFlowLayoutPanel.Name = "favouritesFlowLayoutPanel";
             this.favouritesFlowLayoutPanel.Size = new System.Drawing.Size(1008, 696);
             this.favouritesFlowLayoutPanel.TabIndex = 13;
@@ -1607,7 +1607,7 @@
             this.Controls.Add(this.hiddenPanel);
             this.Controls.Add(this.mainSidePanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "incognitoForm";
             this.Text = "Private Video Player";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);

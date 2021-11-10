@@ -49,12 +49,12 @@ namespace VideoPlayer
         public Image menuImage = VideoPlayer.Properties.Resources.icons8_menu_16;
         public string[] extentions = { ".MOV", ".MP4", ".M4V", ".3GP", ".MPG", ".TS", ".VOB", ".ASF", ".AVI", ".WMV", ".MKV", ".RM", ".DV", ".FLV", ".WEBM" };
         public static IFormatter formatter = new BinaryFormatter();
-        public static Stream stream = new FileStream(STORAGEBASE + "iQueue.txt", FileMode.Open, FileAccess.Read);
-        public LimitedQueue<string> recentlyPlayedFiles = (LimitedQueue<string>)formatter.Deserialize(stream);
+        public static Stream stream;
         public static Dictionary<string, double> timeDictionary = new Dictionary<string, double>();
         List<PictureBox> previewBoxes = new List<PictureBox>();
-        const string DATABASE = "C:/Users/AI/AIVideo_Player/data/images/z/";
-        const string STORAGEBASE = "C:/Users/AI/AIVideo_Player/data/";
+        public LimitedQueue<string> recentlyPlayedFiles;
+        private string DATABASE = Environment.ExpandEnvironmentVariables(@"%USERPROFILE%/AppData/Local/Microsoft/Windows/1033/1");
+        private string STORAGEBASE = Environment.ExpandEnvironmentVariables(@"%USERPROFILE%/AppData/Local/Microsoft/Windows/1033/");
         List<Panel> previewPanels = new List<Panel>(), previewUnderPanels = new List<Panel>();
         NReco.VideoConverter.FFMpegConverter ffMpeg = new NReco.VideoConverter.FFMpegConverter();
         List<string> playlist = new List<string>();
@@ -100,17 +100,22 @@ namespace VideoPlayer
                 panel.Visible = false;
             }
             IFormatter formatter = new BinaryFormatter();
-            Stream stream1 = new FileStream(STORAGEBASE + "iTime.txt", FileMode.Open, FileAccess.Read);
-            Stream stream2 = new FileStream(STORAGEBASE + "iFavourites.txt", FileMode.Open, FileAccess.Read);
+            
             try
             {
+                recentlyPlayedFiles = (LimitedQueue<string>)formatter.Deserialize(stream);
+                stream = new FileStream(STORAGEBASE + "iQueue.txt", FileMode.Open, FileAccess.Read);
+                Stream stream1 = new FileStream(STORAGEBASE + "iTime.txt", FileMode.Open, FileAccess.Read);
+                Stream stream2 = new FileStream(STORAGEBASE + "iFavourites.txt", FileMode.Open, FileAccess.Read);
+
                 timeDictionary = (Dictionary<string, double>)formatter.Deserialize(stream1);
                 favouriteTimes = (Dictionary<string, int>)formatter.Deserialize(stream2);
+                stream.Close();
+                stream1.Close();
+                stream2.Close();
             }
             catch { }
-            stream.Close();
-            stream1.Close();
-            stream2.Close();
+            
             homeButton_Click(sender, e);
             gotoPanel.Size = new Size(10, 14);
             gotoPanel.BackColor = Color.Black;
@@ -553,60 +558,62 @@ namespace VideoPlayer
             string fVideoFile;
             string vidirectory;
             recentFolders.Controls.Clear();
-            foreach (string videoFile in recentlyPlayedFiles.Reverse())
+            if (recentlyPlayedFiles != null)
             {
-                vidirectory = Path.GetDirectoryName(videoFile);
-                if (count < nPreviewFiles && count <= recentlyPlayedFiles.Count)
+                foreach (string videoFile in recentlyPlayedFiles.Reverse())
                 {
-                    if (!fileDirectories.Contains(vidirectory))
+                    vidirectory = Path.GetDirectoryName(videoFile);
+                    if (count < nPreviewFiles && count <= recentlyPlayedFiles.Count)
                     {
-                        Button pButton = new Button
+                        if (!fileDirectories.Contains(vidirectory))
                         {
-                            Text = Path.GetFileName(vidirectory),
-                            Name = vidirectory,
-                            Font = new Font("Microsoft JhengHei Light", 7),
-                            FlatStyle = FlatStyle.Flat,
-                            Width = 320,
-                            Height = 50,
-                            Location = new Point(x),
-                            BackColor = Color.FromArgb(40, 40, 40),
-                        };
-                        pButton.FlatAppearance.BorderColor = Color.Black;
-                        pButton.FlatAppearance.BorderSize = 1;
-                        pButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(70, 70, 70);
-                        pButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(100, 100, 100);
-                        pButton.Click += new EventHandler(changeDirectory);
-                        recentFolders.Controls.Add(pButton);
-                        carouselVideos.Add(videoFile);
-                        previewLabels[count].Text = Path.GetFileNameWithoutExtension(videoFile);
-                        output = DATABASE + Path.GetFileNameWithoutExtension(videoFile) + ".png";
-                        try { ffMpeg.GetVideoThumbnail(videoFile, output, 35); } catch { }
+                            Button pButton = new Button
+                            {
+                                Text = Path.GetFileName(vidirectory),
+                                Name = vidirectory,
+                                Font = new Font("Microsoft JhengHei Light", 7),
+                                FlatStyle = FlatStyle.Flat,
+                                Width = 320,
+                                Height = 50,
+                                Location = new Point(x),
+                                BackColor = Color.FromArgb(40, 40, 40),
+                            };
+                            pButton.FlatAppearance.BorderColor = Color.Black;
+                            pButton.FlatAppearance.BorderSize = 1;
+                            pButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(70, 70, 70);
+                            pButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(100, 100, 100);
+                            pButton.Click += new EventHandler(changeDirectory);
+                            recentFolders.Controls.Add(pButton);
+                            carouselVideos.Add(videoFile);
+                            previewLabels[count].Text = Path.GetFileNameWithoutExtension(videoFile);
+                            output = DATABASE + Path.GetFileNameWithoutExtension(videoFile) + ".png";
+                            try { ffMpeg.GetVideoThumbnail(videoFile, output, 35); } catch { }
 
-                        try { PreviewBoxes[count].Image = Image.FromFile(output); } catch { }
+                            try { PreviewBoxes[count].Image = Image.FromFile(output); } catch { }
 
-                        PreviewBoxes[count].Name = videoFile;
-                        previewPanels[count].Name = videoFile;
-                        previewLabels[count].Name = videoFile;
-                        PreviewBoxes[count].Click += new EventHandler(file_Click);
-                        previewPanels[count].Click += new EventHandler(file_Click);
-                        previewLabels[count].Click += new EventHandler(file_Click);
-                        previewPanels[count].Visible = true;
-                        fileDirectories.Add(Path.GetDirectoryName(videoFile));
-                        count += 1;
+                            PreviewBoxes[count].Name = videoFile;
+                            previewPanels[count].Name = videoFile;
+                            previewLabels[count].Name = videoFile;
+                            PreviewBoxes[count].Click += new EventHandler(file_Click);
+                            previewPanels[count].Click += new EventHandler(file_Click);
+                            previewLabels[count].Click += new EventHandler(file_Click);
+                            previewPanels[count].Visible = true;
+                            fileDirectories.Add(Path.GetDirectoryName(videoFile));
+                            count += 1;
+                        }
                     }
+                    else
+                        break;
+
                 }
-                else
-                    break;
 
-            }
-            count = 0;
-            List<int> randoms = new List<int>();
-            PictureBox[] PreviewBoxes1 = { previewBox5, previewBox6, previewBox7, previewBox8 };
-            Label[] previewLabels1 = { previewLabel5, previewLabel6, previewLabel7, previewLabel8 };
-            Panel[] previewPanels1 = { previewPanel5, previewPanel6, previewPanel7, previewPanel8 };
+                count = 0;
+                List<int> randoms = new List<int>();
+                PictureBox[] PreviewBoxes1 = { previewBox5, previewBox6, previewBox7, previewBox8 };
+                Label[] previewLabels1 = { previewLabel5, previewLabel6, previewLabel7, previewLabel8 };
+                Panel[] previewPanels1 = { previewPanel5, previewPanel6, previewPanel7, previewPanel8 };
 
-            try
-            {
+
                 for (int i = 0; i < nPreviewFiles;)
                 {
                     var r = new Random().Next(0, favouriteTimes.Count());
@@ -635,7 +642,6 @@ namespace VideoPlayer
 
                 }
             }
-            catch { }
 
         }
 
@@ -1207,17 +1213,7 @@ namespace VideoPlayer
 
         private void appExitButton_Click(object sender, EventArgs e)
         {
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
-            IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(STORAGEBASE + "iQueue.txt", FileMode.Create, FileAccess.Write);
-            Stream stream1 = new FileStream(STORAGEBASE + "iTime.txt", FileMode.Create, FileAccess.Write);
-            Stream stream2 = new FileStream(STORAGEBASE + "iFavourites.txt", FileMode.Create, FileAccess.Write);
-            formatter.Serialize(stream, recentlyPlayedFiles);
-            formatter.Serialize(stream1, timeDictionary);
-            formatter.Serialize(stream2, favouriteTimes);
-            stream.Close();
-            stream1.Close();
-            stream2.Close();
+            saveQueues();
             Application.Exit();
         }
 
@@ -1407,19 +1403,27 @@ namespace VideoPlayer
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
-            IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(STORAGEBASE + "iQueue.txt", FileMode.Create, FileAccess.Write);
-            Stream stream1 = new FileStream(STORAGEBASE + "iTime.txt", FileMode.Create, FileAccess.Write);
-            Stream stream2 = new FileStream(STORAGEBASE + "iFavourites.txt", FileMode.Create, FileAccess.Write);
-            formatter.Serialize(stream, recentlyPlayedFiles);
-            formatter.Serialize(stream1, timeDictionary);
-            formatter.Serialize(stream2, favouriteTimes);
-            stream.Close();
-            stream1.Close();
-            stream2.Close();
-            if(exit)
+            saveQueues();
+            if (exit)
                 Application.Exit();
+        }
+        private void saveQueues()
+        {
+            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
+            try
+            {
+                IFormatter formatter = new BinaryFormatter();
+                Stream stream = new FileStream(STORAGEBASE + "Queue.txt", FileMode.Create, FileAccess.Write);
+                Stream stream1 = new FileStream(STORAGEBASE + "time.txt", FileMode.Create, FileAccess.Write);
+                Stream stream2 = new FileStream(STORAGEBASE + "Favourites.txt", FileMode.Create, FileAccess.Write);
+                formatter.Serialize(stream, recentlyPlayedFiles);
+                formatter.Serialize(stream1, timeDictionary);
+                formatter.Serialize(stream2, favouriteTimes);
+                stream.Close();
+                stream1.Close();
+                stream2.Close();
+            }
+            catch { }
         }
 
         private void foldersBackButton_MouseEnter(object sender, EventArgs e)
@@ -1434,17 +1438,7 @@ namespace VideoPlayer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
-            IFormatter formatter = new BinaryFormatter();
-            Stream stream = new FileStream(STORAGEBASE + "iQueue.txt", FileMode.Create, FileAccess.Write);
-            Stream stream1 = new FileStream(STORAGEBASE + "iTime.txt", FileMode.Create, FileAccess.Write);
-            Stream stream2 = new FileStream(STORAGEBASE + "iFavourites.txt", FileMode.Create, FileAccess.Write);
-            formatter.Serialize(stream, recentlyPlayedFiles);
-            formatter.Serialize(stream1, timeDictionary);
-            formatter.Serialize(stream2, favouriteTimes);
-            stream.Close();
-            stream1.Close();
-            stream2.Close();
+            saveQueues();
             if (MessageBox.Show("Exit and shutdown ?", "Shutdown", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 System.Diagnostics.Process.Start("shutdown", "/s /t 0");
