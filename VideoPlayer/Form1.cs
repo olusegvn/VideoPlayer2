@@ -73,6 +73,8 @@ namespace VideoPlayer
         int goTo = 0;
         int skipper = 0;
         int goToEnd;
+        bool useCustomSkipper;
+        int customSkipper;
         string output;
         bool firstFull = true;
         int currentPlaylistIndex = -1;
@@ -1908,6 +1910,158 @@ namespace VideoPlayer
         {
             //descriptionLabel.BringToFront();
             MessageBox.Show(e.KeyCode.ToString(), "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    {
+                        axVLCPlugin21.volume += 10;
+                        describe("Volume: " + axVLCPlugin21.volume);
+                        break;
+                    }
+                case Keys.R:
+                    {
+                        randomPictureBox_Click(sender, e);
+                        break;
+                    }
+                case Keys.D:
+                    {
+                        axVLCPlugin21.input.time = axVLCPlugin21.input.time + 10;
+                        describe("Foreward: 10ms");
+                        break;
+                    }
+                case Keys.W:
+                    {
+                        axVLCPlugin21.volume = axVLCPlugin21.volume + 5;
+                        describe("Volume: " + axVLCPlugin21.volume.ToString());
+                        break;
+                    }
+                case Keys.S:
+                    {
+                        axVLCPlugin21.volume = axVLCPlugin21.volume - 5;
+                        describe("Volume: " + axVLCPlugin21.volume.ToString());
+                        break;
+                    }
+                case Keys.A:
+                    {
+                        axVLCPlugin21.input.time = axVLCPlugin21.input.time - 10;
+                        describe("Backward: 10ms");
+                        break;
+                    }
+                case Keys.Space | Keys.MediaPlayPause:
+                    {
+                        TogglePause();
+                        break;
+                    }
+                case Keys.Return:
+                    {
+                        fullscreenButton_Click(sender, e);
+                        break;
+                    }
+                case Keys.Next | Keys.MediaNextTrack:
+                    {
+                        nextFile();
+                        break;
+                    }
+                case Keys.P:
+                    {
+                        playlistButton_Click(sender, e);
+                        break;
+                    }
+                case Keys.PageUp | Keys.MediaPreviousTrack:
+                    {
+                        playlistButton_Click(sender, e);
+                        break;
+                    }
+                case Keys.T:
+                    {
+                        describe(DateTime.Now.ToString());
+                        break;
+                    }
+                case Keys.F:
+                    {
+                        pictureBox5_Click_1(sender, e);
+                        break;
+                    }
+                case Keys.Home:
+                    {
+                        axVLCPlugin21.input.time = 0;
+                        describe("Restart");
+                        break;
+                    }
+                case Keys.End:
+                    {
+                        axVLCPlugin21.input.time = axVLCPlugin21.input.length;
+                        describe("End");
+                        break;
+                    }
+                case Keys.Z:
+                    {
+                        skipper = (int)axVLCPlugin21.input.time;
+                        describe("Set skipper");
+                        break;
+                    }
+                case Keys.L:
+                    {
+                        loopPictureBox(sender, e);
+                        break;
+                    }
+                case Keys.OemOpenBrackets:
+                    {
+                        goTo = (int)axVLCPlugin21.input.time;
+                        gotoPanel.Location = new Point(Convert.ToInt32((((goTo / axVLCPlugin21.input.length) * 100) * seekBar.Width) / 100), 1);
+                        seekBar.Controls.Add(gotoPanel);
+                        describe("Set GoTO");
+                        break;
+                    }
+                case Keys.Oem6:
+                    {
+                        goToEnd = (int)axVLCPlugin21.input.time;
+                        gotoEndPanel.Location = new Point(Convert.ToInt32((((goToEnd / axVLCPlugin21.input.length) * 100) * seekBar.Width) / 100), 1);
+                        seekBar.Controls.Add(gotoEndPanel);
+                        describe("Set A-B Repeat");
+                        break;
+                    }
+                case Keys.LWin:
+                    {
+                        appExitButton_Click(sender, e);
+                        break;
+                    }
+                case Keys.Oem5:
+                    {
+                        goTo = 0;
+                        goToEnd = (int)axVLCPlugin21.input.length;
+                        if (seekBar.Controls.Contains(gotoPanel))
+                            seekBar.Controls.Remove(gotoPanel);
+                        if (seekBar.Controls.Contains(gotoEndPanel))
+                            seekBar.Controls.Remove(gotoEndPanel);
+                        describe("Clear GoTO");
+                        break;
+                    }
+                case Keys.Down:
+                    {
+                        axVLCPlugin21.volume -= 10;
+                        describe("Volume: " + axVLCPlugin21.volume);
+                        break;
+                    }
+                case Keys.Right:
+                    {
+                        axVLCPlugin21.input.time += 5000;
+                        describe("Forward 5s");
+                        break;
+                    }
+                case Keys.Left:
+                    {
+                        axVLCPlugin21.input.time -= 5000;
+                        describe("Backwards 5s");
+                        break;
+                    }
+                case Keys.X:
+                    {
+                        customSkipper = Int32.Parse(Interaction.InputBox("Skip by how many seconds?", "Skipper", "3", -1, -1)) * 1000;
+                        useCustomSkipper = true;
+                        break;
+                    }
+            }
             if (e.KeyCode.ToString() == "P" && e.Shift)
             {
                 if (MessageBox.Show("Clear Playlist ?", "Playlist", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -1919,11 +2073,6 @@ namespace VideoPlayer
                 }
             }
 
-            else if (e.KeyCode == Keys.Up)
-            {
-                axVLCPlugin21.volume += 10;
-                describe("Volume: " + axVLCPlugin21.volume);
-            }
             else if (e.KeyCode == Keys.Right && e.Shift)
             {
                 axVLCPlugin21.input.time += 1000;
@@ -1935,120 +2084,20 @@ namespace VideoPlayer
                 describe("Backwards 1s");
             }
 
-            else if (e.KeyCode.ToString() == "R")
-                randomPictureBox_Click(sender, e);
-
-            else if (e.KeyCode.ToString() == "D")
+            else if (e.KeyCode == Keys.Add && (skipper != 0 || useCustomSkipper.Equals(true)))
             {
-                axVLCPlugin21.input.time = axVLCPlugin21.input.time + 10;
-                describe("Foreward: 10ms");
-            }
-            else if (e.KeyCode.ToString() == "W")
-            {
-                axVLCPlugin21.volume = axVLCPlugin21.volume + 5;
-                describe("Volume: " + axVLCPlugin21.volume.ToString());
-            }
-            else if (e.KeyCode.ToString() == "S")
-            {
-                axVLCPlugin21.volume = axVLCPlugin21.volume - 5;
-                describe("Volume: " + axVLCPlugin21.volume.ToString());
-            }
-            else if (e.KeyCode.ToString() == "A")
-            {
-                axVLCPlugin21.input.time = axVLCPlugin21.input.time - 10;
-                describe("Backward: 10ms");
-            }
-            else if (e.KeyCode.ToString() == "Space" || e.KeyCode.ToString() == "MediaPlayPause")
-                TogglePause();
-            else if (e.KeyCode == Keys.Space)
-                TogglePause();
-            else if (e.KeyCode.ToString() == "Return")
-                fullscreenButton_Click(sender, e);
-            else if (e.KeyCode.ToString() == "Next")
-                nextFile();
-            else if (e.KeyCode.ToString() == "P")
-                playlistButton_Click(sender, e);
-            else if (e.KeyCode.ToString() == "PageUp")
-                prevFile();
-            else if (e.KeyCode.ToString() == "T")
-                describe(DateTime.Now.ToString());
-            else if (e.KeyCode.ToString() == "F")
-                pictureBox5_Click_1(sender, e);
-            else if (e.KeyCode.ToString() == "Home")
-            {
-                axVLCPlugin21.input.time = 0;
-                describe("Restart");
-            }
-            else if (e.KeyCode.ToString() == "End")
-            {
-                axVLCPlugin21.input.time = axVLCPlugin21.input.length;
-                describe("End");
-            }
-            else if (e.KeyCode.ToString() == "Z")
-            {
-                skipper = (int)axVLCPlugin21.input.time;
-                describe("Set skipper");
-            }
-            else if (e.KeyCode.ToString() == "Add" && skipper != 0)
-            {
-                axVLCPlugin21.input.time = skipper;
+                if (useCustomSkipper)
+                    axVLCPlugin21.input.time += customSkipper;
+                else
+                    axVLCPlugin21.input.time = skipper;
                 describe("Skipping");
             }
-            else if (e.KeyCode.ToString() == "L")
-            {
-                loopPictureBox(sender, e);
-            }
 
-            else if (e.KeyCode.ToString() == "OemOpenBrackets")
-            {
-                goTo = (int)axVLCPlugin21.input.time;
-                gotoPanel.Location = new Point(Convert.ToInt32((((goTo / axVLCPlugin21.input.length) * 100) * seekBar.Width) / 100), 1);
-                seekBar.Controls.Add(gotoPanel);
-                describe("Set GoTO");
-            }
-            else if (e.KeyCode.ToString() == "Oem6")
-            {
-                goToEnd = (int)axVLCPlugin21.input.time;
-
-                gotoEndPanel.Location = new Point(Convert.ToInt32((((goToEnd / axVLCPlugin21.input.length) * 100) * seekBar.Width) / 100), 1);
-                seekBar.Controls.Add(gotoEndPanel);
-                describe("Set A-B Repeat");
-            }
             else if (e.KeyCode.ToString() == "G" && goTo != 0)
             {
                 axVLCPlugin21.input.time = goTo;
                 describe("GoTO");
-            }
-            else if (e.Alt == true && e.KeyCode.ToString() == "LWin")
-                appExitButton_Click(sender, e);
-            else if (e.KeyCode.ToString() == "Oem5")
-            {
-                goTo = 0;
-                goToEnd = (int)axVLCPlugin21.input.length;
-                if (seekBar.Controls.Contains(gotoPanel))
-                    seekBar.Controls.Remove(gotoPanel);
-                if (seekBar.Controls.Contains(gotoEndPanel))
-                    seekBar.Controls.Remove(gotoEndPanel);
-                describe("Clear GoTO");
-            }
-
-            else if (e.KeyCode == Keys.Down)
-            {
-                axVLCPlugin21.volume -= 10;
-                describe("Volume: " + axVLCPlugin21.volume);
-            }
-
-            else if (e.KeyCode == Keys.Right)
-            {
-                axVLCPlugin21.input.time += 5000;
-                describe("Forward 5s");
-            }
-            else if (e.KeyCode == Keys.Left)
-            {
-                axVLCPlugin21.input.time -= 5000;
-                describe("Backwards 5s");
-            }
-            
+            }       
 
         }
 
