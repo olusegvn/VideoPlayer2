@@ -53,7 +53,6 @@
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.homePanel = new System.Windows.Forms.Panel();
             this.recentFlowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
             this.carouselLabel = new System.Windows.Forms.Label();
             this.carousel = new AxAXVLC.AxVLCPlugin2();
             this.label2 = new System.Windows.Forms.Label();
@@ -76,23 +75,6 @@
             this.previewUnderPanel5 = new System.Windows.Forms.Panel();
             this.previewLabel5 = new System.Windows.Forms.Label();
             this.previewBox5 = new System.Windows.Forms.PictureBox();
-            this.rightSidePanel = new System.Windows.Forms.Panel();
-            this.previewPanel4 = new System.Windows.Forms.Panel();
-            this.previewUnderPanel4 = new System.Windows.Forms.Panel();
-            this.previewLabel4 = new System.Windows.Forms.Label();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.previewPanel3 = new System.Windows.Forms.Panel();
-            this.previewLabel3 = new System.Windows.Forms.Label();
-            this.previewUnderPanel3 = new System.Windows.Forms.Panel();
-            this.previewBox3 = new System.Windows.Forms.PictureBox();
-            this.previewPanel2 = new System.Windows.Forms.Panel();
-            this.previewLabel2 = new System.Windows.Forms.Label();
-            this.previewBox2 = new System.Windows.Forms.PictureBox();
-            this.previewUnderPanel2 = new System.Windows.Forms.Panel();
-            this.previewPanel1 = new System.Windows.Forms.Panel();
-            this.previewLabel1 = new System.Windows.Forms.Label();
-            this.previewBox1 = new System.Windows.Forms.PictureBox();
-            this.previewUnderPanel1 = new System.Windows.Forms.Panel();
             this.secondsTimer = new System.Windows.Forms.Timer(this.components);
             this.descriptionTimer = new System.Windows.Forms.Timer(this.components);
             this.preBox1 = new System.Windows.Forms.PictureBox();
@@ -139,7 +121,6 @@
             this.viewerOptionsPanel.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.homePanel.SuspendLayout();
-            this.recentFlowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.carousel)).BeginInit();
             this.favouritesPanel.SuspendLayout();
             this.previewPanel8.SuspendLayout();
@@ -150,15 +131,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.previewBox6)).BeginInit();
             this.previewPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewBox5)).BeginInit();
-            this.rightSidePanel.SuspendLayout();
-            this.previewPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            this.previewPanel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.previewBox3)).BeginInit();
-            this.previewPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.previewBox2)).BeginInit();
-            this.previewPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.previewBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.preBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -571,7 +543,6 @@
             this.homePanel.Controls.Add(this.sliderForwardButton);
             this.homePanel.Controls.Add(this.sliderBackButton);
             this.homePanel.Controls.Add(this.favouritesPanel);
-            this.homePanel.Controls.Add(this.rightSidePanel);
             this.homePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.homePanel.Location = new System.Drawing.Point(35, 0);
             this.homePanel.Margin = new System.Windows.Forms.Padding(0);
@@ -584,30 +555,14 @@
             this.recentFlowLayoutPanel2.AutoScroll = true;
             this.recentFlowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.recentFlowLayoutPanel2.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.recentFlowLayoutPanel2.Controls.Add(this.label1);
             this.recentFlowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
             this.recentFlowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.recentFlowLayoutPanel2.Location = new System.Drawing.Point(857, 0);
+            this.recentFlowLayoutPanel2.Location = new System.Drawing.Point(827, 0);
             this.recentFlowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.recentFlowLayoutPanel2.Name = "recentFlowLayoutPanel2";
-            this.recentFlowLayoutPanel2.Size = new System.Drawing.Size(271, 531);
+            this.recentFlowLayoutPanel2.Size = new System.Drawing.Size(301, 531);
             this.recentFlowLayoutPanel2.TabIndex = 1;
             this.recentFlowLayoutPanel2.TabStop = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Padding = new System.Windows.Forms.Padding(15);
-            this.label1.Size = new System.Drawing.Size(109, 58);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Recent";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // carouselLabel
             // 
@@ -622,6 +577,7 @@
             // 
             // carousel
             // 
+            this.carousel.AllowDrop = true;
             this.carousel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -916,243 +872,6 @@
             this.previewBox5.TabStop = false;
             this.previewBox5.MouseEnter += new System.EventHandler(this.previewBox5_MouseEnter);
             this.previewBox5.MouseLeave += new System.EventHandler(this.previewBox5_MouseLeave);
-            // 
-            // rightSidePanel
-            // 
-            this.rightSidePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(245)))));
-            this.rightSidePanel.Controls.Add(this.previewPanel4);
-            this.rightSidePanel.Controls.Add(this.previewPanel3);
-            this.rightSidePanel.Controls.Add(this.previewPanel2);
-            this.rightSidePanel.Controls.Add(this.previewPanel1);
-            this.rightSidePanel.Location = new System.Drawing.Point(854, 0);
-            this.rightSidePanel.Margin = new System.Windows.Forms.Padding(2);
-            this.rightSidePanel.Name = "rightSidePanel";
-            this.rightSidePanel.Size = new System.Drawing.Size(274, 703);
-            this.rightSidePanel.TabIndex = 0;
-            this.rightSidePanel.Visible = false;
-            // 
-            // previewPanel4
-            // 
-            this.previewPanel4.Controls.Add(this.previewUnderPanel4);
-            this.previewPanel4.Controls.Add(this.previewLabel4);
-            this.previewPanel4.Controls.Add(this.pictureBox4);
-            this.previewPanel4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.previewPanel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.previewPanel4.Location = new System.Drawing.Point(0, 312);
-            this.previewPanel4.Margin = new System.Windows.Forms.Padding(0, 100, 0, 48);
-            this.previewPanel4.Name = "previewPanel4";
-            this.previewPanel4.Padding = new System.Windows.Forms.Padding(0, 18, 0, 0);
-            this.previewPanel4.Size = new System.Drawing.Size(274, 156);
-            this.previewPanel4.TabIndex = 2;
-            this.previewPanel4.Visible = false;
-            this.previewPanel4.MouseEnter += new System.EventHandler(this.pictureBox4_MouseEnter);
-            this.previewPanel4.MouseLeave += new System.EventHandler(this.pictureBox4_MouseLeave);
-            // 
-            // previewUnderPanel4
-            // 
-            this.previewUnderPanel4.BackColor = System.Drawing.Color.Black;
-            this.previewUnderPanel4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.previewUnderPanel4.Location = new System.Drawing.Point(0, 155);
-            this.previewUnderPanel4.Margin = new System.Windows.Forms.Padding(0, 0, 0, 48);
-            this.previewUnderPanel4.Name = "previewUnderPanel4";
-            this.previewUnderPanel4.Size = new System.Drawing.Size(274, 1);
-            this.previewUnderPanel4.TabIndex = 3;
-            this.previewUnderPanel4.Visible = false;
-            // 
-            // previewLabel4
-            // 
-            this.previewLabel4.AutoSize = true;
-            this.previewLabel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewLabel4.Font = new System.Drawing.Font("Microsoft JhengHei Light", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.previewLabel4.Location = new System.Drawing.Point(0, 137);
-            this.previewLabel4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.previewLabel4.Name = "previewLabel4";
-            this.previewLabel4.Padding = new System.Windows.Forms.Padding(24, 0, 0, 0);
-            this.previewLabel4.Size = new System.Drawing.Size(24, 15);
-            this.previewLabel4.TabIndex = 1;
-            this.previewLabel4.MouseEnter += new System.EventHandler(this.pictureBox4_MouseEnter);
-            this.previewLabel4.MouseLeave += new System.EventHandler(this.pictureBox4_MouseLeave);
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pictureBox4.Location = new System.Drawing.Point(0, 18);
-            this.pictureBox4.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(274, 119);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox4.TabIndex = 0;
-            this.pictureBox4.TabStop = false;
-            this.pictureBox4.MouseEnter += new System.EventHandler(this.pictureBox4_MouseEnter);
-            this.pictureBox4.MouseLeave += new System.EventHandler(this.pictureBox4_MouseLeave);
-            // 
-            // previewPanel3
-            // 
-            this.previewPanel3.Controls.Add(this.previewLabel3);
-            this.previewPanel3.Controls.Add(this.previewUnderPanel3);
-            this.previewPanel3.Controls.Add(this.previewBox3);
-            this.previewPanel3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.previewPanel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.previewPanel3.Location = new System.Drawing.Point(0, 156);
-            this.previewPanel3.Margin = new System.Windows.Forms.Padding(0, 100, 0, 48);
-            this.previewPanel3.Name = "previewPanel3";
-            this.previewPanel3.Padding = new System.Windows.Forms.Padding(0, 18, 0, 0);
-            this.previewPanel3.Size = new System.Drawing.Size(274, 156);
-            this.previewPanel3.TabIndex = 2;
-            this.previewPanel3.Visible = false;
-            this.previewPanel3.MouseEnter += new System.EventHandler(this.previewBox3_MouseEnter_1);
-            this.previewPanel3.MouseLeave += new System.EventHandler(this.previewLabel3_MouseLeave);
-            // 
-            // previewLabel3
-            // 
-            this.previewLabel3.AutoSize = true;
-            this.previewLabel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewLabel3.Font = new System.Drawing.Font("Microsoft JhengHei Light", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.previewLabel3.Location = new System.Drawing.Point(0, 137);
-            this.previewLabel3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.previewLabel3.Name = "previewLabel3";
-            this.previewLabel3.Padding = new System.Windows.Forms.Padding(24, 0, 0, 0);
-            this.previewLabel3.Size = new System.Drawing.Size(24, 15);
-            this.previewLabel3.TabIndex = 1;
-            this.previewLabel3.MouseEnter += new System.EventHandler(this.previewBox3_MouseEnter_1);
-            this.previewLabel3.MouseLeave += new System.EventHandler(this.previewLabel3_MouseLeave);
-            // 
-            // previewUnderPanel3
-            // 
-            this.previewUnderPanel3.BackColor = System.Drawing.Color.Black;
-            this.previewUnderPanel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.previewUnderPanel3.Location = new System.Drawing.Point(0, 155);
-            this.previewUnderPanel3.Margin = new System.Windows.Forms.Padding(0, 0, 0, 48);
-            this.previewUnderPanel3.Name = "previewUnderPanel3";
-            this.previewUnderPanel3.Size = new System.Drawing.Size(274, 1);
-            this.previewUnderPanel3.TabIndex = 3;
-            this.previewUnderPanel3.Visible = false;
-            // 
-            // previewBox3
-            // 
-            this.previewBox3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.previewBox3.Location = new System.Drawing.Point(0, 18);
-            this.previewBox3.Margin = new System.Windows.Forms.Padding(2);
-            this.previewBox3.Name = "previewBox3";
-            this.previewBox3.Size = new System.Drawing.Size(274, 119);
-            this.previewBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.previewBox3.TabIndex = 0;
-            this.previewBox3.TabStop = false;
-            this.previewBox3.MouseEnter += new System.EventHandler(this.previewBox3_MouseEnter_1);
-            this.previewBox3.MouseLeave += new System.EventHandler(this.previewLabel3_MouseLeave);
-            // 
-            // previewPanel2
-            // 
-            this.previewPanel2.Controls.Add(this.previewLabel2);
-            this.previewPanel2.Controls.Add(this.previewBox2);
-            this.previewPanel2.Controls.Add(this.previewUnderPanel2);
-            this.previewPanel2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.previewPanel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.previewPanel2.Location = new System.Drawing.Point(0, 0);
-            this.previewPanel2.Margin = new System.Windows.Forms.Padding(0, 100, 0, 100);
-            this.previewPanel2.Name = "previewPanel2";
-            this.previewPanel2.Padding = new System.Windows.Forms.Padding(0, 18, 0, 0);
-            this.previewPanel2.Size = new System.Drawing.Size(274, 156);
-            this.previewPanel2.TabIndex = 2;
-            this.previewPanel2.Visible = false;
-            this.previewPanel2.MouseEnter += new System.EventHandler(this.previewBox2_MouseEnter_1);
-            this.previewPanel2.MouseLeave += new System.EventHandler(this.previewBox2_MouseLeave_1);
-            // 
-            // previewLabel2
-            // 
-            this.previewLabel2.AutoSize = true;
-            this.previewLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewLabel2.Font = new System.Drawing.Font("Microsoft JhengHei Light", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.previewLabel2.Location = new System.Drawing.Point(0, 137);
-            this.previewLabel2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.previewLabel2.Name = "previewLabel2";
-            this.previewLabel2.Padding = new System.Windows.Forms.Padding(24, 0, 0, 0);
-            this.previewLabel2.Size = new System.Drawing.Size(24, 15);
-            this.previewLabel2.TabIndex = 1;
-            this.previewLabel2.MouseEnter += new System.EventHandler(this.previewBox2_MouseEnter_1);
-            this.previewLabel2.MouseLeave += new System.EventHandler(this.previewBox2_MouseLeave_1);
-            // 
-            // previewBox2
-            // 
-            this.previewBox2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.previewBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.previewBox2.Location = new System.Drawing.Point(0, 18);
-            this.previewBox2.Margin = new System.Windows.Forms.Padding(2);
-            this.previewBox2.Name = "previewBox2";
-            this.previewBox2.Size = new System.Drawing.Size(274, 119);
-            this.previewBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.previewBox2.TabIndex = 0;
-            this.previewBox2.TabStop = false;
-            this.previewBox2.MouseEnter += new System.EventHandler(this.previewBox2_MouseEnter_1);
-            this.previewBox2.MouseLeave += new System.EventHandler(this.previewBox2_MouseLeave_1);
-            // 
-            // previewUnderPanel2
-            // 
-            this.previewUnderPanel2.BackColor = System.Drawing.Color.Black;
-            this.previewUnderPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.previewUnderPanel2.Location = new System.Drawing.Point(0, 155);
-            this.previewUnderPanel2.Margin = new System.Windows.Forms.Padding(0, 0, 0, 48);
-            this.previewUnderPanel2.Name = "previewUnderPanel2";
-            this.previewUnderPanel2.Size = new System.Drawing.Size(274, 1);
-            this.previewUnderPanel2.TabIndex = 3;
-            this.previewUnderPanel2.Visible = false;
-            // 
-            // previewPanel1
-            // 
-            this.previewPanel1.Controls.Add(this.previewLabel1);
-            this.previewPanel1.Controls.Add(this.previewBox1);
-            this.previewPanel1.Controls.Add(this.previewUnderPanel1);
-            this.previewPanel1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.previewPanel1.Location = new System.Drawing.Point(0, 58);
-            this.previewPanel1.Margin = new System.Windows.Forms.Padding(0, 100, 0, 130);
-            this.previewPanel1.Name = "previewPanel1";
-            this.previewPanel1.Padding = new System.Windows.Forms.Padding(0, 18, 0, 0);
-            this.previewPanel1.Size = new System.Drawing.Size(274, 156);
-            this.previewPanel1.TabIndex = 2;
-            this.previewPanel1.Visible = false;
-            this.previewPanel1.MouseEnter += new System.EventHandler(this.previewBox1_MouseEnter_1);
-            this.previewPanel1.MouseLeave += new System.EventHandler(this.previewLabel1_MouseLeave);
-            // 
-            // previewLabel1
-            // 
-            this.previewLabel1.AutoSize = true;
-            this.previewLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.previewLabel1.Font = new System.Drawing.Font("Microsoft JhengHei Light", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.previewLabel1.Location = new System.Drawing.Point(0, 137);
-            this.previewLabel1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.previewLabel1.Name = "previewLabel1";
-            this.previewLabel1.Padding = new System.Windows.Forms.Padding(24, 0, 0, 0);
-            this.previewLabel1.Size = new System.Drawing.Size(24, 15);
-            this.previewLabel1.TabIndex = 1;
-            this.previewLabel1.Click += new System.EventHandler(this.previewLabel1_Click);
-            this.previewLabel1.MouseEnter += new System.EventHandler(this.previewBox1_MouseEnter_1);
-            this.previewLabel1.MouseLeave += new System.EventHandler(this.previewLabel1_MouseLeave);
-            // 
-            // previewBox1
-            // 
-            this.previewBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.previewBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.previewBox1.Location = new System.Drawing.Point(0, 18);
-            this.previewBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.previewBox1.Name = "previewBox1";
-            this.previewBox1.Size = new System.Drawing.Size(274, 119);
-            this.previewBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.previewBox1.TabIndex = 0;
-            this.previewBox1.TabStop = false;
-            this.previewBox1.MouseEnter += new System.EventHandler(this.previewBox1_MouseEnter_1);
-            this.previewBox1.MouseLeave += new System.EventHandler(this.previewLabel1_MouseLeave);
-            // 
-            // previewUnderPanel1
-            // 
-            this.previewUnderPanel1.BackColor = System.Drawing.Color.Black;
-            this.previewUnderPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.previewUnderPanel1.Location = new System.Drawing.Point(0, 155);
-            this.previewUnderPanel1.Margin = new System.Windows.Forms.Padding(0, 0, 0, 30);
-            this.previewUnderPanel1.Name = "previewUnderPanel1";
-            this.previewUnderPanel1.Size = new System.Drawing.Size(274, 1);
-            this.previewUnderPanel1.TabIndex = 3;
-            this.previewUnderPanel1.Visible = false;
             // 
             // secondsTimer
             // 
@@ -1697,6 +1416,7 @@
             // 
             // Form1
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
@@ -1713,7 +1433,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(1000, 698);
             this.Name = "Form1";
-            this.Opacity = 0.9D;
+            this.Opacity = 0.94D;
             this.Text = "AIVideoPlayer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -1726,8 +1446,6 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.homePanel.ResumeLayout(false);
             this.homePanel.PerformLayout();
-            this.recentFlowLayoutPanel2.ResumeLayout(false);
-            this.recentFlowLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.carousel)).EndInit();
             this.favouritesPanel.ResumeLayout(false);
             this.previewPanel8.ResumeLayout(false);
@@ -1742,19 +1460,6 @@
             this.previewPanel5.ResumeLayout(false);
             this.previewPanel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewBox5)).EndInit();
-            this.rightSidePanel.ResumeLayout(false);
-            this.previewPanel4.ResumeLayout(false);
-            this.previewPanel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            this.previewPanel3.ResumeLayout(false);
-            this.previewPanel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.previewBox3)).EndInit();
-            this.previewPanel2.ResumeLayout(false);
-            this.previewPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.previewBox2)).EndInit();
-            this.previewPanel1.ResumeLayout(false);
-            this.previewPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.previewBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.preBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
@@ -1875,24 +1580,6 @@
         private System.Windows.Forms.Panel viewerPanel;
         private AxAXVLC.AxVLCPlugin2 axVLCPlugin21;
         private System.Windows.Forms.FlowLayoutPanel recentFlowLayoutPanel2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel rightSidePanel;
-        private System.Windows.Forms.Panel previewPanel4;
-        private System.Windows.Forms.Panel previewUnderPanel4;
-        private System.Windows.Forms.Label previewLabel4;
-        private System.Windows.Forms.PictureBox pictureBox4;
-        private System.Windows.Forms.Panel previewPanel3;
-        private System.Windows.Forms.Label previewLabel3;
-        private System.Windows.Forms.Panel previewUnderPanel3;
-        private System.Windows.Forms.PictureBox previewBox3;
-        private System.Windows.Forms.Panel previewPanel2;
-        private System.Windows.Forms.Label previewLabel2;
-        private System.Windows.Forms.PictureBox previewBox2;
-        private System.Windows.Forms.Panel previewUnderPanel2;
-        private System.Windows.Forms.Panel previewPanel1;
-        private System.Windows.Forms.Label previewLabel1;
-        private System.Windows.Forms.PictureBox previewBox1;
-        private System.Windows.Forms.Panel previewUnderPanel1;
     }
 }
 

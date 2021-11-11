@@ -46,6 +46,8 @@ namespace VideoPlayer
         public static Stream stream;
         public LimitedQueue<string> recentlyPlayedFiles;
         public static Dictionary<string, double> timeDictionary = new Dictionary<string, double>();
+        public static Dictionary<string, Array> skipperData = new Dictionary<string, Array>();
+
         List<PictureBox> previewBoxes = new List<PictureBox>();
         private string DATABASE = Environment.ExpandEnvironmentVariables(@"%USERPROFILE%/AIVideo_Player/data/images/");
         private string STORAGEBASE = Environment.ExpandEnvironmentVariables(@"%USERPROFILE%/AIVideo_Player/data/");
@@ -105,8 +107,11 @@ namespace VideoPlayer
                 recentlyPlayedFiles = (LimitedQueue<string>)formatter.Deserialize(stream);
                 Stream stream1 = new FileStream(STORAGEBASE + "time.txt", FileMode.Open, FileAccess.Read);
                 Stream stream2 = new FileStream(STORAGEBASE + "Favourites.txt", FileMode.Open, FileAccess.Read);
+                Stream stream3 = new FileStream(STORAGEBASE + "skipperData.txt", FileMode.Open, FileAccess.Read);
+
                 timeDictionary = (Dictionary<string, double>)formatter.Deserialize(stream1);
                 favouriteTimes = (Dictionary<string, int>)formatter.Deserialize(stream2);
+                skipperData = (Dictionary<string, Array>)formatter.Deserialize(stream2);
                 stream.Close();
                 stream1.Close();
                 stream2.Close();
@@ -123,6 +128,8 @@ namespace VideoPlayer
             timer1_Tick(sender, e);
             timer1.Start();
         }
+
+
 
         public void renderDirectory()
         {
@@ -543,9 +550,6 @@ namespace VideoPlayer
         public void renderHomePanel()
         {
             int x = 1;
-            PictureBox[] PreviewBoxes = { previewBox1, previewBox2, previewBox3, pictureBox4 };
-            Label[] previewLabels = { previewLabel1, previewLabel2, previewLabel3, previewLabel4 };
-            Panel[] previewPanels = { previewPanel1, previewPanel2, previewPanel3, previewPanel4 };
             carouselVideos.Clear();
             int count = 0;
             List<string> videoFiles = new List<string>();
@@ -562,7 +566,7 @@ namespace VideoPlayer
                     Font = new Font("Microsoft JhengHei Light", 17),
                     //Location = new Point(pPictureBox.Location.X, 0),
                     Padding = new Padding(0, 15, 0, 0),
-                    Size = new Size(265, 50),
+                    Size = new Size(265, 70),
 
                 };
                 recentFlowLayoutPanel2.Controls.Add(recentsLabel);
@@ -607,7 +611,7 @@ namespace VideoPlayer
                             {
                                 Dock = DockStyle.Top,
                                 Anchor = AnchorStyles.Top,
-                                Size = new Size(265, 140),
+                                Size = new Size(225, 140),
                                 Padding = new Padding(18, 28, 3, 5),
                                 Cursor = Cursors.Hand,
 
@@ -648,6 +652,12 @@ namespace VideoPlayer
                             pPictureBox.Click += new EventHandler(file_Click);
                             pPanel.Click += new EventHandler(file_Click);
                             pLabel.Click += new EventHandler(file_Click);
+                            pLabel.MouseEnter += new EventHandler(childLabelTogglePanelWhiteSmoke);
+                            pLabel.MouseLeave += new EventHandler(childLabelTogglePanelWhiteSmoke);
+                            pPictureBox.MouseEnter += new EventHandler(childPictureBoxTogglePanelWhiteSmoke);
+                            pPictureBox.MouseLeave += new EventHandler(childPictureBoxTogglePanelWhiteSmoke);
+                            pPanel.MouseEnter += new EventHandler(togglePanelWhiteSmoke);
+                            pPanel.MouseLeave += new EventHandler(togglePanelWhiteSmoke);
                             fileDirectories.Add(Path.GetDirectoryName(videoFile));
                             count += 1;
                         }
@@ -746,18 +756,7 @@ namespace VideoPlayer
 
             int newwidth = Convert.ToInt32((6 * ClientRectangle.Width / 100));
             int newheight = Convert.ToInt32((6 * ClientRectangle.Height / 100));
-            PictureBox[] PreviewBoxes = { previewBox1, previewBox2, previewBox3, pictureBox4 };
-            Panel[] previewPanels = { previewPanel1, previewPanel2, previewPanel3, previewPanel4 };
-            PictureBox[] PreviewBoxes1 = { previewBox5, previewBox6, previewBox7, previewBox8 };
-            Panel[] previewPanels1 = { previewPanel5, previewPanel6, previewPanel7, previewPanel8 };
-            for (int _ = 0; _ < previewPanels.Count(); _++)
-            {
-                PreviewBoxes[_].Size = new Size(newheight, newwidth);
-                previewPanels[_].Size = new Size(newheight + 50, newwidth + 60);
-                PreviewBoxes1[_].Size = new Size(newheight, newwidth + 40);
-                previewPanels1[_].Size = new Size(newheight + 220, newwidth + 80);
-            }
-            rightSidePanel.Width = Convert.ToInt32((17 * ClientRectangle.Width) / 100);
+            recentFlowLayoutPanel2.Width = Convert.ToInt32((22 * ClientRectangle.Width) / 100);
             favouritesPanel.Height = Convert.ToInt32((13 * ClientRectangle.Width) / 100);
         }
 
@@ -915,127 +914,7 @@ namespace VideoPlayer
             toggleMenuicon();
         }
 
-        private void panel3_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel1.BackColor = Color.White;
-        }
-
-        private void panel3_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel1.BackColor = Color.FromArgb(252, 250, 250);
-        }
-
-        private void label2_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel1.BackColor = Color.White;
-        }
-
-        private void label2_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel1.BackColor = Color.FromArgb(252, 250, 250);
-        }
-
-        private void previewPanel2_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel2.BackColor = Color.White;
-            previewUnderPanel2.Visible = true;
-        }
-
-        private void previewPanel2_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel2.BackColor = Color.FromArgb(252, 250, 250);
-            previewUnderPanel2.Visible = false;
-        }
-
-        private void pictureBox1_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel2.BackColor = Color.White;
-            previewUnderPanel2.Visible = true;
-        }
-
-        private void pictureBox1_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel2.BackColor = Color.White;
-            previewUnderPanel2.Visible = true;
-        }
-
-        private void previewPanel3_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel3.BackColor = Color.White;
-            previewUnderPanel3.Visible = true;
-        }
-
-        private void previewPanel3_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel3.BackColor = Color.FromArgb(252, 250, 250);
-            previewUnderPanel3.Visible = false;
-        }
-
-        private void previewPanel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void pictureBox5_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel4.BackColor = Color.White;
-            previewUnderPanel4.Visible = true;
-        }
-
-        private void pictureBox5_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel4.BackColor = Color.FromArgb(252, 250, 250);
-            previewUnderPanel4.Visible = false;
-        }
-
-        private void previewPanel4_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel4.BackColor = Color.White;
-            previewUnderPanel4.Visible = true;
-        }
-
-        private void previewPanel4_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel4.BackColor = Color.FromArgb(252, 250, 250);
-            previewUnderPanel4.Visible = false;
-        }
-
-        private void previewBox1_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel1.BackColor = Color.White;
-            previewUnderPanel1.Visible = true;
-        }
-
-        private void previewBox1_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel1.BackColor = Color.FromArgb(252, 250, 250);
-            previewUnderPanel1.Visible = false;
-        }
-
-        private void previewBox2_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel2.BackColor = Color.White;
-            previewUnderPanel2.Visible = true;
-        }
-
-        private void previewBox2_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel2.BackColor = Color.FromArgb(252, 250, 250);
-            previewUnderPanel2.Visible = false;
-        }
-
-        private void previewBox3_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel3.BackColor = Color.White;
-            previewUnderPanel3.Visible = true;
-        }
-
-        private void previewBox3_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel3.BackColor = Color.FromArgb(252, 250, 250);
-            previewUnderPanel3.Visible = false;
-        }
-
+      
         private void Form1_ClientSizeChanged(object sender, EventArgs e)
         {
             resizeEverything();
@@ -1270,6 +1149,7 @@ namespace VideoPlayer
 
         public void togglePanelWhiteSmoke(object sender, EventArgs e)
         {
+
             if (((Panel)sender).BackColor == Color.WhiteSmoke)
             {
                 ((Panel)sender).BackColor = Color.White;
@@ -1277,6 +1157,33 @@ namespace VideoPlayer
             else
             {
                 ((Panel)sender).BackColor = Color.WhiteSmoke;
+
+            }
+        }
+        public void childPictureBoxTogglePanelWhiteSmoke(object sender, EventArgs e)
+        {
+            if (((PictureBox)sender).Parent.BackColor == Color.WhiteSmoke)
+            {
+                ((PictureBox)sender).Parent.BackColor = Color.White;
+
+            }
+            else
+            {
+                ((PictureBox)sender).Parent.BackColor = Color.WhiteSmoke;
+
+            }
+        }
+        public void childLabelTogglePanelWhiteSmoke(object sender, EventArgs e)
+        {
+            if (((Label)sender).Parent.BackColor == Color.WhiteSmoke)
+            {
+                ((Label)sender).Parent.BackColor = Color.White;
+
+            }
+            else
+            {
+                ((Label)sender).Parent.BackColor = Color.WhiteSmoke;
+
             }
         }
         public void togglePanelGrey(object sender, EventArgs e)
@@ -1344,76 +1251,7 @@ namespace VideoPlayer
             this.Opacity = 1;
         }
 
-        private void previewLabel1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void previewBox1_MouseEnter_1(object sender, EventArgs e)
-        {
-            previewLabel1.BackColor = Color.White;
-            previewBox1.BackColor = Color.White;
-            previewPanel1.BackColor = Color.White;
-            previewUnderPanel1.Visible = true;
-        }
-
-        private void previewBox2_MouseEnter_1(object sender, EventArgs e)
-        {
-            previewLabel2.BackColor = Color.White;
-            previewBox2.BackColor = Color.White;
-            previewPanel2.BackColor = Color.White;
-            previewUnderPanel2.Visible = true;
-        }
-
-        private void previewBox2_MouseLeave_1(object sender, EventArgs e)
-        {
-            previewLabel2.BackColor = Color.FromArgb(240, 244, 245);
-            previewBox2.BackColor = Color.FromArgb(240, 244, 245);
-            previewPanel2.BackColor = Color.FromArgb(240, 244, 245);
-            previewUnderPanel2.Visible = false;
-
-        }
-
-        private void previewBox3_MouseEnter_1(object sender, EventArgs e)
-        {
-            previewLabel3.BackColor = Color.White;
-            previewBox3.BackColor = Color.White;
-            previewPanel3.BackColor = Color.White;
-            previewUnderPanel3.Visible = true;
-        }
-
-        private void pictureBox4_MouseEnter(object sender, EventArgs e)
-        {
-            previewLabel4.BackColor = Color.White;
-            pictureBox4.BackColor = Color.White;
-            previewPanel4.BackColor = Color.White;
-            previewUnderPanel4.Visible = true;
-        }
-
-        private void pictureBox4_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel4.BackColor = Color.FromArgb(240, 244, 245);
-            pictureBox4.BackColor = Color.FromArgb(240, 244, 245);
-            previewPanel4.BackColor = Color.FromArgb(240, 244, 245);
-            previewUnderPanel4.Visible = false;
-        }
-
-        private void previewLabel3_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel3.BackColor = Color.FromArgb(240, 244, 245);
-            previewBox3.BackColor = Color.FromArgb(240, 244, 245);
-            previewPanel3.BackColor = Color.FromArgb(240, 244, 245);
-            previewUnderPanel3.Visible = false;
-        }
-
-        private void previewLabel1_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel1.BackColor = Color.FromArgb(240, 244, 245);
-            previewBox1.BackColor = Color.FromArgb(240, 244, 245);
-            previewPanel1.BackColor = Color.FromArgb(240, 244, 245);
-            previewUnderPanel1.Visible = false;
-        }
-
+ 
 
         private void sliderBackButton_Click_1(object sender, EventArgs e)
         {
@@ -2230,6 +2068,7 @@ namespace VideoPlayer
         {
             mainSidePanel.Visible = false;
         }
+
 
         private void axVLCPlugin21_MouseDownEvent(object sender, AxAXVLC.DVLCEvents_MouseDownEvent e)
         {
