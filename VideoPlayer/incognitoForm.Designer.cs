@@ -49,6 +49,7 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.favouritesButton = new System.Windows.Forms.Button();
             this.homePanel = new System.Windows.Forms.Panel();
+            this.recentFlowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.carouselLabel = new System.Windows.Forms.Label();
             this.carousel = new AxAXVLC.AxVLCPlugin2();
             this.label2 = new System.Windows.Forms.Label();
@@ -72,6 +73,7 @@
             this.previewLabel5 = new System.Windows.Forms.Label();
             this.previewBox5 = new System.Windows.Forms.PictureBox();
             this.viewerPanel = new System.Windows.Forms.Panel();
+            this.axVLCPlugin21 = new AxAXVLC.AxVLCPlugin2();
             this.descriptionLabel = new System.Windows.Forms.Label();
             this.playlistPanel = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
@@ -93,7 +95,6 @@
             this.pictureBox11 = new System.Windows.Forms.PictureBox();
             this.playButton = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.axVLCPlugin21 = new AxAXVLC.AxVLCPlugin2();
             this.recentlyPlayedFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.foldersPanel = new System.Windows.Forms.Panel();
             this.foldersFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
@@ -112,7 +113,7 @@
             this.descriptionTimer = new System.Windows.Forms.Timer(this.components);
             this.hiddenPanel = new System.Windows.Forms.Panel();
             this.favouritesFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.recentFlowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.axVLCPlugin22 = new AxAXVLC.AxVLCPlugin2();
             this.mainSidePanel.SuspendLayout();
             this.viewerOptionsPanel.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -128,6 +129,7 @@
             this.previewPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewBox5)).BeginInit();
             this.viewerPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin21)).BeginInit();
             this.playlistPanel.SuspendLayout();
             this.controlsPanel.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -140,12 +142,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin21)).BeginInit();
             this.foldersPanel.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.foldersBackButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin22)).BeginInit();
             this.SuspendLayout();
             // 
             // mainSidePanel
@@ -514,6 +516,20 @@
             this.homePanel.Size = new System.Drawing.Size(1008, 696);
             this.homePanel.TabIndex = 8;
             // 
+            // recentFlowLayoutPanel2
+            // 
+            this.recentFlowLayoutPanel2.AutoScroll = true;
+            this.recentFlowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.recentFlowLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.recentFlowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.recentFlowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.recentFlowLayoutPanel2.Location = new System.Drawing.Point(737, 0);
+            this.recentFlowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.recentFlowLayoutPanel2.Name = "recentFlowLayoutPanel2";
+            this.recentFlowLayoutPanel2.Size = new System.Drawing.Size(271, 493);
+            this.recentFlowLayoutPanel2.TabIndex = 6;
+            this.recentFlowLayoutPanel2.TabStop = true;
+            // 
             // carouselLabel
             // 
             this.carouselLabel.AutoSize = true;
@@ -538,7 +554,7 @@
             this.carousel.Margin = new System.Windows.Forms.Padding(2);
             this.carousel.Name = "carousel";
             this.carousel.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("carousel.OcxState")));
-            this.carousel.Size = new System.Drawing.Size(550, 375);
+            this.carousel.Size = new System.Drawing.Size(549, 375);
             this.carousel.TabIndex = 4;
             // 
             // label2
@@ -807,6 +823,7 @@
             // 
             // viewerPanel
             // 
+            this.viewerPanel.Controls.Add(this.axVLCPlugin22);
             this.viewerPanel.Controls.Add(this.axVLCPlugin21);
             this.viewerPanel.Controls.Add(this.descriptionLabel);
             this.viewerPanel.Controls.Add(this.playlistPanel);
@@ -818,6 +835,24 @@
             this.viewerPanel.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.viewerPanel.Size = new System.Drawing.Size(1008, 696);
             this.viewerPanel.TabIndex = 9;
+            // 
+            // axVLCPlugin21
+            // 
+            this.axVLCPlugin21.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.axVLCPlugin21.Enabled = true;
+            this.axVLCPlugin21.Location = new System.Drawing.Point(0, 2);
+            this.axVLCPlugin21.Name = "axVLCPlugin21";
+            this.axVLCPlugin21.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axVLCPlugin21.OcxState")));
+            this.axVLCPlugin21.Size = new System.Drawing.Size(806, 646);
+            this.axVLCPlugin21.TabIndex = 3;
+            this.axVLCPlugin21.MediaPlayerEndReached += new System.EventHandler(this.axVLCPlugin21_MediaPlayerEndReached);
+            this.axVLCPlugin21.ClickEvent += new System.EventHandler(this.axVLCPlugin21_ClickEvent);
+            this.axVLCPlugin21.DblClick += new System.EventHandler(this.fullscreenButton_Click);
+            this.axVLCPlugin21.KeyDownEvent += new AxAXVLC.DVLCEvents_KeyDownEventHandler(this.axVLCPlugin21_KeyDownEvent);
+            this.axVLCPlugin21.KeyPressEvent += new AxAXVLC.DVLCEvents_KeyPressEventHandler(this.axVLCPlugin21_KeyPressEvent_1);
+            this.axVLCPlugin21.KeyUpEvent += new AxAXVLC.DVLCEvents_KeyUpEventHandler(this.axVLCPlugin21_KeyUpEvent);
+            this.axVLCPlugin21.Enter += new System.EventHandler(this.axVLCPlugin21_Enter);
+            this.axVLCPlugin21.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.axVLCPlugin21_PreviewKeyDown);
             // 
             // descriptionLabel
             // 
@@ -996,6 +1031,8 @@
             this.seekBar.Click += new System.EventHandler(this.seekBar_Click);
             this.seekBar.MouseEnter += new System.EventHandler(this.seekBar_MouseEnter);
             this.seekBar.MouseLeave += new System.EventHandler(this.seekBar_MouseLeave);
+            this.seekBar.MouseHover += new System.EventHandler(this.seekBar_MouseHover);
+            this.seekBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.seekBar_MouseMove);
             // 
             // seekpin
             // 
@@ -1117,24 +1154,6 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
-            // axVLCPlugin21
-            // 
-            this.axVLCPlugin21.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.axVLCPlugin21.Enabled = true;
-            this.axVLCPlugin21.Location = new System.Drawing.Point(0, 2);
-            this.axVLCPlugin21.Name = "axVLCPlugin21";
-            this.axVLCPlugin21.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axVLCPlugin21.OcxState")));
-            this.axVLCPlugin21.Size = new System.Drawing.Size(806, 646);
-            this.axVLCPlugin21.TabIndex = 3;
-            this.axVLCPlugin21.MediaPlayerEndReached += new System.EventHandler(this.axVLCPlugin21_MediaPlayerEndReached);
-            this.axVLCPlugin21.ClickEvent += new System.EventHandler(this.axVLCPlugin21_ClickEvent);
-            this.axVLCPlugin21.DblClick += new System.EventHandler(this.fullscreenButton_Click);
-            this.axVLCPlugin21.KeyDownEvent += new AxAXVLC.DVLCEvents_KeyDownEventHandler(this.axVLCPlugin21_KeyDownEvent);
-            this.axVLCPlugin21.KeyPressEvent += new AxAXVLC.DVLCEvents_KeyPressEventHandler(this.axVLCPlugin21_KeyPressEvent_1);
-            this.axVLCPlugin21.KeyUpEvent += new AxAXVLC.DVLCEvents_KeyUpEventHandler(this.axVLCPlugin21_KeyUpEvent);
-            this.axVLCPlugin21.Enter += new System.EventHandler(this.axVLCPlugin21_Enter);
-            this.axVLCPlugin21.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.axVLCPlugin21_PreviewKeyDown);
             // 
             // recentlyPlayedFlowLayoutPanel
             // 
@@ -1334,27 +1353,22 @@
             this.favouritesFlowLayoutPanel.Size = new System.Drawing.Size(1008, 696);
             this.favouritesFlowLayoutPanel.TabIndex = 13;
             // 
-            // recentFlowLayoutPanel2
+            // axVLCPlugin22
             // 
-            this.recentFlowLayoutPanel2.AutoScroll = true;
-            this.recentFlowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.recentFlowLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.recentFlowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.recentFlowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.recentFlowLayoutPanel2.Location = new System.Drawing.Point(737, 0);
-            this.recentFlowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.recentFlowLayoutPanel2.Name = "recentFlowLayoutPanel2";
-            this.recentFlowLayoutPanel2.Size = new System.Drawing.Size(271, 493);
-            this.recentFlowLayoutPanel2.TabIndex = 6;
-            this.recentFlowLayoutPanel2.TabStop = true;
+            this.axVLCPlugin22.Enabled = true;
+            this.axVLCPlugin22.Location = new System.Drawing.Point(1, 506);
+            this.axVLCPlugin22.Name = "axVLCPlugin22";
+            this.axVLCPlugin22.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axVLCPlugin22.OcxState")));
+            this.axVLCPlugin22.Size = new System.Drawing.Size(185, 142);
+            this.axVLCPlugin22.TabIndex = 9;
             // 
             // incognitoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1041, 696);
-            this.Controls.Add(this.homePanel);
             this.Controls.Add(this.viewerPanel);
+            this.Controls.Add(this.homePanel);
             this.Controls.Add(this.favouritesFlowLayoutPanel);
             this.Controls.Add(this.recentlyPlayedFlowLayoutPanel);
             this.Controls.Add(this.foldersPanel);
@@ -1387,6 +1401,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.previewBox5)).EndInit();
             this.viewerPanel.ResumeLayout(false);
             this.viewerPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin21)).EndInit();
             this.playlistPanel.ResumeLayout(false);
             this.playlistPanel.PerformLayout();
             this.controlsPanel.ResumeLayout(false);
@@ -1402,13 +1417,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.playButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin21)).EndInit();
             this.foldersPanel.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.foldersBackButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin22)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1498,5 +1513,6 @@
         private System.Windows.Forms.Label systemTime;
         private System.Windows.Forms.Label batteryTimeRemaining;
         private System.Windows.Forms.FlowLayoutPanel recentFlowLayoutPanel2;
+        private AxAXVLC.AxVLCPlugin2 axVLCPlugin22;
     }
 }

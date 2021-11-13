@@ -18,7 +18,7 @@ namespace VideoPlayer
         public baseForm()
         {
             InitializeComponent();
-            form1 = new Form1();
+            form1 = new Form1(false);
             form1.Show();
         }
 
@@ -35,7 +35,7 @@ namespace VideoPlayer
         public static void switchNormal()
         {
             incognitoform.Close();
-            form1 = new Form1();
+            form1 = new Form1(true);
             form1.Show();
         }
     }

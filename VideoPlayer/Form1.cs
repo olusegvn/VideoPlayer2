@@ -43,10 +43,10 @@ namespace VideoPlayer
         public Image menuImage = VideoPlayer.Properties.Resources.icons8_menu_16;
         public string[] extentions = { ".MOV", ".MP4", ".M4V", ".3GP", ".MPG", ".TS", ".VOB", ".ASF", ".AVI", ".WMV", ".MKV", ".RM", ".DV", ".FLV", ".WEBM" };
         public static IFormatter formatter = new BinaryFormatter();
-        public static Stream stream;
+        public static Stream stream, stream1, stream2, stream3;
         public LimitedQueue<string> recentlyPlayedFiles;
-        public static Dictionary<string, double> timeDictionary = new Dictionary<string, double>();
-        public static Dictionary<string, Array> skipperData = new Dictionary<string, Array>();
+        public static Dictionary<string, double[]> timeDictionary = new Dictionary<string, double[]>();
+        public static Dictionary<string, int[]> skipperData = new Dictionary<string, int[]>();
 
         List<PictureBox> previewBoxes = new List<PictureBox>();
         private string DATABASE = Environment.ExpandEnvironmentVariables(@"%USERPROFILE%/AIVideo_Player/data/images/");
@@ -78,12 +78,13 @@ namespace VideoPlayer
         bool useCustomSkipper;
         int customSkipper;
         string output;
+        string clickedFilePathDirectory;
         bool firstFull = true;
         int currentPlaylistIndex = -1;
         Panel gotoPanel = new Panel();
         Panel gotoEndPanel = new Panel();
 
-        public Form1()
+        public Form1(bool fromIncognito)
         {
 
             InitializeComponent();
@@ -100,31 +101,61 @@ namespace VideoPlayer
             }
 
             IFormatter formatter = new BinaryFormatter();
-            
+
             try
             {
                 stream = new FileStream(STORAGEBASE + "Queue.txt", FileMode.Open, FileAccess.Read);
                 recentlyPlayedFiles = (LimitedQueue<string>)formatter.Deserialize(stream);
-                Stream stream1 = new FileStream(STORAGEBASE + "time.txt", FileMode.Open, FileAccess.Read);
-                Stream stream2 = new FileStream(STORAGEBASE + "Favourites.txt", FileMode.Open, FileAccess.Read);
-                Stream stream3 = new FileStream(STORAGEBASE + "skipperData.txt", FileMode.Open, FileAccess.Read);
-
-                timeDictionary = (Dictionary<string, double>)formatter.Deserialize(stream1);
-                favouriteTimes = (Dictionary<string, int>)formatter.Deserialize(stream2);
-                skipperData = (Dictionary<string, Array>)formatter.Deserialize(stream2);
                 stream.Close();
-                stream1.Close();
-                stream2.Close();
             }
             catch {
                 recentlyPlayedFiles = new LimitedQueue<string>(80);
+                stream.Close();
             }
-            
+            try
+            {
+                stream1 = new FileStream(STORAGEBASE + "time.txt", FileMode.Open, FileAccess.Read);
+                timeDictionary = (Dictionary<string, double[]>)formatter.Deserialize(stream1);
+                stream1.Close();
+            }
+            catch { 
+                stream1.Close();
+            }
+            try
+            {
+                stream2 = new FileStream(STORAGEBASE + "Favourites.txt", FileMode.Open, FileAccess.Read);
+                favouriteTimes = (Dictionary<string, int>)formatter.Deserialize(stream2);
+                stream2.Close();
+            }
+            catch { 
+                stream2.Close();
+            }
+            try
+            {
+                stream3 = new FileStream(STORAGEBASE + "skipperData.txt", FileMode.Open, FileAccess.Read);
+                skipperData = (Dictionary<string, int[]>)formatter.Deserialize(stream3);
+                stream3.Close();
+            }
+            catch {
+                stream3.Close();
+            }
+
             homeButton_Click(sender, e);
             gotoPanel.Size = new Size(10, 14);
             gotoPanel.BackColor = Color.Black;
             gotoEndPanel.Size = new Size(10, 14);
             gotoEndPanel.BackColor = Color.Black;
+            if (fromIncognito)
+            {
+                foreach (string videoFile in recentlyPlayedFiles.Reverse())
+                {
+                    clickedFilePath = videoFile; break;
+                }
+                file_Click();
+                firstFull = false;
+                viewerButton_Click(sender, e);
+                axVLCPlugin21.playlist.pause();
+            }
             timer1_Tick(sender, e);
             timer1.Start();
         }
@@ -211,6 +242,27 @@ namespace VideoPlayer
                     FlatStyle = FlatStyle.Flat,
                     Width = subpanel.Width - 8,
                 };
+                Label progressLabel = new Label
+                {
+                    Anchor = AnchorStyles.Right,
+                    Font = new Font("Microsoft JhengHei Light", 12),
+
+                };
+                Panel progressPanel = new Panel
+                {
+                    Height = 2,
+                    BackColor = Color.Black,
+                    Width = 0,
+                    Dock = DockStyle.Bottom,
+                };
+                string formattedName = _.FullName.Replace("\\", "/");
+
+                if (timeDictionary.ContainsKey(formattedName))
+                {
+                    int progress = (int)timeDictionary[formattedName][1];
+                    progressLabel.Text = progress.ToString()+ "%";
+                    progressPanel.Width = progress * subpanel.Width / 100;
+                }
                 pButton.FlatAppearance.BorderColor = Color.Black;
                 pButton.FlatAppearance.BorderSize = 1;
                 pButton.FlatAppearance.MouseOverBackColor = Color.WhiteSmoke;
@@ -274,6 +326,8 @@ namespace VideoPlayer
                 subpanel.Click += new EventHandler(file_Click);
                 label.MouseEnter += new EventHandler(subPanel_MouseEnter);
                 label.MouseLeave += new EventHandler(subPanel_MouseLeave);
+                subpanel.Controls.Add(progressLabel);
+                subpanel.Controls.Add(progressPanel);
                 subpanel.Controls.Add(pictureBox);
                 subpanel.Controls.Add(label);
                 subpanel.Controls.Add(dockPanel);
@@ -288,13 +342,35 @@ namespace VideoPlayer
 
         private void file_Click(object sender, EventArgs e)
         {
+            clickedFilePath = getControlName(sender);
+            file_Click();
+            viewerButton_Click(sender, e);
+        }
+
+
+        private void file_Click()
+        {
             carousel.volume = 0;
             directoryRendered = true;
             textFromUser = false;
             searchTextBox.Text = "";
             textFromUser = true;
-            clickedFilePath = getControlName(sender);
 
+            clickedFilePathDirectory = Path.GetDirectoryName(clickedFilePath);
+            try
+            {
+                if (skipperData[clickedFilePathDirectory][1] == 0)
+                {
+                    skipper = skipperData[clickedFilePathDirectory][0];
+                    useCustomSkipper = false;
+                }
+                else
+                {
+                    customSkipper = skipperData[clickedFilePathDirectory][0];
+                    useCustomSkipper = true;
+                }
+            }
+            catch { }
 
             axVLCPlugin21.playlist.stop();
             axVLCPlugin21.playlist.items.clear();
@@ -319,14 +395,13 @@ namespace VideoPlayer
             currentPlaylistIndex = playlist.IndexOf(fileUri);
             axVLCPlugin21.playlist.playItem(currentPlaylistIndex);
             if (timeDictionary.ContainsKey(clickedFilePath))
-                axVLCPlugin21.input.time = (int)timeDictionary[clickedFilePath] - 2500;
+                axVLCPlugin21.input.time = (int)timeDictionary[clickedFilePath][0] - 2500;
             if (recentlyPlayedFiles.Contains(clickedFilePath))
                 queueRemove(clickedFilePath);
             renderPlaylist(fileUri);
             recentlyPlayedFiles.Enqueue(clickedFilePath);
             changeFile();
 
-            viewerButton_Click(sender, e);
         }
 
 
@@ -438,7 +513,7 @@ namespace VideoPlayer
             axVLCPlugin21.playlist.playItem(playlist.IndexOf(active));
             clickedFilePath = Uri.UnescapeDataString(active).Replace("file:///", "");
             if (timeDictionary.ContainsKey(clickedFilePath))
-                axVLCPlugin21.input.time = timeDictionary[clickedFilePath] - 2500;
+                axVLCPlugin21.input.time = timeDictionary[clickedFilePath][0] - 2500;
             recentlyPlayedFiles.Enqueue(clickedFilePath);
             renderPlaylist(active);
             axVLCPlugin21.Focus();
@@ -455,7 +530,7 @@ namespace VideoPlayer
         {
             goTo = 0;
             goToEnd = -1;
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
+            timeDictionary[clickedFilePath] = new double[] { axVLCPlugin21.input.time, (axVLCPlugin21.input.time / axVLCPlugin21.input.length * 100) };
             if (seekBar.Controls.Contains(gotoPanel))
                 seekBar.Controls.Remove(gotoPanel);
             if (seekBar.Controls.Contains(gotoEndPanel))
@@ -509,7 +584,7 @@ namespace VideoPlayer
             clickedFilePath = Uri.UnescapeDataString(currentItem).Replace("file:///", "");
 
             if (timeDictionary.ContainsKey(clickedFilePath))
-                axVLCPlugin21.input.time = (int)timeDictionary[clickedFilePath] - 2500;
+                axVLCPlugin21.input.time = (double)timeDictionary[clickedFilePath][0] - 2500;
             if (recentlyPlayedFiles.Contains(clickedFilePath))
                 queueRemove(clickedFilePath);
             recentlyPlayedFiles.Enqueue(clickedFilePath);
@@ -523,7 +598,7 @@ namespace VideoPlayer
             clickedFilePath = Uri.UnescapeDataString(currentItem).Replace("file:///", "");
 
             if (timeDictionary.ContainsKey(clickedFilePath))
-                axVLCPlugin21.input.time = (int)timeDictionary[clickedFilePath] - 2500;
+                axVLCPlugin21.input.time = (double)timeDictionary[clickedFilePath][0] - 2500;
             if (recentlyPlayedFiles.Contains(clickedFilePath))
                 queueRemove(clickedFilePath);
             recentlyPlayedFiles.Enqueue(clickedFilePath);
@@ -668,11 +743,11 @@ namespace VideoPlayer
                 }
             }
 
-                count = 0;
-                List<int> randoms = new List<int>();
-                PictureBox[] PreviewBoxes1 = { previewBox5, previewBox6, previewBox7, previewBox8 };
-                Label[] previewLabels1 = { previewLabel5, previewLabel6, previewLabel7, previewLabel8 };
-                Panel[] previewPanels1 = { previewPanel5, previewPanel6, previewPanel7, previewPanel8 };
+            count = 0;
+            List<int> randoms = new List<int>();
+            PictureBox[] PreviewBoxes1 = { previewBox5, previewBox6, previewBox7, previewBox8 };
+            Label[] previewLabels1 = { previewLabel5, previewLabel6, previewLabel7, previewLabel8 };
+            Panel[] previewPanels1 = { previewPanel5, previewPanel6, previewPanel7, previewPanel8 };
 
 
             try
@@ -753,9 +828,6 @@ namespace VideoPlayer
         }
         public void resizeEverything()
         {
-
-            int newwidth = Convert.ToInt32((6 * ClientRectangle.Width / 100));
-            int newheight = Convert.ToInt32((6 * ClientRectangle.Height / 100));
             recentFlowLayoutPanel2.Width = Convert.ToInt32((22 * ClientRectangle.Width) / 100);
             favouritesPanel.Height = Convert.ToInt32((13 * ClientRectangle.Width) / 100);
         }
@@ -841,7 +913,7 @@ namespace VideoPlayer
             homePanel.BringToFront();
 
             carousel.playlist.items.clear();
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
+            timeDictionary[clickedFilePath] = new double[] { axVLCPlugin21.input.time, (axVLCPlugin21.input.time / axVLCPlugin21.input.length * 100) };
         }
 
         private void homeButton_MouseEnter(object sender, EventArgs e)
@@ -914,7 +986,7 @@ namespace VideoPlayer
             toggleMenuicon();
         }
 
-      
+
         private void Form1_ClientSizeChanged(object sender, EventArgs e)
         {
             resizeEverything();
@@ -941,9 +1013,9 @@ namespace VideoPlayer
                 video = carouselVideos[carouselCounter];
                 carouselLabel.Text = Path.GetFileNameWithoutExtension(video);
                 if (favouriteTimes.ContainsKey(video))
-                    carousel.input.time = favouriteTimes[video] - 4200;
+                    carousel.input.time = favouriteTimes[video] - 4200.0;
                 else if (timeDictionary.ContainsKey(video))
-                    carousel.input.time = timeDictionary[video] - 4200;
+                    carousel.input.time = timeDictionary[video][0] - 4200.0;
                 else
                     carousel.input.time = 0;
             }
@@ -979,20 +1051,22 @@ namespace VideoPlayer
             foldersPanel.BringToFront();
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.Opacity = .9;
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
+            timeDictionary[clickedFilePath] = new double[] { axVLCPlugin21.input.time, (axVLCPlugin21.input.time / axVLCPlugin21.input.length * 100) };
 
         }
 
         private void viewerButton_Click(object sender, EventArgs e)
         {
+            axVLCPlugin22.SendToBack();
             carousel.volume = 0;
             axVLCPlugin21.playlist.play();
             this.FormBorderStyle = FormBorderStyle.None;
             this.Opacity = 1;
             viewerPanel.BringToFront();
             isFavourite();
+            axVLCPlugin21.BringToFront();
             axVLCPlugin21.Focus();
-
+            axVLCPlugin22.playlist.add(new Uri(clickedFilePath).AbsoluteUri);
         }
 
         public void isFavourite()
@@ -1089,7 +1163,7 @@ namespace VideoPlayer
 
 
             recentlyPlayedFlowLayoutPanel.BringToFront();
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
+            timeDictionary[clickedFilePath] = new double[] { axVLCPlugin21.input.time, (axVLCPlugin21.input.time / axVLCPlugin21.input.length * 100) };
 
         }
 
@@ -1213,7 +1287,6 @@ namespace VideoPlayer
 
         private void appExitButton_Click(object sender, EventArgs e)
         {
-            saveQueues();
             Application.Exit();
         }
 
@@ -1237,6 +1310,7 @@ namespace VideoPlayer
             controlsPanel.Visible = true;
             viewerPanel.Padding = new Padding(3);
             viewerFullscreen = false;
+            axVLCPlugin22.Size = new Size(Convert.ToInt32((13 * ClientRectangle.Width) / 100), Convert.ToInt32((13 * ClientRectangle.Height) / 100));
 
         }
 
@@ -1249,9 +1323,9 @@ namespace VideoPlayer
             viewerFullscreen = true;
             this.FormBorderStyle = FormBorderStyle.None;
             this.Opacity = 1;
+            axVLCPlugin22.Size = new Size(Convert.ToInt32((13 * ClientRectangle.Width) / 100), Convert.ToInt32((13 * ClientRectangle.Height) / 100));
         }
 
- 
 
         private void sliderBackButton_Click_1(object sender, EventArgs e)
         {
@@ -1312,12 +1386,6 @@ namespace VideoPlayer
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-
-
-
-
-
-
         }
 
         private void Form1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -1336,21 +1404,31 @@ namespace VideoPlayer
 
         private void saveQueues()
         {
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
+            timeDictionary[clickedFilePath] = new double[] { axVLCPlugin21.input.time, (axVLCPlugin21.input.time / axVLCPlugin21.input.length * 100) };
+            foreach (var item in recentlyPlayedFiles)
+            {
+                MessageBox.Show(item.ToString());
+            }
             try
             {
                 IFormatter formatter = new BinaryFormatter();
                 Stream stream = new FileStream(STORAGEBASE + "Queue.txt", FileMode.Create, FileAccess.Write);
                 Stream stream1 = new FileStream(STORAGEBASE + "time.txt", FileMode.Create, FileAccess.Write);
                 Stream stream2 = new FileStream(STORAGEBASE + "Favourites.txt", FileMode.Create, FileAccess.Write);
+                Stream stream3 = new FileStream(STORAGEBASE + "skipperData.txt", FileMode.Create, FileAccess.Write);
+
                 formatter.Serialize(stream, recentlyPlayedFiles);
                 formatter.Serialize(stream1, timeDictionary);
                 formatter.Serialize(stream2, favouriteTimes);
+                formatter.Serialize(stream3, skipperData);
+
                 stream.Close();
                 stream1.Close();
                 stream2.Close();
+                stream3.Close();
             }
             catch { }
+          
         }
 
         private void foldersBackButton_MouseEnter(object sender, EventArgs e)
@@ -1365,7 +1443,6 @@ namespace VideoPlayer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            saveQueues();
             if (MessageBox.Show("Exit and shutdown ?", "Shutdown", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 System.Diagnostics.Process.Start("shutdown", "/s /t 0");
@@ -1670,12 +1747,19 @@ namespace VideoPlayer
         {
             seekBar.Height += 10;
             seekpin.Height += 10;
+            axVLCPlugin21.playlist.pause();
+            
+            axVLCPlugin22.BringToFront();
         }
 
         private void seekBar_MouseLeave(object sender, EventArgs e)
         {
             seekBar.Height -= 10;
             seekpin.Height -= 10;
+            axVLCPlugin21.playlist.play();
+            axVLCPlugin22.SendToBack();
+            axVLCPlugin22.playlist.pause();
+
         }
 
         private void incognitoButton_Click(object sender, EventArgs e)
@@ -1847,6 +1931,7 @@ namespace VideoPlayer
                     {
                         skipper = (int)axVLCPlugin21.input.time;
                         describe("Set skipper");
+                        skipperData[clickedFilePathDirectory] = new int[] { customSkipper, 1 }; ;
                         break;
                     }
                 case Keys.L:
@@ -1908,6 +1993,8 @@ namespace VideoPlayer
                     {
                         customSkipper = Int32.Parse(Interaction.InputBox("Skip by how many seconds?", "Skipper", "3", -1, -1)) * 1000;
                         useCustomSkipper = true;
+                        skipperData[clickedFilePathDirectory] = new int[] { customSkipper, 1};
+
                         break;
                     }
             }
@@ -2042,7 +2129,7 @@ namespace VideoPlayer
 
 
             favouritesFlowLayoutPanel.BringToFront();
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
+            timeDictionary[clickedFilePath] = new double[] { axVLCPlugin21.input.time, (axVLCPlugin21.input.time / axVLCPlugin21.input.length * 100) };
 
         }
 
@@ -2069,10 +2156,27 @@ namespace VideoPlayer
             mainSidePanel.Visible = false;
         }
 
+        private void controlsPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void seekBar_MouseHover(object sender, EventArgs e)
+        {
+
+        }
+
+        private void seekBar_MouseMove(object sender, MouseEventArgs e)
+        {
+            
+            axVLCPlugin22.input.time = (seekBar.PointToClient(Cursor.Position).X * axVLCPlugin21.input.length) / seekBar.Width;
+            axVLCPlugin22.playlist.play();
+            axVLCPlugin22.Location = new Point(seekBar.PointToClient(Cursor.Position).X, controlsPanel.Location.Y - 140);
+        }
 
         private void axVLCPlugin21_MouseDownEvent(object sender, AxAXVLC.DVLCEvents_MouseDownEvent e)
         {
-            axVLCPlugin21.Focus();
+            axVLCPlugin21_ClickEvent(sender, new EventArgs());
         }
     }
 }
