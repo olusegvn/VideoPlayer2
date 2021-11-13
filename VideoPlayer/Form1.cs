@@ -1066,6 +1066,7 @@ namespace VideoPlayer
             isFavourite();
             axVLCPlugin21.BringToFront();
             axVLCPlugin21.Focus();
+            
             axVLCPlugin22.playlist.add(new Uri(clickedFilePath).AbsoluteUri);
         }
 
@@ -1390,7 +1391,7 @@ namespace VideoPlayer
 
         private void Form1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            MessageBox.Show(e.KeyCode.ToString());
+            //MessageBox.Show(e.KeyCode.ToString());
         }
 
         public void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -1405,10 +1406,6 @@ namespace VideoPlayer
         private void saveQueues()
         {
             timeDictionary[clickedFilePath] = new double[] { axVLCPlugin21.input.time, (axVLCPlugin21.input.time / axVLCPlugin21.input.length * 100) };
-            foreach (var item in recentlyPlayedFiles)
-            {
-                MessageBox.Show(item.ToString());
-            }
             try
             {
                 IFormatter formatter = new BinaryFormatter();
@@ -1804,6 +1801,11 @@ namespace VideoPlayer
                 axVLCPlugin21.playlist.prev();
                 describe("Looping");
             }
+            else
+            {
+                axVLCPlugin21.playlist.prev();
+                nextFile();
+            }
         }
 
         private void playlistButton_Click(object sender, EventArgs e)
@@ -2155,6 +2157,21 @@ namespace VideoPlayer
         {
             mainSidePanel.Visible = false;
         }
+
+        private void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            clickedFilePath = files[0]; 
+            file_Click();
+            firstFull = false;
+            viewerButton_Click(sender, e);
+    }
+        
+        private void Form1_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Copy;
+        }
+
 
         private void controlsPanel_MouseMove(object sender, MouseEventArgs e)
         {

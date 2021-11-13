@@ -44,3 +44,16 @@ C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\obj\Debug\VideoPlayer.exe.manif
 C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\obj\Debug\VideoPlayer.application
 C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\obj\Debug\VideoPlayer.incognitoForm.resources
 C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\obj\Debug\VideoPlayer.baseForm.resources
+C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\ReactiveAnimation.dll
+C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\System.Reactive.Core.dll
+C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\System.Reactive.Interfaces.dll
+C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\System.Reactive.Linq.dll
+C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\System.Reactive.PlatformServices.dll
+C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\System.Reactive.Windows.Forms.dll
+C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\WinFormAnimation.dll
+C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\ReactiveAnimation.xml
+C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\System.Reactive.Core.xml
+C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\System.Reactive.Interfaces.xml
+C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\System.Reactive.Linq.xml
+C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\System.Reactive.PlatformServices.xml
+C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\System.Reactive.Windows.Forms.xml

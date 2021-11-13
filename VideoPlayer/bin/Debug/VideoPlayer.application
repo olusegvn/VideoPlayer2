@@ -5,7 +5,7 @@
   <deployment install="true" mapFileExtensions="true">
     <subscription>
       <update>
-        <beforeApplicationStartup />
+        <expiration maximumAge="7" unit="weeks" />
       </update>
     </subscription>
     <deploymentProvider codebase="http://theaivideoplayer.com/updates/VideoPlayer.application" />
@@ -14,14 +14,14 @@
     <framework targetVersion="4.7.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="VideoPlayer.exe.manifest" size="11108">
+    <dependentAssembly dependencyType="install" codebase="VideoPlayer.exe.manifest" size="15961">
       <assemblyIdentity name="VideoPlayer.exe" version="1.1.1.13" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>dz+gYOCIdaLbnFTbhEpjBUxToGERA50F5SdLbwPPEaw=</dsig:DigestValue>
+        <dsig:DigestValue>X7hP4nk61fWD1nlDn67tSwBn06lVTAO7ZhHq5LMSoTo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

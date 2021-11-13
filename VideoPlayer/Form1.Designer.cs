@@ -537,6 +537,7 @@
             // 
             // homePanel
             // 
+            this.homePanel.AllowDrop = true;
             this.homePanel.BackColor = System.Drawing.Color.White;
             this.homePanel.Controls.Add(this.recentFlowLayoutPanel2);
             this.homePanel.Controls.Add(this.carouselLabel);
@@ -551,9 +552,12 @@
             this.homePanel.Name = "homePanel";
             this.homePanel.Size = new System.Drawing.Size(1128, 731);
             this.homePanel.TabIndex = 7;
+            this.homePanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
+            this.homePanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // recentFlowLayoutPanel2
             // 
+            this.recentFlowLayoutPanel2.AllowDrop = true;
             this.recentFlowLayoutPanel2.AutoScroll = true;
             this.recentFlowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.recentFlowLayoutPanel2.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -565,6 +569,8 @@
             this.recentFlowLayoutPanel2.Size = new System.Drawing.Size(301, 531);
             this.recentFlowLayoutPanel2.TabIndex = 1;
             this.recentFlowLayoutPanel2.TabStop = true;
+            this.recentFlowLayoutPanel2.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
+            this.recentFlowLayoutPanel2.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // carouselLabel
             // 
@@ -638,6 +644,7 @@
             // 
             // favouritesPanel
             // 
+            this.favouritesPanel.AllowDrop = true;
             this.favouritesPanel.BackColor = System.Drawing.Color.WhiteSmoke;
             this.favouritesPanel.Controls.Add(this.previewPanel8);
             this.favouritesPanel.Controls.Add(this.previewPanel7);
@@ -650,6 +657,8 @@
             this.favouritesPanel.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
             this.favouritesPanel.Size = new System.Drawing.Size(1128, 168);
             this.favouritesPanel.TabIndex = 2;
+            this.favouritesPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
+            this.favouritesPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // previewPanel8
             // 
@@ -1398,6 +1407,8 @@
             this.viewerPanel.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.viewerPanel.Size = new System.Drawing.Size(1128, 731);
             this.viewerPanel.TabIndex = 6;
+            this.viewerPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
+            this.viewerPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
             // axVLCPlugin22
             // 
@@ -1410,6 +1421,7 @@
             // 
             // axVLCPlugin21
             // 
+            this.axVLCPlugin21.AllowDrop = true;
             this.axVLCPlugin21.Dock = System.Windows.Forms.DockStyle.Fill;
             this.axVLCPlugin21.Enabled = true;
             this.axVLCPlugin21.Location = new System.Drawing.Point(0, 2);
@@ -1437,8 +1449,8 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1163, 731);
-            this.Controls.Add(this.viewerPanel);
             this.Controls.Add(this.homePanel);
+            this.Controls.Add(this.viewerPanel);
             this.Controls.Add(this.foldersPanel);
             this.Controls.Add(this.favouritesFlowLayoutPanel);
             this.Controls.Add(this.recentlyPlayedFlowLayoutPanel);
@@ -1454,6 +1466,8 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ClientSizeChanged += new System.EventHandler(this.Form1_ClientSizeChanged);
             this.Click += new System.EventHandler(this.Form1_Click);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Form1_PreviewKeyDown);
             this.mainSidePanel.ResumeLayout(false);

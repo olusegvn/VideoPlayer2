@@ -65,6 +65,7 @@ namespace VideoPlayer
         private string clickedDirectory = "";
         private string clickedFilePath = "";
         int carouselCounter = 0;
+        string clickedFilePathDirectory;
         public Panel previewUnderPanel;
         private List<string> carouselVideos = new List<string>();
         Dictionary<string, int> favouriteTimes = new Dictionary<string, int>();
@@ -286,15 +287,23 @@ namespace VideoPlayer
             }
 
         }
-
         private void file_Click(object sender, EventArgs e)
         {
+            clickedFilePath = getControlName(sender);
+            file_Click();
+            viewerButton_Click(sender, e);
+        }
+
+
+        private void file_Click()
+        {
             carousel.volume = 0;
+            directoryRendered = true;
             textFromUser = false;
             searchTextBox.Text = "";
             textFromUser = true;
-            clickedFilePath = getControlName(sender);
-            
+
+            clickedFilePathDirectory = Path.GetDirectoryName(clickedFilePath);
 
             axVLCPlugin21.playlist.stop();
             axVLCPlugin21.playlist.items.clear();
@@ -304,7 +313,7 @@ namespace VideoPlayer
             var directoryFiles = new DirectoryInfo(Path.GetDirectoryName(clickedFilePath)).GetFiles().Where(s => extentions.Contains(s.Extension.ToUpper()));
             string convertedUri;
             string fullname;
-            
+
             foreach (FileInfo path in directoryFiles)
             {
                 fullname = path.FullName.Replace("\\", "/");
@@ -312,9 +321,9 @@ namespace VideoPlayer
                 convertedUri = uri.AbsoluteUri;
                 axVLCPlugin21.playlist.add(convertedUri);
                 playlist.Add(convertedUri);
-                
+
             }
-            
+
 
             currentPlaylistIndex = playlist.IndexOf(fileUri);
             axVLCPlugin21.playlist.playItem(currentPlaylistIndex);
@@ -326,7 +335,6 @@ namespace VideoPlayer
             recentlyPlayedFiles.Enqueue(clickedFilePath);
             changeFile();
 
-            viewerButton_Click(sender, e);
         }
 
         public void changeDirectory(object sender, EventArgs e)
@@ -1693,7 +1701,15 @@ namespace VideoPlayer
         private void axVLCPlugin21_MediaPlayerEndReached(object sender, EventArgs e)
         {
             if (loop)
+            {
                 axVLCPlugin21.playlist.prev();
+                describe("looping");
+            }
+            else
+            {
+                axVLCPlugin21.playlist.prev();
+                nextFile();
+            }
         }
 
         private void randomPictureBox_Click(object sender, EventArgs e)
@@ -2059,6 +2075,30 @@ namespace VideoPlayer
         private void carouselLabel_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void axVLCPlugin21_MediaPlayerEncounteredError(object sender, EventArgs e)
+        {
+
+        }
+
+        private void incognitoForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void Form1_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Copy;
+        }
+
+        private void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            clickedFilePath = files[0];
+            file_Click();
+            viewerButton_Click(sender, e);
         }
 
         private void seekBar_MouseMove(object sender, MouseEventArgs e)
