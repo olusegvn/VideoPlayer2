@@ -116,7 +116,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.descriptionLabel = new System.Windows.Forms.Label();
             this.viewerPanel = new System.Windows.Forms.Panel();
-            this.axVLCPlugin22 = new AxAXVLC.AxVLCPlugin2();
             this.axVLCPlugin21 = new AxAXVLC.AxVLCPlugin2();
             this.mainSidePanel.SuspendLayout();
             this.viewerOptionsPanel.SuspendLayout();
@@ -153,7 +152,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.playlistPanel.SuspendLayout();
             this.viewerPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin22)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin21)).BeginInit();
             this.SuspendLayout();
             // 
@@ -594,7 +592,7 @@
             this.carousel.Margin = new System.Windows.Forms.Padding(2);
             this.carousel.Name = "carousel";
             this.carousel.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("carousel.OcxState")));
-            this.carousel.Size = new System.Drawing.Size(613, 425);
+            this.carousel.Size = new System.Drawing.Size(613, 426);
             this.carousel.TabIndex = 4;
             // 
             // label2
@@ -1113,6 +1111,7 @@
             this.controlsPanel.Size = new System.Drawing.Size(1128, 47);
             this.controlsPanel.TabIndex = 4;
             this.controlsPanel.MouseLeave += new System.EventHandler(this.controlsPanel_MouseLeave);
+            this.controlsPanel.MouseHover += new System.EventHandler(this.controlsPanel_MouseHover);
             this.controlsPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.controlsPanel_MouseMove);
             // 
             // panel3
@@ -1395,7 +1394,6 @@
             // 
             // viewerPanel
             // 
-            this.viewerPanel.Controls.Add(this.axVLCPlugin22);
             this.viewerPanel.Controls.Add(this.descriptionLabel);
             this.viewerPanel.Controls.Add(this.playlistPanel);
             this.viewerPanel.Controls.Add(this.controlsPanel);
@@ -1409,15 +1407,6 @@
             this.viewerPanel.TabIndex = 6;
             this.viewerPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.viewerPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
-            // 
-            // axVLCPlugin22
-            // 
-            this.axVLCPlugin22.Enabled = true;
-            this.axVLCPlugin22.Location = new System.Drawing.Point(0, 542);
-            this.axVLCPlugin22.Name = "axVLCPlugin22";
-            this.axVLCPlugin22.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axVLCPlugin22.OcxState")));
-            this.axVLCPlugin22.Size = new System.Drawing.Size(185, 142);
-            this.axVLCPlugin22.TabIndex = 8;
             // 
             // axVLCPlugin21
             // 
@@ -1436,7 +1425,6 @@
             this.axVLCPlugin21.KeyPressEvent += new AxAXVLC.DVLCEvents_KeyPressEventHandler(this.axVLCPlugin21_KeyPressEvent_1);
             this.axVLCPlugin21.KeyUpEvent += new AxAXVLC.DVLCEvents_KeyUpEventHandler(this.axVLCPlugin21_KeyUpEvent);
             this.axVLCPlugin21.MouseDownEvent += new AxAXVLC.DVLCEvents_MouseDownEventHandler(this.axVLCPlugin21_MouseDownEvent);
-            this.axVLCPlugin21.MouseMoveEvent += new AxAXVLC.DVLCEvents_MouseMoveEventHandler(this.axVLCPlugin21_MouseMoveEvent);
             this.axVLCPlugin21.Enter += new System.EventHandler(this.fullscreenButton_Click);
             this.axVLCPlugin21.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.axVLCPlugin21_PreviewKeyDown);
             this.axVLCPlugin21.ParentChanged += new System.EventHandler(this.axVLCPlugin21_ParentChanged);
@@ -1449,8 +1437,8 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1163, 731);
-            this.Controls.Add(this.homePanel);
             this.Controls.Add(this.viewerPanel);
+            this.Controls.Add(this.homePanel);
             this.Controls.Add(this.foldersPanel);
             this.Controls.Add(this.favouritesFlowLayoutPanel);
             this.Controls.Add(this.recentlyPlayedFlowLayoutPanel);
@@ -1515,7 +1503,6 @@
             this.playlistPanel.PerformLayout();
             this.viewerPanel.ResumeLayout(false);
             this.viewerPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin22)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin21)).EndInit();
             this.ResumeLayout(false);
 
@@ -1610,7 +1597,6 @@
         private System.Windows.Forms.Panel viewerPanel;
         private AxAXVLC.AxVLCPlugin2 axVLCPlugin21;
         private System.Windows.Forms.FlowLayoutPanel recentFlowLayoutPanel2;
-        private AxAXVLC.AxVLCPlugin2 axVLCPlugin22;
     }
 }
 

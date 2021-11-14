@@ -73,7 +73,6 @@
             this.previewLabel5 = new System.Windows.Forms.Label();
             this.previewBox5 = new System.Windows.Forms.PictureBox();
             this.viewerPanel = new System.Windows.Forms.Panel();
-            this.axVLCPlugin22 = new AxAXVLC.AxVLCPlugin2();
             this.axVLCPlugin21 = new AxAXVLC.AxVLCPlugin2();
             this.descriptionLabel = new System.Windows.Forms.Label();
             this.playlistPanel = new System.Windows.Forms.Panel();
@@ -129,7 +128,6 @@
             this.previewPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewBox5)).BeginInit();
             this.viewerPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin22)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin21)).BeginInit();
             this.playlistPanel.SuspendLayout();
             this.controlsPanel.SuspendLayout();
@@ -825,7 +823,6 @@
             // 
             // viewerPanel
             // 
-            this.viewerPanel.Controls.Add(this.axVLCPlugin22);
             this.viewerPanel.Controls.Add(this.axVLCPlugin21);
             this.viewerPanel.Controls.Add(this.descriptionLabel);
             this.viewerPanel.Controls.Add(this.playlistPanel);
@@ -837,15 +834,6 @@
             this.viewerPanel.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.viewerPanel.Size = new System.Drawing.Size(1008, 696);
             this.viewerPanel.TabIndex = 9;
-            // 
-            // axVLCPlugin22
-            // 
-            this.axVLCPlugin22.Enabled = true;
-            this.axVLCPlugin22.Location = new System.Drawing.Point(1, 506);
-            this.axVLCPlugin22.Name = "axVLCPlugin22";
-            this.axVLCPlugin22.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axVLCPlugin22.OcxState")));
-            this.axVLCPlugin22.Size = new System.Drawing.Size(185, 142);
-            this.axVLCPlugin22.TabIndex = 9;
             // 
             // axVLCPlugin21
             // 
@@ -1408,7 +1396,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.previewBox5)).EndInit();
             this.viewerPanel.ResumeLayout(false);
             this.viewerPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin22)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin21)).EndInit();
             this.playlistPanel.ResumeLayout(false);
             this.playlistPanel.PerformLayout();
@@ -1520,6 +1507,5 @@
         private System.Windows.Forms.Label systemTime;
         private System.Windows.Forms.Label batteryTimeRemaining;
         private System.Windows.Forms.FlowLayoutPanel recentFlowLayoutPanel2;
-        private AxAXVLC.AxVLCPlugin2 axVLCPlugin22;
     }
 }

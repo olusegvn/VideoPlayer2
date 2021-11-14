@@ -948,8 +948,6 @@ namespace VideoPlayer
 
         private void viewerButton_Click(object sender, EventArgs e)
         {
-            axVLCPlugin22.playlist.add(new Uri(clickedFilePath).AbsoluteUri);
-            axVLCPlugin22.SendToBack();
             carousel.volume = 0;
             axVLCPlugin21.playlist.play();
             this.FormBorderStyle = FormBorderStyle.None;
@@ -1199,7 +1197,6 @@ namespace VideoPlayer
             controlsPanel.Visible = true;
             viewerPanel.Padding = new Padding(3);
             viewerFullscreen = false;
-            axVLCPlugin22.Size = new Size(Convert.ToInt32((13 * ClientRectangle.Width) / 100), Convert.ToInt32((13 * ClientRectangle.Height) / 100));
         }
 
         private void fullscreenEnter()
@@ -1210,7 +1207,6 @@ namespace VideoPlayer
             viewerPanel.Padding = new Padding(0);
             viewerFullscreen = true;
             this.FormBorderStyle = FormBorderStyle.None;
-            axVLCPlugin22.Size = new Size(Convert.ToInt32((13 * ClientRectangle.Width) / 100), Convert.ToInt32((13 * ClientRectangle.Height) / 100));
         }
 
         private void previewLabel1_Click(object sender, EventArgs e)
@@ -1347,12 +1343,12 @@ namespace VideoPlayer
 
         private void secondsTimer_Tick(object sender, EventArgs e)
         {
-            if ((!controlsPanel.Visible && this.PointToClient(Cursor.Position).Y < 1 && this.WindowState == FormWindowState.Normal )|| !controlsPanel.Visible && axVLCPlugin21.PointToClient(Cursor.Position).Y > 1010 && this.WindowState == FormWindowState.Maximized)
+            if (!controlsPanel.Visible && axVLCPlugin21.PointToClient(Cursor.Position).Y > 1010 && this.WindowState == FormWindowState.Maximized)
             {
                 controlsPanel.Visible = true;
                 fullscreenClicked = false;
             }
-            else if (!controlsPanel.Visible && axVLCPlugin21.PointToClient(Cursor.Position).X < 40 && this.WindowState == FormWindowState.Normal || !controlsPanel.Visible && axVLCPlugin21.PointToClient(Cursor.Position).X < 40 && this.WindowState == FormWindowState.Maximized)
+            else if (!controlsPanel.Visible && axVLCPlugin21.PointToClient(Cursor.Position).X < 40 && this.WindowState == FormWindowState.Maximized)
             {
                 mainSidePanel.Visible = true;
                 fullscreenClicked = false;
@@ -1637,8 +1633,6 @@ namespace VideoPlayer
             seekBar.Height += 10;
             seekpin.Height += 10;
             axVLCPlugin21.playlist.pause();
-
-            axVLCPlugin22.BringToFront();
         }
 
         private void seekBar_MouseLeave(object sender, EventArgs e)
@@ -1646,8 +1640,6 @@ namespace VideoPlayer
             seekBar.Height -= 10;
             seekpin.Height -= 10;
             axVLCPlugin21.playlist.play();
-            axVLCPlugin22.playlist.pause();
-            axVLCPlugin22.SendToBack();
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -2064,7 +2056,7 @@ namespace VideoPlayer
 
         private void controlsPanel_MouseLeave(object sender, EventArgs e)
         {
-            controlsPanel.Visible = false;
+            controlsPanel.Visible = !viewerFullscreen;
         }
 
         private void axVLCPlugin21_Enter(object sender, EventArgs e)
@@ -2103,9 +2095,6 @@ namespace VideoPlayer
 
         private void seekBar_MouseMove(object sender, MouseEventArgs e)
         {
-            axVLCPlugin22.input.time = (seekBar.PointToClient(Cursor.Position).X * axVLCPlugin21.input.length) / seekBar.Width;
-            axVLCPlugin22.playlist.play();
-            axVLCPlugin22.Location = new Point(seekBar.PointToClient(Cursor.Position).X, controlsPanel.Location.Y - 140);
         }
 
         private void seekBar_MouseHover(object sender, EventArgs e)
