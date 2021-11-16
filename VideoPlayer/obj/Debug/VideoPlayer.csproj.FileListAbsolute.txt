@@ -61,7 +61,11 @@ C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\System.Reactive.Windo
 <<<<<<< HEAD
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
 C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\libvlc\win-x64\libvlc.dll
 C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\libvlc\win-x64\libvlc.lib
 C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\libvlc\win-x64\libvlccore.dll
@@ -1215,4 +1219,8 @@ C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\obj\Debug\XamlC.stamp
 <<<<<<< HEAD
 >>>>>>> - Full LibVLC update
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9

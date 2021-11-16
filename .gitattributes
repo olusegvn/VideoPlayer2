@@ -7,7 +7,11 @@
 =======
 >>>>>>> - Full LibVLC update
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
 *.dll filter=lfs diff=lfs merge=lfs -text
 *.nupkg filter=lfs diff=lfs merge=lfs -text
 *.exe filter=lfs diff=lfs merge=lfs -text

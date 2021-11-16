@@ -8,7 +8,11 @@
 >>>>>>> - Full LibVLC update
 =======
   <assemblyIdentity name="VideoPlayer.application" version="1.1.1.15" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" xmlns="urn:schemas-microsoft-com:asm.v1" />
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
   <description asmv2:publisher="HP Inc." asmv2:product="VideoPlayer" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <deployment install="true" mapFileExtensions="true">
     <subscription>
@@ -33,7 +37,11 @@
 =======
     <dependentAssembly dependencyType="install" codebase="VideoPlayer.exe.manifest" size="509842">
       <assemblyIdentity name="VideoPlayer.exe" version="1.1.1.15" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
@@ -47,7 +55,11 @@
 >>>>>>> - Full LibVLC update
 =======
         <dsig:DigestValue>EadTfTwTcnmDcbp9k0QLoA2cYoPTJIdT8fx5c5DeLAI=</dsig:DigestValue>
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
       </hash>
     </dependentAssembly>
   </dependency>

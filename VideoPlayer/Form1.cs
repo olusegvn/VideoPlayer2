@@ -55,7 +55,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
         public static Dictionary<string, long[]> timeDictionary = new Dictionary<string, long[]>();
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
         public static Dictionary<string, int[]> skipperData = new Dictionary<string, int[]>();
 
         List<PictureBox> previewBoxes = new List<PictureBox>();
@@ -146,7 +150,11 @@ namespace VideoPlayer
                 favouriteTimes = (Dictionary<string, int>)formatter.Deserialize(stream2);
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                 timeDictionary = (Dictionary<string, long[]>)formatter.Deserialize(stream1);
                 stream1.Close();
             }
@@ -160,7 +168,11 @@ namespace VideoPlayer
 <<<<<<< HEAD
 >>>>>>> - Full LibVLC update
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                 stream2.Close();
             }
             catch { 
@@ -186,7 +198,11 @@ namespace VideoPlayer
 =======
             searchTextBox_TextChanged_1(sender, e);
 
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             gotoPanel.Size = new Size(10, 14);
             gotoPanel.BackColor = Color.Black;
             gotoEndPanel.Size = new Size(10, 14);
@@ -195,7 +211,11 @@ namespace VideoPlayer
 <<<<<<< HEAD
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             libVLC = new LibVLC();
             carouselLibVLC = new LibVLC();
             media_player = new MediaPlayer(libVLC);
@@ -208,7 +228,11 @@ namespace VideoPlayer
 <<<<<<< HEAD
 >>>>>>> - Full LibVLC update
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             if (fromIncognito)
             {
                 foreach (string videoFile in recentlyPlayedFiles.Reverse())
@@ -226,7 +250,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
                 media_player.Pause();
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             }
             timer1_Tick(sender, e);
             timer1.Start();
@@ -329,7 +357,11 @@ namespace VideoPlayer
                     Font = new Font("Microsoft JhengHei Light", 12),
                     Dock = DockStyle.Top,
                     Width = subpanel.Width,
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                 };
                 Panel progressPanel = new Panel
                 {
@@ -347,7 +379,11 @@ namespace VideoPlayer
                     int progress = (int)timeDictionary[formattedName][1];
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                     Dock = DockStyle.Top,
                     Anchor = AnchorStyles.Left,
 
@@ -359,7 +395,11 @@ namespace VideoPlayer
 <<<<<<< HEAD
 >>>>>>> - Full LibVLC update
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                     progressLabel.Text = progress.ToString()+ "%";
                     progressPanel.Width = progress * subpanel.Width / 100;
                 }
@@ -431,7 +471,11 @@ namespace VideoPlayer
                 label.MouseLeave += new EventHandler(subPanel_MouseLeave);
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                 label.Click += new EventHandler(file_Click);
                 label.MouseEnter += new EventHandler(childLabelTogglePanelWhiteSmoke);
                 label.MouseLeave += new EventHandler(childLabelTogglePanelWhiteSmoke);
@@ -445,7 +489,11 @@ namespace VideoPlayer
 <<<<<<< HEAD
 >>>>>>> - Full LibVLC update
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                 subpanel.Controls.Add(progressLabel);
                 subpanel.Controls.Add(progressPanel);
                 subpanel.Controls.Add(pictureBox);
@@ -475,7 +523,11 @@ namespace VideoPlayer
             carousel.volume = 0;
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             clickedFilePath = getControlName(sender).Replace("/", "\\");
             file_Click();
         }
@@ -486,7 +538,11 @@ namespace VideoPlayer
 <<<<<<< HEAD
 >>>>>>> - Full LibVLC update
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             directoryRendered = true;
             textFromUser = false;
             searchTextBox.Text = "";
@@ -527,7 +583,11 @@ namespace VideoPlayer
 =======
             clickedFilePathDirectory = Path.GetDirectoryName(clickedFilePath);
             try
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             {
                 if (skipperData[clickedFilePathDirectory][1] == 0)
                 {
@@ -558,7 +618,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
                 media_player.Time = (int)timeDictionary[clickedFilePath][0] - 2500;
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             if (recentlyPlayedFiles.Contains(clickedFilePath))
                 queueRemove(clickedFilePath);
             renderPlaylist();
@@ -688,7 +752,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
                 media_player.SeekTo(new TimeSpan(0, 0, 0, (int)(timeDictionary[clickedFilePath][0] - 2500)));
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             recentlyPlayedFiles.Enqueue(clickedFilePath);
             renderPlaylist();
 
@@ -711,7 +779,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
             timeDictionary[clickedFilePath] = new long[] { media_player.Time, (long)((double)media_player.Time / (double)(media_player.Length) * 100) };
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             if (seekBar.Controls.Contains(gotoPanel))
                 seekBar.Controls.Remove(gotoPanel);
             if (seekBar.Controls.Contains(gotoEndPanel))
@@ -797,7 +869,11 @@ namespace VideoPlayer
                 queueRemove(clickedFilePath);
             recentlyPlayedFiles.Enqueue(clickedFilePath);
             renderPlaylist();
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
         }
 
         private void directory_Click(object sender, EventArgs e)
@@ -842,7 +918,11 @@ namespace VideoPlayer
 =======
 >>>>>>> - Full LibVLC update
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                 };
                 recentFlowLayoutPanel2.Controls.Add(recentsLabel);
                 foreach (string videoFile in recentlyPlayedFiles.Reverse())
@@ -894,7 +974,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
                                 Size = new Size(225, 122),
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                                 Padding = new Padding(18, 28, 3, 5),
                                 Cursor = Cursors.Hand,
 
@@ -934,7 +1018,11 @@ namespace VideoPlayer
 =======
 >>>>>>> - Full LibVLC update
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                             pPictureBox.Name = videoFile;
                             pPanel.Name = videoFile;
                             pLabel.Name = videoFile;
@@ -970,7 +1058,11 @@ namespace VideoPlayer
                 for (int i = 0; i < 4;)
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             try
             {
                 for (int i = 0; i < nPreviewFiles;)
@@ -1100,7 +1192,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
             favoritesFlowLayoutPanel.Height = Convert.ToInt32((21 * ClientRectangle.Height) / 100);
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
         }
 
         public void toggleMenuicon()
@@ -1192,7 +1288,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
             timeDictionary[clickedFilePath] = new long[] { media_player.Time, (long)((double)media_player.Time / (double)media_player.Length * 100) };
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
         }
 
         private void homeButton_MouseEnter(object sender, EventArgs e)
@@ -1299,7 +1399,11 @@ namespace VideoPlayer
                     carousel.MediaPlayer.Time = (favouriteTimes[video] - 4200);
                 else if (timeDictionary.ContainsKey(video))
                     carousel.MediaPlayer.Time = (timeDictionary[video][0] - 4200);
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                 else
                     carousel.MediaPlayer.Time = 0;
             }
@@ -1344,7 +1448,11 @@ namespace VideoPlayer
 =======
             this.Opacity = .97;
             timeDictionary[clickedFilePath] = new long[] { media_player.Time, (long)((double)media_player.Time / (double)media_player.Length * 100) };
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
 
         }
 
@@ -1373,7 +1481,11 @@ namespace VideoPlayer
 =======
             fullscreenEnter();
             mainMediaPlayer.Focus();
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
         }
 
         public void isFavourite()
@@ -1478,7 +1590,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
             timeDictionary[clickedFilePath] = new long[] { media_player.Time, (long)((double)media_player.Time / (double)media_player.Length * 100) };
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
 
         }
 
@@ -1579,7 +1695,11 @@ namespace VideoPlayer
             {
                 ((Label)sender).Parent.BackColor = Color.WhiteSmoke;
 
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             }
         }
         public void childPictureBoxTogglePanelWhiteSmoke(object sender, EventArgs e)
@@ -1760,7 +1880,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
             timeDictionary[clickedFilePath] = new long[] { media_player.Time, (long)((double)media_player.Time / (double)media_player.Length * 100) };
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             try
             {
                 IFormatter formatter = new BinaryFormatter();
@@ -1823,7 +1947,11 @@ namespace VideoPlayer
 
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             if (!pause && this.WindowState == FormWindowState.Maximized)
             {
                 if (!controlsPanel.Visible && mainMediaPlayer.PointToClient(Cursor.Position).Y > 1010 )
@@ -1847,7 +1975,11 @@ namespace VideoPlayer
 <<<<<<< HEAD
 >>>>>>> - Full LibVLC update
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             TimeSpan time;
             systemTime.Text = DateTime.Now.Hour + ":" + DateTime.Now.Minute;
             try
@@ -2009,7 +2141,11 @@ namespace VideoPlayer
             {
                 ThreadPool.QueueUserWorkItem(_ => nextFile(true));
                 ThreadPool.QueueUserWorkItem(_ => nextFile(false));
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             }
         }
 
@@ -2068,7 +2204,11 @@ namespace VideoPlayer
 =======
                         media_player.Volume += 10;
                         describe("Volume: " + media_player.Volume);
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         break;
                     }
                 case Keys.R:
@@ -2086,7 +2226,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
                         media_player.SeekTo(new TimeSpan(0, 0, 0, (int)(media_player.Time+10)));
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         describe("Foreward: 10ms");
                         break;
                     }
@@ -2103,7 +2247,11 @@ namespace VideoPlayer
 =======
                         media_player.Volume += 5;
                         describe("Volume: " + media_player.Volume.ToString());
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         break;
                     }
                 case Keys.S:
@@ -2119,7 +2267,11 @@ namespace VideoPlayer
 =======
                         media_player.Volume -= 5;
                         describe("Volume: " + media_player.Volume.ToString());
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         break;
                     }
                 case Keys.A:
@@ -2132,7 +2284,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
                         media_player.SeekTo(new TimeSpan(0, 0, 0, (int)(media_player.Time - 10)));
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         describe("Backward: 10ms");
                         break;
                     }
@@ -2157,7 +2313,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
                         nextFile(true);
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         break;
                     }
                 case Keys.P:
@@ -2176,7 +2336,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
                         nextFile(false);
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         break;
                     }
                 case Keys.T:
@@ -2201,7 +2365,11 @@ namespace VideoPlayer
 =======
                         media_player.SeekTo(new TimeSpan(0, 0, 0, 0, 0));
 
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         describe("Restart");
                         break;
                     }
@@ -2215,7 +2383,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
                         media_player.SeekTo(new TimeSpan(0, 0, 0, 0, (int)media_player.Length-100));
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         describe("End");
                         break;
                     }
@@ -2228,7 +2400,11 @@ namespace VideoPlayer
                         skipperData[clickedFilePathDirectory] = new int[] { customSkipper, 1 }; ;
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         skipper = (int)media_player.Time;
                         MessageBox.Show(skipper.ToString());
                         describe("Set skipper");
@@ -2236,7 +2412,11 @@ namespace VideoPlayer
 <<<<<<< HEAD
 >>>>>>> - Full LibVLC update
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         break;
                     }
                 case Keys.L:
@@ -2257,7 +2437,11 @@ namespace VideoPlayer
 =======
                         goTo = (int)media_player.Time;
                         gotoPanel.Location = new Point(Convert.ToInt32((((goTo / media_player.Length) * 100) * seekBar.Width) / 100), 1);
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         seekBar.Controls.Add(gotoPanel);
                         describe("Set GoTO");
                         break;
@@ -2275,7 +2459,11 @@ namespace VideoPlayer
 =======
                         goToEnd = (int)media_player.Time;
                         gotoEndPanel.Location = new Point(Convert.ToInt32((((goToEnd / media_player.Length) * 100) * seekBar.Width) / 100), 1);
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         seekBar.Controls.Add(gotoEndPanel);
                         describe("Set A-B Repeat");
                         break;
@@ -2296,7 +2484,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
                         goToEnd = (int)media_player.Length;
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         if (seekBar.Controls.Contains(gotoPanel))
                             seekBar.Controls.Remove(gotoPanel);
                         if (seekBar.Controls.Contains(gotoEndPanel))
@@ -2317,7 +2509,11 @@ namespace VideoPlayer
 =======
                         media_player.Volume -= 10;
                         describe("Volume: " + media_player.Volume);
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         break;
                     }
                 case Keys.Right:
@@ -2330,7 +2526,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
                         media_player.Position += 0.001f;
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         describe("Forward 5s");
                         break;
                     }
@@ -2344,7 +2544,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
                         media_player.Position -= 0.001f;
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                         describe("Backwards 5s");
                         break;
                     }
@@ -2368,7 +2572,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
                 media_player.SeekTo(new TimeSpan(0, 0, 0, 0, (int)((float.Parse(e.KeyCode.ToString()[1].ToString()) / 10) * media_player.Length)));
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             }
             catch { }
             if (e.KeyCode.ToString() == "P" && e.Shift)
@@ -2402,7 +2610,11 @@ namespace VideoPlayer
                     axVLCPlugin21.input.time = skipper;
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
             else if (e.KeyCode == Keys.Add && (skipper > 0 || useCustomSkipper.Equals(true)))
             {
                 if (useCustomSkipper)
@@ -2412,7 +2624,11 @@ namespace VideoPlayer
 <<<<<<< HEAD
 >>>>>>> - Full LibVLC update
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
                 describe("Skipping");
             }
 
@@ -2518,7 +2734,11 @@ namespace VideoPlayer
 >>>>>>> - Full LibVLC update
 =======
             timeDictionary[clickedFilePath] = new long[] { media_player.Time, (long)((double)media_player.Time / (double)media_player.Length * 100) };
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
 
         }
 
@@ -2540,7 +2760,11 @@ namespace VideoPlayer
         }
 
         private void Form1_DragDrop(object sender, DragEventArgs e)
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             clickedFilePath = files[0];
@@ -2581,7 +2805,11 @@ namespace VideoPlayer
         }
 
         private void axVLCPlugin21_MouseMoveEvent(object sender, MouseEventArgs e)
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
         {
             MessageBox.Show("");
         }
@@ -2601,7 +2829,11 @@ namespace VideoPlayer
 =======
         private void controlsPanel_MouseHover(object sender, EventArgs e)
         {
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
 
         }
 
@@ -2690,7 +2922,11 @@ namespace VideoPlayer
         {
             
 =======
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
+>>>>>>> 387454efffae3e885ab02ed3dd06e416656c8cc9
         }
 
         private void axVLCPlugin21_MouseDownEvent(object sender, AxAXVLC.DVLCEvents_MouseDownEvent e)
