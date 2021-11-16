@@ -53,6 +53,7 @@
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.homePanel = new System.Windows.Forms.Panel();
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.recentFlowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
 =======
             this.carousel = new LibVLCSharp.WinForms.VideoView();
@@ -79,6 +80,15 @@
             this.previewLabel5 = new System.Windows.Forms.Label();
             this.previewBox5 = new System.Windows.Forms.PictureBox();
 =======
+            this.recentFlowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.favoritesFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+>>>>>>> - Full LibVLC update
+=======
+            this.carousel = new LibVLCSharp.WinForms.VideoView();
+            this.carouselLabel = new System.Windows.Forms.Label();
+            this.sliderForwardButton = new System.Windows.Forms.Button();
+            this.sliderBackButton = new System.Windows.Forms.Button();
             this.recentFlowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.favoritesFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
@@ -133,6 +143,7 @@
             this.homePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.carousel)).BeginInit();
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.favouritesPanel.SuspendLayout();
             this.previewPanel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewBox8)).BeginInit();
@@ -142,6 +153,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.previewBox6)).BeginInit();
             this.previewPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewBox5)).BeginInit();
+=======
+>>>>>>> - Full LibVLC update
 =======
 >>>>>>> - Full LibVLC update
             ((System.ComponentModel.ISupportInitialize)(this.preBox1)).BeginInit();
@@ -556,7 +569,13 @@
             this.homePanel.Controls.Add(this.sliderForwardButton);
             this.homePanel.Controls.Add(this.sliderBackButton);
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.homePanel.Controls.Add(this.favouritesPanel);
+=======
+            this.homePanel.Controls.Add(this.recentFlowLayoutPanel2);
+            this.homePanel.Controls.Add(this.label2);
+            this.homePanel.Controls.Add(this.favoritesFlowLayoutPanel);
+>>>>>>> - Full LibVLC update
 =======
             this.homePanel.Controls.Add(this.recentFlowLayoutPanel2);
             this.homePanel.Controls.Add(this.label2);
@@ -571,6 +590,7 @@
             this.homePanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.homePanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
+<<<<<<< HEAD
 <<<<<<< HEAD
             // recentFlowLayoutPanel2
             // 
@@ -589,6 +609,8 @@
             this.recentFlowLayoutPanel2.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.recentFlowLayoutPanel2.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
 =======
+=======
+>>>>>>> - Full LibVLC update
             // carousel
             // 
             this.carousel.BackColor = System.Drawing.Color.Black;
@@ -601,6 +623,9 @@
             this.carousel.DragDrop += new System.Windows.Forms.DragEventHandler(this.videoView1_DragDrop);
             this.carousel.DragEnter += new System.Windows.Forms.DragEventHandler(this.videoView1_DragEnter);
             this.carousel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.videoView1_MouseMove);
+<<<<<<< HEAD
+>>>>>>> - Full LibVLC update
+=======
 >>>>>>> - Full LibVLC update
             // 
             // carouselLabel
@@ -614,6 +639,7 @@
             this.carouselLabel.TabIndex = 5;
             this.carouselLabel.Text = "label3";
             // 
+<<<<<<< HEAD
 <<<<<<< HEAD
             // carousel
             // 
@@ -643,6 +669,8 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Favourites";
             // 
+=======
+>>>>>>> - Full LibVLC update
 =======
 >>>>>>> - Full LibVLC update
             // sliderForwardButton
@@ -676,6 +704,7 @@
             this.sliderBackButton.UseVisualStyleBackColor = false;
             this.sliderBackButton.Click += new System.EventHandler(this.sliderBackButton_Click_1);
             // 
+<<<<<<< HEAD
 <<<<<<< HEAD
             // favouritesPanel
             // 
@@ -919,6 +948,8 @@
             this.previewBox5.MouseEnter += new System.EventHandler(this.previewBox5_MouseEnter);
             this.previewBox5.MouseLeave += new System.EventHandler(this.previewBox5_MouseLeave);
 =======
+=======
+>>>>>>> - Full LibVLC update
             // recentFlowLayoutPanel2
             // 
             this.recentFlowLayoutPanel2.AllowDrop = true;
@@ -959,6 +990,9 @@
             this.favoritesFlowLayoutPanel.Name = "favoritesFlowLayoutPanel";
             this.favoritesFlowLayoutPanel.Size = new System.Drawing.Size(1144, 167);
             this.favoritesFlowLayoutPanel.TabIndex = 7;
+<<<<<<< HEAD
+>>>>>>> - Full LibVLC update
+=======
 >>>>>>> - Full LibVLC update
             // 
             // secondsTimer
@@ -1195,6 +1229,10 @@
             this.controlsPanel.MouseHover += new System.EventHandler(this.controlsPanel_MouseHover);
             this.controlsPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.controlsPanel_MouseMove);
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            this.controlsPanel.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.controlsPanel_PreviewKeyDown);
+>>>>>>> - Full LibVLC update
 =======
             this.controlsPanel.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.controlsPanel_PreviewKeyDown);
 >>>>>>> - Full LibVLC update
@@ -1495,6 +1533,7 @@
             this.viewerPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
 <<<<<<< HEAD
+<<<<<<< HEAD
             // axVLCPlugin21
             // 
             this.axVLCPlugin21.AllowDrop = true;
@@ -1516,6 +1555,8 @@
             this.axVLCPlugin21.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.axVLCPlugin21_PreviewKeyDown);
             this.axVLCPlugin21.ParentChanged += new System.EventHandler(this.axVLCPlugin21_ParentChanged);
 =======
+=======
+>>>>>>> - Full LibVLC update
             // filenameFlowLayoutPanel
             // 
             this.filenameFlowLayoutPanel.Controls.Add(this.filenameLabel);
@@ -1551,6 +1592,9 @@
             this.mainMediaPlayer.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             this.mainMediaPlayer.DoubleClick += new System.EventHandler(this.fullscreenButton_Click);
             this.mainMediaPlayer.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.axVLCPlugin21_PreviewKeyDown);
+<<<<<<< HEAD
+>>>>>>> - Full LibVLC update
+=======
 >>>>>>> - Full LibVLC update
             // 
             // Form1
@@ -1561,7 +1605,11 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(1163, 731);
+=======
+            this.ClientSize = new System.Drawing.Size(1179, 731);
+>>>>>>> - Full LibVLC update
 =======
             this.ClientSize = new System.Drawing.Size(1179, 731);
 >>>>>>> - Full LibVLC update
@@ -1577,7 +1625,11 @@
             this.MinimumSize = new System.Drawing.Size(1000, 698);
             this.Name = "Form1";
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.Opacity = 0.94D;
+=======
+            this.Opacity = 0.97D;
+>>>>>>> - Full LibVLC update
 =======
             this.Opacity = 0.97D;
 >>>>>>> - Full LibVLC update
@@ -1597,6 +1649,7 @@
             this.homePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.carousel)).EndInit();
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.favouritesPanel.ResumeLayout(false);
             this.previewPanel8.ResumeLayout(false);
             this.previewPanel8.PerformLayout();
@@ -1610,6 +1663,8 @@
             this.previewPanel5.ResumeLayout(false);
             this.previewPanel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewBox5)).EndInit();
+=======
+>>>>>>> - Full LibVLC update
 =======
 >>>>>>> - Full LibVLC update
             ((System.ComponentModel.ISupportInitialize)(this.preBox1)).EndInit();
@@ -1716,12 +1771,18 @@
         private System.Windows.Forms.Panel viewerPanel;
         private System.Windows.Forms.FlowLayoutPanel recentFlowLayoutPanel2;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> - Full LibVLC update
         private LibVLCSharp.WinForms.VideoView carousel;
         private LibVLCSharp.WinForms.VideoView mainMediaPlayer;
         private System.Windows.Forms.FlowLayoutPanel favoritesFlowLayoutPanel;
         private System.Windows.Forms.FlowLayoutPanel filenameFlowLayoutPanel;
         private System.Windows.Forms.Label filenameLabel;
+<<<<<<< HEAD
+>>>>>>> - Full LibVLC update
+=======
 >>>>>>> - Full LibVLC update
     }
 }
