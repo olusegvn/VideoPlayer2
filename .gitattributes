@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 '*.nupkg' filter=lfs diff=lfs merge=lfs -text
 '/packages/' filter=lfs diff=lfs merge=lfs -text
 '/packages' filter=lfs diff=lfs merge=lfs -text
 'packages/' filter=lfs diff=lfs merge=lfs -text
+=======
+>>>>>>> - Full LibVLC update
 *.dll filter=lfs diff=lfs merge=lfs -text
 *.nupkg filter=lfs diff=lfs merge=lfs -text
 *.exe filter=lfs diff=lfs merge=lfs -text

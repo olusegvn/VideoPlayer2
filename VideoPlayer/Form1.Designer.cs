@@ -52,12 +52,15 @@
             this.hiddenPanel = new System.Windows.Forms.Panel();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.homePanel = new System.Windows.Forms.Panel();
+<<<<<<< HEAD
             this.recentFlowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+=======
+            this.carousel = new LibVLCSharp.WinForms.VideoView();
+>>>>>>> - Full LibVLC update
             this.carouselLabel = new System.Windows.Forms.Label();
-            this.carousel = new AxAXVLC.AxVLCPlugin2();
-            this.label2 = new System.Windows.Forms.Label();
             this.sliderForwardButton = new System.Windows.Forms.Button();
             this.sliderBackButton = new System.Windows.Forms.Button();
+<<<<<<< HEAD
             this.favouritesPanel = new System.Windows.Forms.Panel();
             this.previewPanel8 = new System.Windows.Forms.Panel();
             this.previewUnderPanel8 = new System.Windows.Forms.Panel();
@@ -75,6 +78,11 @@
             this.previewUnderPanel5 = new System.Windows.Forms.Panel();
             this.previewLabel5 = new System.Windows.Forms.Label();
             this.previewBox5 = new System.Windows.Forms.PictureBox();
+=======
+            this.recentFlowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.favoritesFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+>>>>>>> - Full LibVLC update
             this.secondsTimer = new System.Windows.Forms.Timer(this.components);
             this.descriptionTimer = new System.Windows.Forms.Timer(this.components);
             this.preBox1 = new System.Windows.Forms.PictureBox();
@@ -116,12 +124,15 @@
             this.label3 = new System.Windows.Forms.Label();
             this.descriptionLabel = new System.Windows.Forms.Label();
             this.viewerPanel = new System.Windows.Forms.Panel();
-            this.axVLCPlugin21 = new AxAXVLC.AxVLCPlugin2();
+            this.filenameFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.filenameLabel = new System.Windows.Forms.Label();
+            this.mainMediaPlayer = new LibVLCSharp.WinForms.VideoView();
             this.mainSidePanel.SuspendLayout();
             this.viewerOptionsPanel.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.homePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.carousel)).BeginInit();
+<<<<<<< HEAD
             this.favouritesPanel.SuspendLayout();
             this.previewPanel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewBox8)).BeginInit();
@@ -131,6 +142,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.previewBox6)).BeginInit();
             this.previewPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewBox5)).BeginInit();
+=======
+>>>>>>> - Full LibVLC update
             ((System.ComponentModel.ISupportInitialize)(this.preBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -152,7 +165,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.playlistPanel.SuspendLayout();
             this.viewerPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin21)).BeginInit();
+            this.filenameFlowLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mainMediaPlayer)).BeginInit();
             this.SuspendLayout();
             // 
             // mainSidePanel
@@ -537,22 +551,27 @@
             // 
             this.homePanel.AllowDrop = true;
             this.homePanel.BackColor = System.Drawing.Color.White;
-            this.homePanel.Controls.Add(this.recentFlowLayoutPanel2);
-            this.homePanel.Controls.Add(this.carouselLabel);
             this.homePanel.Controls.Add(this.carousel);
-            this.homePanel.Controls.Add(this.label2);
+            this.homePanel.Controls.Add(this.carouselLabel);
             this.homePanel.Controls.Add(this.sliderForwardButton);
             this.homePanel.Controls.Add(this.sliderBackButton);
+<<<<<<< HEAD
             this.homePanel.Controls.Add(this.favouritesPanel);
+=======
+            this.homePanel.Controls.Add(this.recentFlowLayoutPanel2);
+            this.homePanel.Controls.Add(this.label2);
+            this.homePanel.Controls.Add(this.favoritesFlowLayoutPanel);
+>>>>>>> - Full LibVLC update
             this.homePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.homePanel.Location = new System.Drawing.Point(35, 0);
             this.homePanel.Margin = new System.Windows.Forms.Padding(0);
             this.homePanel.Name = "homePanel";
-            this.homePanel.Size = new System.Drawing.Size(1128, 731);
+            this.homePanel.Size = new System.Drawing.Size(1144, 731);
             this.homePanel.TabIndex = 7;
             this.homePanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.homePanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
+<<<<<<< HEAD
             // recentFlowLayoutPanel2
             // 
             this.recentFlowLayoutPanel2.AllowDrop = true;
@@ -569,6 +588,20 @@
             this.recentFlowLayoutPanel2.TabStop = true;
             this.recentFlowLayoutPanel2.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.recentFlowLayoutPanel2.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
+=======
+            // carousel
+            // 
+            this.carousel.BackColor = System.Drawing.Color.Black;
+            this.carousel.Location = new System.Drawing.Point(128, 47);
+            this.carousel.MediaPlayer = null;
+            this.carousel.Name = "carousel";
+            this.carousel.Size = new System.Drawing.Size(593, 413);
+            this.carousel.TabIndex = 6;
+            this.carousel.Text = "videoView1";
+            this.carousel.DragDrop += new System.Windows.Forms.DragEventHandler(this.videoView1_DragDrop);
+            this.carousel.DragEnter += new System.Windows.Forms.DragEventHandler(this.videoView1_DragEnter);
+            this.carousel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.videoView1_MouseMove);
+>>>>>>> - Full LibVLC update
             // 
             // carouselLabel
             // 
@@ -581,6 +614,7 @@
             this.carouselLabel.TabIndex = 5;
             this.carouselLabel.Text = "label3";
             // 
+<<<<<<< HEAD
             // carousel
             // 
             this.carousel.AllowDrop = true;
@@ -609,6 +643,8 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Favourites";
             // 
+=======
+>>>>>>> - Full LibVLC update
             // sliderForwardButton
             // 
             this.sliderForwardButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -617,7 +653,7 @@
             this.sliderForwardButton.FlatAppearance.BorderSize = 0;
             this.sliderForwardButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.sliderForwardButton.Image = global::VideoPlayer.Properties.Resources.icons8_forward_50;
-            this.sliderForwardButton.Location = new System.Drawing.Point(750, 206);
+            this.sliderForwardButton.Location = new System.Drawing.Point(766, 206);
             this.sliderForwardButton.Margin = new System.Windows.Forms.Padding(2);
             this.sliderForwardButton.Name = "sliderForwardButton";
             this.sliderForwardButton.Size = new System.Drawing.Size(57, 92);
@@ -640,6 +676,7 @@
             this.sliderBackButton.UseVisualStyleBackColor = false;
             this.sliderBackButton.Click += new System.EventHandler(this.sliderBackButton_Click_1);
             // 
+<<<<<<< HEAD
             // favouritesPanel
             // 
             this.favouritesPanel.AllowDrop = true;
@@ -881,6 +918,48 @@
             this.previewBox5.TabStop = false;
             this.previewBox5.MouseEnter += new System.EventHandler(this.previewBox5_MouseEnter);
             this.previewBox5.MouseLeave += new System.EventHandler(this.previewBox5_MouseLeave);
+=======
+            // recentFlowLayoutPanel2
+            // 
+            this.recentFlowLayoutPanel2.AllowDrop = true;
+            this.recentFlowLayoutPanel2.AutoScroll = true;
+            this.recentFlowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.recentFlowLayoutPanel2.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.recentFlowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.recentFlowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.recentFlowLayoutPanel2.Location = new System.Drawing.Point(843, 0);
+            this.recentFlowLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.recentFlowLayoutPanel2.Name = "recentFlowLayoutPanel2";
+            this.recentFlowLayoutPanel2.Size = new System.Drawing.Size(301, 532);
+            this.recentFlowLayoutPanel2.TabIndex = 1;
+            this.recentFlowLayoutPanel2.TabStop = true;
+            this.recentFlowLayoutPanel2.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
+            this.recentFlowLayoutPanel2.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.label2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label2.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(0, 532);
+            this.label2.Margin = new System.Windows.Forms.Padding(0);
+            this.label2.Name = "label2";
+            this.label2.Padding = new System.Windows.Forms.Padding(2);
+            this.label2.Size = new System.Drawing.Size(116, 32);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Favourites";
+            // 
+            // favoritesFlowLayoutPanel
+            // 
+            this.favoritesFlowLayoutPanel.AutoScroll = true;
+            this.favoritesFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.favoritesFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.favoritesFlowLayoutPanel.Location = new System.Drawing.Point(0, 564);
+            this.favoritesFlowLayoutPanel.Name = "favoritesFlowLayoutPanel";
+            this.favoritesFlowLayoutPanel.Size = new System.Drawing.Size(1144, 167);
+            this.favoritesFlowLayoutPanel.TabIndex = 7;
+>>>>>>> - Full LibVLC update
             // 
             // secondsTimer
             // 
@@ -928,7 +1007,7 @@
             this.recentlyPlayedFlowLayoutPanel.Location = new System.Drawing.Point(35, 0);
             this.recentlyPlayedFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(2);
             this.recentlyPlayedFlowLayoutPanel.Name = "recentlyPlayedFlowLayoutPanel";
-            this.recentlyPlayedFlowLayoutPanel.Size = new System.Drawing.Size(1128, 731);
+            this.recentlyPlayedFlowLayoutPanel.Size = new System.Drawing.Size(1144, 731);
             this.recentlyPlayedFlowLayoutPanel.TabIndex = 5;
             // 
             // favouritesFlowLayoutPanel
@@ -938,7 +1017,7 @@
             this.favouritesFlowLayoutPanel.Location = new System.Drawing.Point(35, 0);
             this.favouritesFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(2);
             this.favouritesFlowLayoutPanel.Name = "favouritesFlowLayoutPanel";
-            this.favouritesFlowLayoutPanel.Size = new System.Drawing.Size(1128, 731);
+            this.favouritesFlowLayoutPanel.Size = new System.Drawing.Size(1144, 731);
             this.favouritesFlowLayoutPanel.TabIndex = 9;
             // 
             // panel2
@@ -954,16 +1033,18 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1128, 154);
+            this.panel2.Size = new System.Drawing.Size(1144, 167);
             this.panel2.TabIndex = 0;
             // 
             // recentFolders
             // 
+            this.recentFolders.AutoScroll = true;
             this.recentFolders.Dock = System.Windows.Forms.DockStyle.Top;
+            this.recentFolders.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.recentFolders.Location = new System.Drawing.Point(0, 0);
             this.recentFolders.Margin = new System.Windows.Forms.Padding(2);
             this.recentFolders.Name = "recentFolders";
-            this.recentFolders.Size = new System.Drawing.Size(1128, 54);
+            this.recentFolders.Size = new System.Drawing.Size(1144, 73);
             this.recentFolders.TabIndex = 6;
             // 
             // panel7
@@ -972,10 +1053,10 @@
             this.panel7.Controls.Add(this.searchTextBox);
             this.panel7.Controls.Add(this.pictureBox9);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel7.Location = new System.Drawing.Point(0, 104);
+            this.panel7.Location = new System.Drawing.Point(0, 116);
             this.panel7.Margin = new System.Windows.Forms.Padding(2);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(1128, 48);
+            this.panel7.Size = new System.Drawing.Size(1144, 49);
             this.panel7.TabIndex = 5;
             // 
             // searchTextBox
@@ -983,10 +1064,10 @@
             this.searchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.searchTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.searchTextBox.Font = new System.Drawing.Font("Microsoft JhengHei Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchTextBox.Location = new System.Drawing.Point(55, 15);
+            this.searchTextBox.Location = new System.Drawing.Point(55, 16);
             this.searchTextBox.Margin = new System.Windows.Forms.Padding(6, 0, 0, 0);
             this.searchTextBox.Name = "searchTextBox";
-            this.searchTextBox.Size = new System.Drawing.Size(1073, 33);
+            this.searchTextBox.Size = new System.Drawing.Size(1089, 33);
             this.searchTextBox.TabIndex = 1;
             this.searchTextBox.Text = "";
             this.searchTextBox.TextChanged += new System.EventHandler(this.searchTextBox_TextChanged_1);
@@ -999,7 +1080,7 @@
             this.pictureBox9.Location = new System.Drawing.Point(0, 0);
             this.pictureBox9.Margin = new System.Windows.Forms.Padding(2, 2, 24, 2);
             this.pictureBox9.Name = "pictureBox9";
-            this.pictureBox9.Size = new System.Drawing.Size(55, 48);
+            this.pictureBox9.Size = new System.Drawing.Size(55, 49);
             this.pictureBox9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox9.TabIndex = 0;
             this.pictureBox9.TabStop = false;
@@ -1010,7 +1091,7 @@
             this.foldersBackButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.foldersBackButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.foldersBackButton.Image = global::VideoPlayer.Properties.Resources.icons8_back_503;
-            this.foldersBackButton.Location = new System.Drawing.Point(-1, 65);
+            this.foldersBackButton.Location = new System.Drawing.Point(0, 74);
             this.foldersBackButton.Margin = new System.Windows.Forms.Padding(5, 5, 2, 2);
             this.foldersBackButton.Name = "foldersBackButton";
             this.foldersBackButton.Padding = new System.Windows.Forms.Padding(2, 2, 0, 0);
@@ -1025,10 +1106,10 @@
             // panel6
             // 
             this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel6.Location = new System.Drawing.Point(0, 152);
+            this.panel6.Location = new System.Drawing.Point(0, 165);
             this.panel6.Margin = new System.Windows.Forms.Padding(2);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(1128, 2);
+            this.panel6.Size = new System.Drawing.Size(1144, 2);
             this.panel6.TabIndex = 3;
             // 
             // directoryLabel
@@ -1036,7 +1117,7 @@
             this.directoryLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.directoryLabel.AutoSize = true;
             this.directoryLabel.Font = new System.Drawing.Font("Microsoft YaHei Light", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.directoryLabel.Location = new System.Drawing.Point(60, 75);
+            this.directoryLabel.Location = new System.Drawing.Point(60, 88);
             this.directoryLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.directoryLabel.Name = "directoryLabel";
             this.directoryLabel.Padding = new System.Windows.Forms.Padding(4, 4, 4, 1);
@@ -1048,7 +1129,7 @@
             // 
             this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.panel5.BackColor = System.Drawing.Color.Black;
-            this.panel5.Location = new System.Drawing.Point(700, 150);
+            this.panel5.Location = new System.Drawing.Point(716, 163);
             this.panel5.Margin = new System.Windows.Forms.Padding(2);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(424, 1);
@@ -1058,11 +1139,11 @@
             // 
             this.panel8.BackColor = System.Drawing.Color.Black;
             this.panel8.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel8.Location = new System.Drawing.Point(0, 154);
+            this.panel8.Location = new System.Drawing.Point(0, 167);
             this.panel8.Margin = new System.Windows.Forms.Padding(2);
             this.panel8.Name = "panel8";
             this.panel8.Padding = new System.Windows.Forms.Padding(0, 2, 0, 24);
-            this.panel8.Size = new System.Drawing.Size(1128, 1);
+            this.panel8.Size = new System.Drawing.Size(1144, 1);
             this.panel8.TabIndex = 2;
             // 
             // foldersPanel
@@ -1075,17 +1156,17 @@
             this.foldersPanel.Location = new System.Drawing.Point(35, 0);
             this.foldersPanel.Margin = new System.Windows.Forms.Padding(2);
             this.foldersPanel.Name = "foldersPanel";
-            this.foldersPanel.Size = new System.Drawing.Size(1128, 731);
+            this.foldersPanel.Size = new System.Drawing.Size(1144, 731);
             this.foldersPanel.TabIndex = 8;
             // 
             // foldersFlowLayoutPanel
             // 
             this.foldersFlowLayoutPanel.AutoScroll = true;
             this.foldersFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.foldersFlowLayoutPanel.Location = new System.Drawing.Point(0, 155);
+            this.foldersFlowLayoutPanel.Location = new System.Drawing.Point(0, 168);
             this.foldersFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(2);
             this.foldersFlowLayoutPanel.Name = "foldersFlowLayoutPanel";
-            this.foldersFlowLayoutPanel.Size = new System.Drawing.Size(1128, 576);
+            this.foldersFlowLayoutPanel.Size = new System.Drawing.Size(1144, 563);
             this.foldersFlowLayoutPanel.TabIndex = 1;
             this.foldersFlowLayoutPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.foldersFlowLayoutPanel_Paint);
             // 
@@ -1108,11 +1189,15 @@
             this.controlsPanel.Location = new System.Drawing.Point(0, 684);
             this.controlsPanel.Margin = new System.Windows.Forms.Padding(2);
             this.controlsPanel.Name = "controlsPanel";
-            this.controlsPanel.Size = new System.Drawing.Size(1128, 47);
+            this.controlsPanel.Size = new System.Drawing.Size(1144, 47);
             this.controlsPanel.TabIndex = 4;
             this.controlsPanel.MouseLeave += new System.EventHandler(this.controlsPanel_MouseLeave);
             this.controlsPanel.MouseHover += new System.EventHandler(this.controlsPanel_MouseHover);
             this.controlsPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.controlsPanel_MouseMove);
+<<<<<<< HEAD
+=======
+            this.controlsPanel.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.controlsPanel_PreviewKeyDown);
+>>>>>>> - Full LibVLC update
             // 
             // panel3
             // 
@@ -1124,7 +1209,7 @@
             this.panel3.Location = new System.Drawing.Point(634, 19);
             this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(176, 24);
+            this.panel3.Size = new System.Drawing.Size(192, 24);
             this.panel3.TabIndex = 6;
             // 
             // currentTime
@@ -1167,7 +1252,7 @@
             this.batteryPercent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.batteryPercent.AutoSize = true;
             this.batteryPercent.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.batteryPercent.Location = new System.Drawing.Point(1002, 13);
+            this.batteryPercent.Location = new System.Drawing.Point(1018, 13);
             this.batteryPercent.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.batteryPercent.Name = "batteryPercent";
             this.batteryPercent.Size = new System.Drawing.Size(36, 18);
@@ -1180,7 +1265,7 @@
             this.systemTime.AutoSize = true;
             this.systemTime.BackColor = System.Drawing.Color.Transparent;
             this.systemTime.Font = new System.Drawing.Font("Bahnschrift Light", 28.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.systemTime.Location = new System.Drawing.Point(1037, 12);
+            this.systemTime.Location = new System.Drawing.Point(1053, 12);
             this.systemTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.systemTime.Name = "systemTime";
             this.systemTime.Size = new System.Drawing.Size(102, 46);
@@ -1193,7 +1278,7 @@
             this.batteryTimeRemaining.AutoSize = true;
             this.batteryTimeRemaining.BackColor = System.Drawing.Color.Transparent;
             this.batteryTimeRemaining.Font = new System.Drawing.Font("Bahnschrift Light", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.batteryTimeRemaining.Location = new System.Drawing.Point(911, 34);
+            this.batteryTimeRemaining.Location = new System.Drawing.Point(927, 34);
             this.batteryTimeRemaining.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.batteryTimeRemaining.Name = "batteryTimeRemaining";
             this.batteryTimeRemaining.Size = new System.Drawing.Size(93, 13);
@@ -1211,7 +1296,7 @@
             this.seekBar.Location = new System.Drawing.Point(-1, 1);
             this.seekBar.Margin = new System.Windows.Forms.Padding(2);
             this.seekBar.Name = "seekBar";
-            this.seekBar.Size = new System.Drawing.Size(1129, 11);
+            this.seekBar.Size = new System.Drawing.Size(1145, 11);
             this.seekBar.TabIndex = 3;
             this.seekBar.Click += new System.EventHandler(this.seekBar_Click);
             this.seekBar.Paint += new System.Windows.Forms.PaintEventHandler(this.seekBar_Paint);
@@ -1355,7 +1440,7 @@
             this.playlistPanel.BackColor = System.Drawing.Color.White;
             this.playlistPanel.Controls.Add(this.label3);
             this.playlistPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.playlistPanel.Location = new System.Drawing.Point(912, 2);
+            this.playlistPanel.Location = new System.Drawing.Point(928, 2);
             this.playlistPanel.Margin = new System.Windows.Forms.Padding(2);
             this.playlistPanel.Name = "playlistPanel";
             this.playlistPanel.Size = new System.Drawing.Size(216, 682);
@@ -1384,7 +1469,7 @@
             this.descriptionLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.descriptionLabel.Font = new System.Drawing.Font("Microsoft YaHei UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.descriptionLabel.ForeColor = System.Drawing.Color.Black;
-            this.descriptionLabel.Location = new System.Drawing.Point(812, 21);
+            this.descriptionLabel.Location = new System.Drawing.Point(839, 30);
             this.descriptionLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.descriptionLabel.Name = "descriptionLabel";
             this.descriptionLabel.Padding = new System.Windows.Forms.Padding(8);
@@ -1394,20 +1479,22 @@
             // 
             // viewerPanel
             // 
+            this.viewerPanel.Controls.Add(this.filenameFlowLayoutPanel);
             this.viewerPanel.Controls.Add(this.descriptionLabel);
+            this.viewerPanel.Controls.Add(this.mainMediaPlayer);
             this.viewerPanel.Controls.Add(this.playlistPanel);
             this.viewerPanel.Controls.Add(this.controlsPanel);
-            this.viewerPanel.Controls.Add(this.axVLCPlugin21);
             this.viewerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewerPanel.Location = new System.Drawing.Point(35, 0);
             this.viewerPanel.Margin = new System.Windows.Forms.Padding(2);
             this.viewerPanel.Name = "viewerPanel";
             this.viewerPanel.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.viewerPanel.Size = new System.Drawing.Size(1128, 731);
+            this.viewerPanel.Size = new System.Drawing.Size(1144, 731);
             this.viewerPanel.TabIndex = 6;
             this.viewerPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
             this.viewerPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
             // 
+<<<<<<< HEAD
             // axVLCPlugin21
             // 
             this.axVLCPlugin21.AllowDrop = true;
@@ -1428,6 +1515,43 @@
             this.axVLCPlugin21.Enter += new System.EventHandler(this.fullscreenButton_Click);
             this.axVLCPlugin21.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.axVLCPlugin21_PreviewKeyDown);
             this.axVLCPlugin21.ParentChanged += new System.EventHandler(this.axVLCPlugin21_ParentChanged);
+=======
+            // filenameFlowLayoutPanel
+            // 
+            this.filenameFlowLayoutPanel.Controls.Add(this.filenameLabel);
+            this.filenameFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.filenameFlowLayoutPanel.Location = new System.Drawing.Point(0, 2);
+            this.filenameFlowLayoutPanel.Name = "filenameFlowLayoutPanel";
+            this.filenameFlowLayoutPanel.Size = new System.Drawing.Size(928, 21);
+            this.filenameFlowLayoutPanel.TabIndex = 9;
+            // 
+            // filenameLabel
+            // 
+            this.filenameLabel.AutoSize = true;
+            this.filenameLabel.Font = new System.Drawing.Font("Microsoft JhengHei UI Light", 10.2F);
+            this.filenameLabel.Location = new System.Drawing.Point(3, 0);
+            this.filenameLabel.Name = "filenameLabel";
+            this.filenameLabel.Size = new System.Drawing.Size(42, 18);
+            this.filenameLabel.TabIndex = 0;
+            this.filenameLabel.Text = "label1";
+            // 
+            // mainMediaPlayer
+            // 
+            this.mainMediaPlayer.BackColor = System.Drawing.Color.Black;
+            this.mainMediaPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainMediaPlayer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.mainMediaPlayer.Location = new System.Drawing.Point(0, 2);
+            this.mainMediaPlayer.MediaPlayer = null;
+            this.mainMediaPlayer.Name = "mainMediaPlayer";
+            this.mainMediaPlayer.Size = new System.Drawing.Size(928, 682);
+            this.mainMediaPlayer.TabIndex = 8;
+            this.mainMediaPlayer.Text = "videoView1";
+            this.mainMediaPlayer.Click += new System.EventHandler(this.mainMediaPlayer_Click);
+            this.mainMediaPlayer.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
+            this.mainMediaPlayer.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
+            this.mainMediaPlayer.DoubleClick += new System.EventHandler(this.fullscreenButton_Click);
+            this.mainMediaPlayer.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.axVLCPlugin21_PreviewKeyDown);
+>>>>>>> - Full LibVLC update
             // 
             // Form1
             // 
@@ -1436,7 +1560,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
+<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(1163, 731);
+=======
+            this.ClientSize = new System.Drawing.Size(1179, 731);
+>>>>>>> - Full LibVLC update
             this.Controls.Add(this.viewerPanel);
             this.Controls.Add(this.homePanel);
             this.Controls.Add(this.foldersPanel);
@@ -1448,7 +1576,11 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(1000, 698);
             this.Name = "Form1";
+<<<<<<< HEAD
             this.Opacity = 0.94D;
+=======
+            this.Opacity = 0.97D;
+>>>>>>> - Full LibVLC update
             this.Text = "AIVideoPlayer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -1464,6 +1596,7 @@
             this.homePanel.ResumeLayout(false);
             this.homePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.carousel)).EndInit();
+<<<<<<< HEAD
             this.favouritesPanel.ResumeLayout(false);
             this.previewPanel8.ResumeLayout(false);
             this.previewPanel8.PerformLayout();
@@ -1477,6 +1610,8 @@
             this.previewPanel5.ResumeLayout(false);
             this.previewPanel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewBox5)).EndInit();
+=======
+>>>>>>> - Full LibVLC update
             ((System.ComponentModel.ISupportInitialize)(this.preBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
@@ -1503,7 +1638,9 @@
             this.playlistPanel.PerformLayout();
             this.viewerPanel.ResumeLayout(false);
             this.viewerPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin21)).EndInit();
+            this.filenameFlowLayoutPanel.ResumeLayout(false);
+            this.filenameFlowLayoutPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mainMediaPlayer)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1534,28 +1671,10 @@
         private System.Windows.Forms.Panel homePanel;
         private System.Windows.Forms.Button sliderForwardButton;
         private System.Windows.Forms.Button sliderBackButton;
-        private System.Windows.Forms.Panel favouritesPanel;
         private System.Windows.Forms.Button shutdownExit;
         private System.Windows.Forms.Timer secondsTimer;
-        private System.Windows.Forms.Panel previewPanel7;
-        private System.Windows.Forms.Panel previewUnderPanel7;
-        private System.Windows.Forms.Label previewLabel7;
-        private System.Windows.Forms.PictureBox previewBox7;
-        private System.Windows.Forms.Panel previewPanel6;
-        private System.Windows.Forms.Panel previewUnderPanel6;
-        private System.Windows.Forms.Label previewLabel6;
-        private System.Windows.Forms.PictureBox previewBox6;
-        private System.Windows.Forms.Panel previewPanel5;
-        private System.Windows.Forms.Panel previewUnderPanel5;
-        private System.Windows.Forms.Label previewLabel5;
-        private System.Windows.Forms.PictureBox previewBox5;
-        private System.Windows.Forms.Panel previewPanel8;
-        private System.Windows.Forms.Panel previewUnderPanel8;
-        private System.Windows.Forms.Label previewLabel8;
-        private System.Windows.Forms.PictureBox previewBox8;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Timer descriptionTimer;
-        private AxAXVLC.AxVLCPlugin2 carousel;
         private System.Windows.Forms.Label carouselLabel;
         private System.Windows.Forms.Button incognitoButton;
         private System.Windows.Forms.Button button1;
@@ -1595,8 +1714,15 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label descriptionLabel;
         private System.Windows.Forms.Panel viewerPanel;
-        private AxAXVLC.AxVLCPlugin2 axVLCPlugin21;
         private System.Windows.Forms.FlowLayoutPanel recentFlowLayoutPanel2;
+<<<<<<< HEAD
+=======
+        private LibVLCSharp.WinForms.VideoView carousel;
+        private LibVLCSharp.WinForms.VideoView mainMediaPlayer;
+        private System.Windows.Forms.FlowLayoutPanel favoritesFlowLayoutPanel;
+        private System.Windows.Forms.FlowLayoutPanel filenameFlowLayoutPanel;
+        private System.Windows.Forms.Label filenameLabel;
+>>>>>>> - Full LibVLC update
     }
 }
 
