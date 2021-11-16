@@ -1,0 +1,125 @@
+[33mcommit 445379febc2c56771ed98ec5bb1485509c41e914[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Sat Nov 13 22:38:21 2021 +0100
+
+    - Enabled and implemented drag and drop.
+    - Bug fixes for nextFile method.
+    - removed unnecessary message boxes.
+
+[33mcommit 8f60ea5546e64cdbc0074aa7b57aae72be83c711[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Sat Nov 13 13:19:07 2021 +0100
+
+    - improved loading of serialised data and started implementing skipper persistent to series.
+    - made intro skip specific to series
+    - In rendering files, progress of each file is shown.
+    - Enabled scrub preview while watching a video ( made it pause video, preview, then play when the mouse leaves panel)
+    - implemented  Incogexit
+
+[33mcommit d7a7b6dda31e66afdeda8da2ec91a1b557a70b98[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Thu Nov 11 20:03:44 2021 +0100
+
+    - Added hover animations to home-panel on both forms
+    - Added features from last few commits to incognito-form
+    -  Design bug fixes and final removal of right-side-panel.
+    - No bugs.
+
+[33mcommit 3a0f1ec35573db1d1432338b0212bfa17f568a84[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Wed Nov 10 23:29:51 2021 +0100
+
+    General bug fixes
+
+[33mcommit 97bf8c4c19ce69acdcd1e2fe8d3649c485de7317[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Wed Nov 10 22:53:32 2021 +0100
+
+    - Added feature to skip using numbers.
+
+[33mcommit e5d79584c0f274e10254f485c508e65065d6c766[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Wed Nov 10 22:24:59 2021 +0100
+
+    - Added new intro skip control
+    - Optimized controls with switch statements and added media controls
+
+[33mcommit a5181536b76ab94acc12664fd913d6d72402b643[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Wed Nov 10 21:42:00 2021 +0100
+
+    - fixed some design bugs and now adding media control inputs.
+
+[33mcommit 2db939bfca13b3e174eba0a565316ec0c5fb7465[m[33m ([m[1;32mhomePanelRedesign[m[33m)[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Wed Nov 10 20:58:46 2021 +0100
+
+    resolve conflict
+
+[33mcommit 45a8e3220a95c03a9b87b2fb036024a155876023[m[33m ([m[1;31morigin/homePanelRedesign[m[33m)[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Wed Nov 10 20:55:41 2021 +0100
+
+    - Resolved conflict
+
+[33mcommit 47bbe659ad561d0a1c2332b116741d51767d6e18[m
+Merge: e2cd37a 2c047ba
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Wed Nov 10 20:41:18 2021 +0100
+
+    Merge branch 'homePanelRedesign' of https://github.com/olusegvn/VideoPlayer2 into homePanelRedesign
+
+[33mcommit e2cd37a72d2f9b60827aeb73cc80dfa2eda4cdb4[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Wed Nov 10 20:37:10 2021 +0100
+
+    - Increased recently watched tiles to 10 and optimized it allowing the generation of a variable number of tiles.
+    - Home panel re-design
+
+[33mcommit 2c047bad73a31dda3150fb53956d6e9fa5ee79ac[m
+Merge: 01c0774 4f303c5
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Wed Nov 10 20:40:08 2021 +0100
+
+    Merge branch 'homePanelRedesign' of https://github.com/olusegvn/VideoPlayer2 into homePanelRedesign
+
+[33mcommit 01c0774f95d650dc0283a6455151f5f11263e4bd[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Wed Nov 10 20:37:10 2021 +0100
+
+    - Increased recently watched tiles to 10 and optimized it allowing the generation of a variable number of tiles.
+    - Home panel re-design
+
+[33mcommit 4f303c516109f82aaf709751f528521e9daa2387[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Wed Nov 10 20:37:10 2021 +0100
+
+    - Increased recently watched tiles to 10 and optimized it allowing the generation of a variable number of tiles.
+    - Home panel re-design
+
+[33mcommit ae0676e648b8182f464d2661480b3c328e254ef8[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Wed Nov 10 13:37:53 2021 +0100
+
+    - Opacity of home screen reduced to 90% and form border style is now sizable just after opening app
+    - Now opens without prior Queue files
+    - optimized closing by creating a function called saveQueue
+    - App can now work on all user profiles
+
+[33mcommit 8e5e8898fa89568791c967b221e23d5300bb1516[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Wed Nov 10 11:28:05 2021 +0100
+
+    Changed number for Queue to 80 on both form1 and Incognitoform and fixed the bug in last commit.
+
+[33mcommit 91d0e427d2f73ec9d8680f146d938a539a226616[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Wed Nov 10 11:16:57 2021 +0100
+
+    Increased number of Queue items to 80.
+
+[33mcommit b1b730fddfa31d623e9bf3972b15f7ef6b087624[m
+Author: Yinka Olusegun <olusegvn@gmail.com>
+Date:   Tue Nov 9 12:03:30 2021 +0100
+
+    first commit

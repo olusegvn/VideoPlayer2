@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Microsoft.VisualBasic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -13,6 +14,9 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.WindowsAPICodePack;
 using Microsoft.WindowsAPICodePack.Shell;
+using LibVLCSharp.Shared;
+using System.Threading;
+
 
 
 namespace VideoPlayer
@@ -49,11 +53,11 @@ namespace VideoPlayer
         public Image menuImage = VideoPlayer.Properties.Resources.icons8_menu_16;
         public string[] extentions = { ".MOV", ".MP4", ".M4V", ".3GP", ".MPG", ".TS", ".VOB", ".ASF", ".AVI", ".WMV", ".MKV", ".RM", ".DV", ".FLV", ".WEBM" };
         public static IFormatter formatter = new BinaryFormatter();
-        public static Stream stream;
-        public static Dictionary<string, double> timeDictionary = new Dictionary<string, double>();
+        public static Stream stream, stream1, stream2;
+        public static Dictionary<string, long[]> timeDictionary = new Dictionary<string, long[]>();
         List<PictureBox> previewBoxes = new List<PictureBox>();
         public LimitedQueue<string> recentlyPlayedFiles;
-        private string DATABASE = Environment.ExpandEnvironmentVariables(@"%USERPROFILE%/AppData/Local/Microsoft/Windows/1033/1");
+        private string DATABASE = Environment.ExpandEnvironmentVariables(@"%USERPROFILE%/AppData/Local/Microsoft/Windows/1033/1/");
         private string STORAGEBASE = Environment.ExpandEnvironmentVariables(@"%USERPROFILE%/AppData/Local/Microsoft/Windows/1033/");
         List<Panel> previewPanels = new List<Panel>(), previewUnderPanels = new List<Panel>();
         NReco.VideoConverter.FFMpegConverter ffMpeg = new NReco.VideoConverter.FFMpegConverter();
@@ -64,9 +68,10 @@ namespace VideoPlayer
         private string clickedDirectory = "";
         private string clickedFilePath = "";
         int carouselCounter = 0;
+        string clickedFilePathDirectory;
         public Panel previewUnderPanel;
         private List<string> carouselVideos = new List<string>();
-        Dictionary<string, int> favouriteTimes = new Dictionary<string, int>();
+        Dictionary<string, long> favouriteTimes = new Dictionary<string, long>();
         bool loop = false;
         bool directoryRendered = false;
         bool textFromUser = true;
@@ -79,11 +84,20 @@ namespace VideoPlayer
         int nPreviewFiles = 4;
         int goTo = 0;
         int skipper = 0;
+        bool useCustomSkipper;
+        int customSkipper;
         int goToEnd;
+        bool pause;
         string output;
         int currentPlaylistIndex = -1;
         Panel gotoPanel = new Panel();
         Panel gotoEndPanel = new Panel();
+        public MediaPlayer media_player;
+        public Media media;
+        public MediaPlayer carousel_media_player;
+        public Media carousel_media;
+        LibVLC libVLC = new LibVLC("--input-repeat=2");
+        LibVLC carouselLibVLC = new LibVLC();
 
         public incognitoForm()
         {
@@ -93,34 +107,58 @@ namespace VideoPlayer
             object sender = new object();
             EventArgs e = new EventArgs();
 
-            searchTextBox_TextChanged_1(sender, e);
             System.Windows.Forms.Panel[] buttonPanels = { B1, U2, B3 };
             foreach (System.Windows.Forms.Panel panel in buttonPanels)
             {
                 panel.Visible = false;
             }
             IFormatter formatter = new BinaryFormatter();
-            
+
             try
             {
-                recentlyPlayedFiles = (LimitedQueue<string>)formatter.Deserialize(stream);
                 stream = new FileStream(STORAGEBASE + "iQueue.txt", FileMode.Open, FileAccess.Read);
-                Stream stream1 = new FileStream(STORAGEBASE + "iTime.txt", FileMode.Open, FileAccess.Read);
-                Stream stream2 = new FileStream(STORAGEBASE + "iFavourites.txt", FileMode.Open, FileAccess.Read);
-
-                timeDictionary = (Dictionary<string, double>)formatter.Deserialize(stream1);
-                favouriteTimes = (Dictionary<string, int>)formatter.Deserialize(stream2);
+                recentlyPlayedFiles = (LimitedQueue<string>)formatter.Deserialize(stream);
                 stream.Close();
+            }
+            catch
+            {
+                recentlyPlayedFiles = new LimitedQueue<string>(80);
+                stream.Close();
+            }
+            try
+            {
+                stream1 = new FileStream(STORAGEBASE + "itime.txt", FileMode.Open, FileAccess.Read);
+                timeDictionary = (Dictionary<string, long[]>)formatter.Deserialize(stream1);
                 stream1.Close();
+            }
+            catch
+            {
+                stream1.Close();
+            }
+            try
+            {
+                stream2 = new FileStream(STORAGEBASE + "iFavourites.txt", FileMode.Open, FileAccess.Read);
+                favouriteTimes = (Dictionary<string, long>)formatter.Deserialize(stream2);
                 stream2.Close();
             }
-            catch { }
-            
-            homeButton_Click(sender, e);
+            catch
+            {
+                stream2.Close();
+            }
+
+            searchTextBox_TextChanged_1(sender, e);
             gotoPanel.Size = new Size(10, 14);
             gotoPanel.BackColor = Color.Black;
             gotoEndPanel.Size = new Size(10, 14);
             gotoEndPanel.BackColor = Color.Black;
+            libVLC = new LibVLC();
+            carouselLibVLC = new LibVLC();
+            media_player = new MediaPlayer(libVLC);
+            mainMediaPlayer.MediaPlayer = media_player;
+            carousel_media_player = new MediaPlayer(carouselLibVLC);
+            carousel.MediaPlayer = carousel_media_player;
+            media_player.EndReached += media_player_MediaPlayerEndReached;
+            homeButton_Click(sender, e);
             timer1_Tick(sender, e);
             timer1.Start();
         }
@@ -269,44 +307,36 @@ namespace VideoPlayer
 
         private void file_Click(object sender, EventArgs e)
         {
-            carousel.volume = 0;
+            clickedFilePath = getControlName(sender).Replace("/", "\\");
+            file_Click();
+        }
+
+        private void file_Click()
+        {
+            carousel.MediaPlayer.Volume = 0;
+            directoryRendered = true;
             textFromUser = false;
             searchTextBox.Text = "";
             textFromUser = true;
-            clickedFilePath = getControlName(sender);
-            
+            clickedFilePathDirectory = Path.GetDirectoryName(clickedFilePath);
 
-            axVLCPlugin21.playlist.stop();
-            axVLCPlugin21.playlist.items.clear();
-            playlist.Clear();
-            string fileUri = new Uri(clickedFilePath).AbsoluteUri;
-
-            var directoryFiles = new DirectoryInfo(Path.GetDirectoryName(clickedFilePath)).GetFiles().Where(s => extentions.Contains(s.Extension.ToUpper()));
-            string convertedUri;
-            string fullname;
-            
-            foreach (FileInfo path in directoryFiles)
+            if (!random)
             {
-                fullname = path.FullName.Replace("\\", "/");
-                Uri uri = new Uri(fullname);
-                convertedUri = uri.AbsoluteUri;
-                axVLCPlugin21.playlist.add(convertedUri);
-                playlist.Add(convertedUri);
-                
+                playlist.Clear();
+                var directoryFiles = new DirectoryInfo(Path.GetDirectoryName(clickedFilePath)).GetFiles().Where(s => extentions.Contains(s.Extension.ToUpper()));
+                foreach (FileInfo path in directoryFiles)
+                    playlist.Add(path.FullName.Replace("/", "\\"));
             }
-            
-
-            currentPlaylistIndex = playlist.IndexOf(fileUri);
-            axVLCPlugin21.playlist.playItem(currentPlaylistIndex);
+            media_player.Play(new Media(libVLC, clickedFilePath));
             if (timeDictionary.ContainsKey(clickedFilePath))
-                axVLCPlugin21.input.time = (int)timeDictionary[clickedFilePath] - 2500;
+                media_player.Time = (int)timeDictionary[clickedFilePath][0] - 2500;
             if (recentlyPlayedFiles.Contains(clickedFilePath))
                 queueRemove(clickedFilePath);
-            renderPlaylist(fileUri);
+            renderPlaylist();
             recentlyPlayedFiles.Enqueue(clickedFilePath);
             changeFile();
+            viewerButton_Click();
 
-            viewerButton_Click(sender, e);
         }
 
         public void changeDirectory(object sender, EventArgs e)
@@ -318,23 +348,21 @@ namespace VideoPlayer
 
         public void playlistAdd(object sender, EventArgs e)
         {
-            string filename = new Uri(getControlName(sender)).AbsoluteUri;
-            playlist.Add(filename);
-            axVLCPlugin21.playlist.add(filename);
+
+            clickedFilePath = getControlName(sender).Replace("/", "\\");
+            playlist.Add(clickedFilePath);
             ((Button)sender).Text = "Added";
-            clickedFilePath = Uri.UnescapeDataString(filename).Replace("file:///", "");
             if (recentlyPlayedFiles.Contains(clickedFilePath))
                 queueRemove(clickedFilePath);
             recentlyPlayedFiles.Enqueue(clickedFilePath);
-            renderPlaylist(filename);
+            renderPlaylist();
         }
-        
+
         public void playlistRemove(object sender, EventArgs e)
         {
-            string filename = getControlName(sender);
-            axVLCPlugin21.playlist.items.remove(playlist.IndexOf(filename));
+            string filename = getControlName(sender).Replace("/", "\\");
             playlist.Remove(filename);
-            renderPlaylist(new Uri(clickedFilePath).AbsoluteUri);
+            renderPlaylist();
         }
 
         public void deleteFile(object sender, EventArgs e)
@@ -362,7 +390,7 @@ namespace VideoPlayer
         {
             goTo = 0;
             goToEnd = -1;
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
+            timeDictionary[clickedFilePath] = new long[] { media_player.Time, (long)((double)media_player.Time / (double)(media_player.Length) * 100) };
             if (seekBar.Controls.Contains(gotoPanel))
                 seekBar.Controls.Remove(gotoPanel);
             if (seekBar.Controls.Contains(gotoEndPanel))
@@ -380,7 +408,7 @@ namespace VideoPlayer
             recentlyPlayedFiles = temp;
         }
 
-        public void renderPlaylist(string active)
+        public void renderPlaylist()
         {
             y = 100;
             playlistPanel.Controls.Clear();
@@ -394,8 +422,11 @@ namespace VideoPlayer
                 Size = new Size(237, 74)
             };
             playlistPanel.Controls.Add(playlistLabel);
-            foreach (string video in playlist)
             {
+            }
+            for (int _ = 0; _ < playlist.Count; _++)
+            {
+                string video = playlist[_];
                 Panel subpanel = new Panel
                 {
                     Cursor = Cursors.Hand,
@@ -404,8 +435,7 @@ namespace VideoPlayer
                     Name = video,
                     Padding = new Padding(1),
                     Location = new Point(x, y),
-                    BackColor = Color.FromArgb(43, 43, 43),
-            };
+                };
                 subpanel.MouseEnter += new EventHandler(togglePanelWhiteSmoke);
                 subpanel.MouseLeave += new EventHandler(togglePanelWhiteSmoke);
                 Panel dockPanel = new Panel
@@ -417,7 +447,7 @@ namespace VideoPlayer
                 Label label = new Label
                 {
                     BackColor = Color.Transparent,
-                    ForeColor = Color.WhiteSmoke,
+                    ForeColor = Color.Black,
                     Font = new Font("Microsoft JhengHei Light", 9),
                     Text = Uri.UnescapeDataString(Path.GetFileNameWithoutExtension(video)),
                     Name = video,
@@ -430,33 +460,32 @@ namespace VideoPlayer
                 {
                     Dock = DockStyle.Bottom,
                     FlatStyle = FlatStyle.Flat,
-                    BackColor = Color.FromArgb(40, 40, 40),
+                    BackColor = Color.White,
                     Text = "Remove",
                     Name = video,
-                    ForeColor = Color.White,
+                    ForeColor = Color.Black,
                     Font = new Font("Microsoft JhengHei Light", 7),
                     Width = 40,
                 };
                 button.FlatAppearance.BorderColor = Color.Black;
                 button.FlatAppearance.BorderSize = 1;
-                button.FlatAppearance.MouseOverBackColor = Color.FromArgb(100, 100, 100);
-                button.FlatAppearance.MouseDownBackColor = Color.FromArgb(70, 70, 70);
-                if (video == active)
+                button.FlatAppearance.MouseOverBackColor = Color.FromArgb(240, 244, 245);
+                button.FlatAppearance.MouseDownBackColor = Color.WhiteSmoke;
+                if (video == clickedFilePath)
                 {
-
+                    currentPlaylistIndex = _;
                     label.Margin = new Padding(0, 0, 50, 0);
-                    label.ForeColor = Color.White;
-                    subpanel.BackColor = Color.FromArgb(70, 70, 70);
+                    label.ForeColor = Color.Black;
+                    subpanel.BackColor = Color.FromArgb(240, 244, 245);
                     dockPanel.Height = 10;
-                    dockPanel.BackColor = Color.WhiteSmoke;
+                    dockPanel.BackColor = Color.Black;
                     label.Font = new Font("Microsoft JhengHei Light", 9);
                 }
                 else
                 {
                     label.ForeColor = Color.Gray;
-                    
                 }
-                
+
                 y += subpanel.Height;
                 label.Click += new EventHandler(playlistClick);
                 subpanel.Click += new EventHandler(playlistClick);
@@ -487,49 +516,31 @@ namespace VideoPlayer
         {
             changeFile();
             string active = getControlName(sender);
-            axVLCPlugin21.playlist.playItem(playlist.IndexOf(active));
-            clickedFilePath = Uri.UnescapeDataString(active).Replace("file:///", "");
+            clickedFilePath = active.Replace("/", "\\");
+            media_player.Play(new Media(libVLC, clickedFilePath));
             if (timeDictionary.ContainsKey(clickedFilePath))
-                axVLCPlugin21.input.time = timeDictionary[clickedFilePath] - 2500;
+                media_player.SeekTo(new TimeSpan(0, 0, 0, (int)(timeDictionary[clickedFilePath][0] - 2500)));
             recentlyPlayedFiles.Enqueue(clickedFilePath);
-            renderPlaylist(active);
-
+            renderPlaylist();
         }
 
-        private void nextFile()
-        {
-            if (random)
+            private void nextFile(bool next)
             {
-                int r = new Random().Next(0, playlist.Count);
-                axVLCPlugin21.playlist.playItem(r);
-            }
+            string currentItem;
+            if (next)
+                currentItem = playlist.ElementAt(currentPlaylistIndex + 1);
             else
-                axVLCPlugin21.playlist.next();
-            string currentItem = playlist.ElementAt(axVLCPlugin21.playlist.currentItem);
-            clickedFilePath = Uri.UnescapeDataString(currentItem).Replace("file:///", "");
+                currentItem = playlist.ElementAt(currentPlaylistIndex - 1);
 
+            media_player.Play(new Media(libVLC, currentItem));
+            clickedFilePath = currentItem.Replace("/", "\\");
             if (timeDictionary.ContainsKey(clickedFilePath))
-                axVLCPlugin21.input.time = (int)timeDictionary[clickedFilePath] - 2500;
+                media_player.SeekTo(new TimeSpan(0, 0, 0, (int)timeDictionary[clickedFilePath][0] - 2500));
             if (recentlyPlayedFiles.Contains(clickedFilePath))
                 queueRemove(clickedFilePath);
             recentlyPlayedFiles.Enqueue(clickedFilePath);
-            renderPlaylist(currentItem);
-
-        }
-
-        private void prevFile()
-        {
-            axVLCPlugin21.playlist.prev();
-            string currentItem = playlist.ElementAt(axVLCPlugin21.playlist.currentItem);
-            clickedFilePath = Uri.UnescapeDataString(currentItem).Replace("file:///", "");
-
-            if (timeDictionary.ContainsKey(clickedFilePath))
-                axVLCPlugin21.input.time = (int)timeDictionary[clickedFilePath] - 2500;
-            if (recentlyPlayedFiles.Contains(clickedFilePath))
-                queueRemove(clickedFilePath);
-            recentlyPlayedFiles.Enqueue(clickedFilePath);
-            renderPlaylist(currentItem);
-        }
+            renderPlaylist();
+            }
 
         private void directory_Click(object sender, EventArgs e)
         {
@@ -548,9 +559,7 @@ namespace VideoPlayer
 
         public void renderHomePanel()
         {
-            PictureBox[] PreviewBoxes = { previewBox1, previewBox2, previewBox3, pictureBox4 };
-            Label[] previewLabels = { previewLabel1, previewLabel2, previewLabel3, previewLabel4 };
-            Panel[] previewPanels = { previewPanel1, previewPanel2, previewPanel3, previewPanel4 };
+            int x = 1;
             carouselVideos.Clear();
             int count = 0;
             List<string> videoFiles = new List<string>();
@@ -558,62 +567,115 @@ namespace VideoPlayer
             string fVideoFile;
             string vidirectory;
             recentFolders.Controls.Clear();
+            favoritesFlowLayoutPanel.Controls.Clear();
             if (recentlyPlayedFiles != null)
             {
+                recentFlowLayoutPanel2.Controls.Clear();
+                Label recentsLabel = new Label
+                {
+                    Text = "Recents",
+                    Font = new Font("Microsoft JhengHei Light", 17),
+                    //Location = new Point(pPictureBox.Location.X, 0),
+                    Padding = new Padding(0, 15, 0, 0),
+                    Size = new Size(265, 70),
+                };
+                recentFlowLayoutPanel2.Controls.Add(recentsLabel);
                 foreach (string videoFile in recentlyPlayedFiles.Reverse())
                 {
                     vidirectory = Path.GetDirectoryName(videoFile);
                     if (count < nPreviewFiles && count <= recentlyPlayedFiles.Count)
                     {
+
                         if (!fileDirectories.Contains(vidirectory))
                         {
                             Button pButton = new Button
                             {
+                                BackColor = Color.White,
                                 Text = Path.GetFileName(vidirectory),
                                 Name = vidirectory,
                                 Font = new Font("Microsoft JhengHei Light", 7),
                                 FlatStyle = FlatStyle.Flat,
                                 Width = 320,
                                 Height = 50,
-                                Location = new Point(x),
-                                BackColor = Color.FromArgb(40, 40, 40),
+                                Location = new Point(x)
                             };
                             pButton.FlatAppearance.BorderColor = Color.Black;
                             pButton.FlatAppearance.BorderSize = 1;
-                            pButton.FlatAppearance.MouseOverBackColor = Color.FromArgb(70, 70, 70);
-                            pButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(100, 100, 100);
+                            pButton.FlatAppearance.MouseOverBackColor = Color.WhiteSmoke;
+                            pButton.FlatAppearance.MouseDownBackColor = Color.FromArgb(252, 250, 250);
                             pButton.Click += new EventHandler(changeDirectory);
                             recentFolders.Controls.Add(pButton);
-                            carouselVideos.Add(videoFile);
-                            previewLabels[count].Text = Path.GetFileNameWithoutExtension(videoFile);
+                            X += pButton.Width;
+
+
+
                             output = DATABASE + Path.GetFileNameWithoutExtension(videoFile) + ".png";
+                            carouselVideos.Add(videoFile);
+
                             try { ffMpeg.GetVideoThumbnail(videoFile, output, 35); } catch { }
 
-                            try { PreviewBoxes[count].Image = Image.FromFile(output); } catch { }
 
-                            PreviewBoxes[count].Name = videoFile;
-                            previewPanels[count].Name = videoFile;
-                            previewLabels[count].Name = videoFile;
-                            PreviewBoxes[count].Click += new EventHandler(file_Click);
-                            previewPanels[count].Click += new EventHandler(file_Click);
-                            previewLabels[count].Click += new EventHandler(file_Click);
-                            previewPanels[count].Visible = true;
+
+
+                            Panel pPanel = new Panel
+                            {
+                                Dock = DockStyle.Top,
+                                Anchor = AnchorStyles.Top,
+                                Size = new Size(225, 122),
+                                Padding = new Padding(18, 28, 3, 5),
+                                Cursor = Cursors.Hand,
+
+                            };
+                            PictureBox pPictureBox = new PictureBox
+                            {
+                                SizeMode = PictureBoxSizeMode.Zoom,
+                                Size = new Size(210, 95),
+                                Dock = DockStyle.Top,
+                                Anchor = AnchorStyles.Top,
+                                Cursor = Cursors.Hand,
+
+                            };
+                            try { pPictureBox.Image = Image.FromFile(output); } catch { }
+
+                            Label pLabel = new Label
+                            {
+                                Text = Path.GetFileNameWithoutExtension(videoFile),
+                                Cursor = Cursors.Hand,
+                                Font = new Font("Microsoft JhengHei Light", 7),
+                                Location = new Point(pPictureBox.Location.X, pPictureBox.Location.Y + pPictureBox.Height + 1),
+                                Size = new Size(265, 140),
+
+                            };
+
+                            pPanel.Controls.Add(pPictureBox);
+                            pPanel.Controls.Add(pLabel);
+                            recentFlowLayoutPanel2.Controls.Add(pPanel);
+
+                            pPictureBox.Name = videoFile;
+                            pPanel.Name = videoFile;
+                            pLabel.Name = videoFile;
+                            pPictureBox.Click += new EventHandler(file_Click);
+                            pPanel.Click += new EventHandler(file_Click);
+                            pLabel.Click += new EventHandler(file_Click);
+                            pLabel.MouseEnter += new EventHandler(childLabelTogglePanelWhiteSmoke);
+                            pLabel.MouseLeave += new EventHandler(childLabelTogglePanelWhiteSmoke);
+                            pPictureBox.MouseEnter += new EventHandler(childPictureBoxTogglePanelWhiteSmoke);
+                            pPictureBox.MouseLeave += new EventHandler(childPictureBoxTogglePanelWhiteSmoke);
+                            pPanel.MouseEnter += new EventHandler(togglePanelWhiteSmoke);
+                            pPanel.MouseLeave += new EventHandler(togglePanelWhiteSmoke);
                             fileDirectories.Add(Path.GetDirectoryName(videoFile));
                             count += 1;
                         }
                     }
                     else
                         break;
-
                 }
+            }
 
-                count = 0;
-                List<int> randoms = new List<int>();
-                PictureBox[] PreviewBoxes1 = { previewBox5, previewBox6, previewBox7, previewBox8 };
-                Label[] previewLabels1 = { previewLabel5, previewLabel6, previewLabel7, previewLabel8 };
-                Panel[] previewPanels1 = { previewPanel5, previewPanel6, previewPanel7, previewPanel8 };
-
-
+            count = 0;
+            List<int> randoms = new List<int>();
+            try
+            {
                 for (int i = 0; i < nPreviewFiles;)
                 {
                     var r = new Random().Next(0, favouriteTimes.Count());
@@ -623,18 +685,59 @@ namespace VideoPlayer
                         ffMpeg = new NReco.VideoConverter.FFMpegConverter();
                         output = DATABASE + Path.GetFileNameWithoutExtension(fVideoFile) + ".png";
                         carouselVideos.Add(fVideoFile);
-                        previewLabels1[i].Text = Path.GetFileNameWithoutExtension(fVideoFile);
                         try { ffMpeg.GetVideoThumbnail(fVideoFile, output, 50); } catch { }
-                        try { PreviewBoxes1[i].Image = Image.FromFile(output); } catch { }
-                        PreviewBoxes1[i].Name = fVideoFile;
-                        previewPanels1[i].Name = fVideoFile;
-                        previewLabels1[i].Name = fVideoFile;
-                        PreviewBoxes1[i].Click += new EventHandler(file_Click);
-                        previewPanels1[i].Click += new EventHandler(file_Click);
-                        previewLabels1[i].Click += new EventHandler(file_Click);
-                        previewPanels1[i].Visible = true;
-                        if (!randoms.Contains(r))
-                            randoms.Add(r);
+                        Panel pPanel = new Panel
+                        {
+                            Dock = DockStyle.Top,
+                            Anchor = AnchorStyles.Top,
+                            Size = new Size(225, 130),
+                            Padding = new Padding(18, 28, 3, 5),
+                            Cursor = Cursors.Hand,
+
+                        };
+                        PictureBox pPictureBox = new PictureBox
+                        {
+                            SizeMode = PictureBoxSizeMode.Zoom,
+                            Size = new Size(215, 100),
+                            Dock = DockStyle.Top,
+                            Anchor = AnchorStyles.Top,
+                            Cursor = Cursors.Hand,
+
+                        };
+                        try { pPictureBox.Image = Image.FromFile(output); } catch { }
+
+                        Label pLabel = new Label
+                        {
+                            Text = Path.GetFileNameWithoutExtension(fVideoFile),
+                            Cursor = Cursors.Hand,
+                            Font = new Font("Microsoft JhengHei Light", 7),
+                            Location = new Point(pPictureBox.Location.X, pPictureBox.Location.Y + pPictureBox.Height + 1),
+                            Size = new Size(265, 140),
+
+                        };
+
+                        pPanel.Controls.Add(pPictureBox);
+                        pPanel.Controls.Add(pLabel);
+                        favoritesFlowLayoutPanel.Controls.Add(pPanel);
+
+                        pPictureBox.Name = fVideoFile;
+                        pPanel.Name = fVideoFile;
+                        pLabel.Name = fVideoFile;
+                        pPictureBox.Click += new EventHandler(file_Click);
+                        pPanel.Click += new EventHandler(file_Click);
+                        pLabel.Click += new EventHandler(file_Click);
+                        pLabel.MouseEnter += new EventHandler(childLabelTogglePanelWhiteSmoke);
+                        pLabel.MouseLeave += new EventHandler(childLabelTogglePanelWhiteSmoke);
+                        pPictureBox.MouseEnter += new EventHandler(childPictureBoxTogglePanelWhiteSmoke);
+                        pPictureBox.MouseLeave += new EventHandler(childPictureBoxTogglePanelWhiteSmoke);
+                        pPanel.MouseEnter += new EventHandler(togglePanelWhiteSmoke);
+                        pPanel.MouseLeave += new EventHandler(togglePanelWhiteSmoke);
+                        fileDirectories.Add(Path.GetDirectoryName(fVideoFile));
+
+
+
+
+                        randoms.Add(r);
                         i += 1;
                     }
                     if (randoms.Count == favouriteTimes.Count)
@@ -642,54 +745,14 @@ namespace VideoPlayer
 
                 }
             }
+            catch { }
 
         }
 
-        private void toggleActivePreviewBox(object sender, EventArgs e)
-        {
-            if (((PictureBox)sender).Parent.BackColor == Color.FromArgb(43, 43, 43))
-            {
-                ((PictureBox)sender).Parent.BackColor = Color.FromArgb(70, 70, 70);
-            }
-            else
-            {
-                ((PictureBox)sender).Parent.BackColor = Color.FromArgb(43, 43, 43);
-            }
-        }
-
-        private void toggleActivePanel(object sender, EventArgs e)
-        {
-
-        }
-        private void toggleActiveLabel(object sender, EventArgs e)
-        {
-            if (((Label)sender).Parent.BackColor == Color.FromArgb(43, 43, 43))
-            {
-                ((Label)sender).Parent.BackColor = Color.FromArgb(70, 70, 70);
-            }
-            else
-            {
-                ((Label)sender).Parent.BackColor = Color.FromArgb(43, 43, 43);
-            }
-        }
         public void resizeEverything()
         {
-
-            int newwidth = Convert.ToInt32((6 * ClientRectangle.Width / 100));
-            int newheight = Convert.ToInt32((6 * ClientRectangle.Height / 100));
-            PictureBox[] PreviewBoxes = { previewBox1, previewBox2, previewBox3, pictureBox4 };
-            Panel[] previewPanels = { previewPanel1, previewPanel2, previewPanel3, previewPanel4 };
-            PictureBox[] PreviewBoxes1 = { previewBox5, previewBox6, previewBox7, previewBox8 };
-            Panel[] previewPanels1 = { previewPanel5, previewPanel6, previewPanel7, previewPanel8 };
-            for (int _ = 0; _ < previewPanels.Count(); _++)
-            {
-                PreviewBoxes[_].Size = new Size(newheight, newwidth);
-                previewPanels[_].Size = new Size(newheight + 50, newwidth + 60);
-                PreviewBoxes1[_].Size = new Size(newheight, newwidth + 40);
-                previewPanels1[_].Size = new Size(newheight + 220, newwidth + 80);
-            }
-            rightSidePanel.Width = Convert.ToInt32((17 * ClientRectangle.Width) / 100);
-            favouritesPanel.Height = Convert.ToInt32((13 * ClientRectangle.Width) / 100);
+            recentFlowLayoutPanel2.Width = Convert.ToInt32((22 * ClientRectangle.Width) / 100);
+            favoritesFlowLayoutPanel.Height = Convert.ToInt32((13 * ClientRectangle.Width) / 100);
         }
 
         public void toggleMenuicon()
@@ -756,13 +819,14 @@ namespace VideoPlayer
         {
             fullscreenExit();
             renderHomePanel();
-            carousel.volume = 40;
+            carousel_media_player.Volume = 70;
             this.FormBorderStyle = FormBorderStyle.Sizable;
-            axVLCPlugin21.playlist.pause();
+            this.Opacity = .9;
+
+            media_player.Pause();
             homePanel.BringToFront();
 
-            carousel.playlist.items.clear();
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
+            timeDictionary[clickedFilePath] = new long[] { media_player.Time, (long)((double)media_player.Time / (double)media_player.Length * 100) };
         }
 
         private void homeButton_MouseEnter(object sender, EventArgs e)
@@ -835,126 +899,7 @@ namespace VideoPlayer
             toggleMenuicon();
         }
 
-        private void panel3_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel1.BackColor = Color.FromArgb(70, 70, 70);
-        }
-
-        private void panel3_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel1.BackColor = Color.FromArgb(43, 43, 43);
-        }
-
-        private void label2_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel1.BackColor = Color.FromArgb(70, 70, 70);
-        }
-
-        private void label2_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel1.BackColor = Color.FromArgb(43, 43, 43);
-        }
-
-        private void previewPanel2_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel2.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel2.Visible = true;
-        }
-
-        private void previewPanel2_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel2.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel2.Visible = false;
-        }
-
-        private void pictureBox1_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel2.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel2.Visible = true;
-        }
-
-        private void pictureBox1_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel2.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel2.Visible = true;
-        }
-
-        private void previewPanel3_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel3.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel3.Visible = true;
-        }
-
-        private void previewPanel3_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel3.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel3.Visible = false;
-        }
-
-        private void previewPanel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void pictureBox5_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel4.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel4.Visible = true;
-        }
-
-        private void pictureBox5_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel4.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel4.Visible = false;
-        }
-
-        private void previewPanel4_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel4.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel4.Visible = true;
-        }
-
-        private void previewPanel4_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel4.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel4.Visible = false;
-        }
-
-        private void previewBox1_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel1.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel1.Visible = true;
-        }
-
-        private void previewBox1_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel1.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel1.Visible = false;
-        }
-
-        private void previewBox2_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel2.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel2.Visible = true;
-        }
-
-        private void previewBox2_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel2.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel2.Visible = false;
-        }
-
-        private void previewBox3_MouseEnter(object sender, EventArgs e)
-        {
-            previewPanel3.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel3.Visible = true;
-        }
-
-        private void previewBox3_MouseLeave(object sender, EventArgs e)
-        {
-            previewPanel3.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel3.Visible = false;
-        }
+  
 
         private void Form1_ClientSizeChanged(object sender, EventArgs e)
         {
@@ -966,26 +911,19 @@ namespace VideoPlayer
         public string video;
         private void slider()
         {
-            if (carouselCounter > carouselVideos.Count || carouselCounter < 0)
+            if (carouselCounter > carouselVideos.Count - 1 || carouselCounter < 0)
                 carouselCounter = 0;
-            if (carousel.playlist.items.count == 0)
-            {
-                carousel.playlist.items.clear();
-                foreach (string item in carouselVideos)
-                    carousel.playlist.add(new Uri(item).AbsoluteUri);
-            }
-            carousel.playlist.playItem(carouselCounter);
-
+            carousel_media_player.Play(new Media(libVLC, carouselVideos[carouselCounter].Replace("/", "\\")));
             try
             {
                 video = carouselVideos[carouselCounter];
                 carouselLabel.Text = Path.GetFileNameWithoutExtension(video);
                 if (favouriteTimes.ContainsKey(video))
-                    carousel.input.time = favouriteTimes[video] - 4200;
+                    carousel.MediaPlayer.Time = (favouriteTimes[video] - 4200);
                 else if (timeDictionary.ContainsKey(video))
-                    carousel.input.time = timeDictionary[video] - 4200;
+                    carousel.MediaPlayer.Time = (timeDictionary[video][0] - 4200);
                 else
-                    carousel.input.time = 0;
+                    carousel.MediaPlayer.Time = 0;
             }
             catch { }
             carouselCounter++;
@@ -998,8 +936,8 @@ namespace VideoPlayer
 
         private void foldersButton_Click(object sender, EventArgs e)
         {
-            axVLCPlugin21.playlist.pause();
-            carousel.volume = 0;
+            media_player.Pause();
+            carousel.MediaPlayer.Volume = 0;
             fullscreenExit();
             if (!directoryRendered)
             {
@@ -1008,20 +946,28 @@ namespace VideoPlayer
             }
             foldersPanel.BringToFront();
             this.FormBorderStyle = FormBorderStyle.Sizable;
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
+            this.Opacity = .97;
+            timeDictionary[clickedFilePath] = new long[] { media_player.Time, (long)((double)media_player.Time / (double)media_player.Length * 100) };
+
 
         }
 
         private void viewerButton_Click(object sender, EventArgs e)
         {
-            carousel.volume = 0;
-            axVLCPlugin21.playlist.play();
+            viewerButton_Click();
+        }
+        private void viewerButton_Click()
+        {
+            filenameLabel.Text = Path.GetFileNameWithoutExtension(clickedFilePath);
+            carousel.MediaPlayer.Volume = 0;
+            media_player.Play();
             this.FormBorderStyle = FormBorderStyle.None;
+            this.Opacity = 1;
             viewerPanel.BringToFront();
             isFavourite();
-            axVLCPlugin21.Focus();
+            fullscreenEnter();
+            mainMediaPlayer.Focus();
         }
-
         public void isFavourite()
         {
             if (favouriteTimes.ContainsKey(clickedFilePath))
@@ -1038,9 +984,11 @@ namespace VideoPlayer
 
         private void recntlyPlayedButton_Click(object sender, EventArgs e)
         {
-            carousel.volume = 0;
+            carousel.MediaPlayer.Volume = 0;
             this.FormBorderStyle = FormBorderStyle.Sizable;
-            axVLCPlugin21.playlist.pause();
+            this.Opacity = .9;
+
+            media_player.Pause();
             fullscreenExit();
             recentlyPlayedFlowLayoutPanel.Controls.Clear();
             foreach (string _ in recentlyPlayedFiles.Reverse())
@@ -1048,6 +996,11 @@ namespace VideoPlayer
                 try
                 {
                     FlowLayoutPanel subpanel = new FlowLayoutPanel();
+                    subpanel.BackColor = Color.FromArgb(252, 250, 250);
+                    subpanel.MouseEnter += new EventHandler(togglePanelWhiteSmoke);
+                    subpanel.MouseLeave += new EventHandler(togglePanelWhiteSmoke);
+                    subpanel.Width = 200;
+                    subpanel.Height = 230;
                     Panel dockPanel = new Panel(), dockPanel1 = new Panel();
 
                     dockPanel1.Height = 1;
@@ -1055,11 +1008,7 @@ namespace VideoPlayer
                     dockPanel.Dock = DockStyle.Bottom;
                     dockPanel.Height = 1;
                     dockPanel.BackColor = Color.Black;
-                    subpanel.BackColor = Color.FromArgb(43, 43, 43);
-                    subpanel.MouseEnter += new EventHandler(togglePanelWhiteSmoke);
-                    subpanel.MouseLeave += new EventHandler(togglePanelWhiteSmoke);
-                    subpanel.Width = 200;
-                    subpanel.Height = 230;
+
                     Label label = new Label(), label1 = new Label();
                     label.Text = Path.GetFileNameWithoutExtension(_);
                     label1.Text = Path.GetDirectoryName(_);
@@ -1078,13 +1027,15 @@ namespace VideoPlayer
                     label.Click += new EventHandler(file_Click);
                     label1.Dock = DockStyle.Bottom;
                     subpanel.Click += new EventHandler(file_Click);
-                    label.BackColor = Color.Transparent;
+                    label.MouseEnter += new EventHandler(subPanel_MouseEnter);
+                    label.MouseLeave += new EventHandler(subPanel_MouseLeave);
                     label1.MouseEnter += new EventHandler(subPanel_MouseEnter);
                     label1.MouseLeave += new EventHandler(subPanel_MouseLeave);
                     label1.Padding = new Padding(3);
                     label.Padding = new Padding(3);
                     subpanel.Padding = new Padding(3);
                     dockPanel1.Dock = DockStyle.Bottom;
+
                     PictureBox pictureBox = new PictureBox
                     {
                         Image = Image.FromFile(DATABASE + Path.GetFileNameWithoutExtension(_) + ".png"),
@@ -1098,12 +1049,6 @@ namespace VideoPlayer
                     try { ffMpeg.GetVideoThumbnail(_, output, 35); } catch { }
 
                     try { pictureBox.Image = Image.FromFile(output); } catch { }
-                    pictureBox.Image = Image.FromFile(DATABASE + Path.GetFileNameWithoutExtension(_) + ".png");
-                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox.Width = subpanel.Width;
-                    pictureBox.Height = subpanel.Height - 130;
-                    pictureBox.Name = _;
-                    pictureBox.Click += new EventHandler(file_Click);
                     subpanel.Location = new Point(x, y);
                     subpanel.Controls.Add(pictureBox);
                     subpanel.Controls.Add(label);
@@ -1117,31 +1062,31 @@ namespace VideoPlayer
 
 
             recentlyPlayedFlowLayoutPanel.BringToFront();
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
+            timeDictionary[clickedFilePath] = new long[] { media_player.Time, (long)((double)media_player.Time / (double)media_player.Length * 100) };
 
         }
 
         private void pictureBox1_Click_1(object sender, EventArgs e)
         {
-            prevFile();
+            nextFile(false);
         }
 
         public void TogglePause()
         {
-            if (axVLCPlugin21.playlist.isPlaying)
+            if (media_player.IsPlaying)
             {
-                axVLCPlugin21.playlist.pause();
+                pause = true;
+                media_player.Pause();
                 playButton.Image = Properties.Resources.icons8_pause_50;
-                controlsPanel.Visible = true;
-                mainSidePanel.Visible = true;
+                filenameFlowLayoutPanel.Visible = mainSidePanel.Visible = controlsPanel.Visible = !controlsPanel.Visible;
 
             }
             else
             {
-                axVLCPlugin21.playlist.play();
+                media_player.Play();
+                pause = false;
                 playButton.Image = Properties.Resources.icons8_play_50;
-                controlsPanel.Visible = false;
-                mainSidePanel.Visible = false;
+                filenameFlowLayoutPanel.Visible = mainSidePanel.Visible = controlsPanel.Visible = !controlsPanel.Visible;
             }
         }
         private void pictureBox5_Click(object sender, EventArgs e)
@@ -1152,7 +1097,7 @@ namespace VideoPlayer
 
         private void pictureBox6_Click(object sender, EventArgs e)
         {
-            nextFile();
+            nextFile(true);
             ((PictureBox)sender).BackColor = ((PictureBox)sender).BackColor == Color.FromArgb(40, 40, 40) ? Color.FromArgb(70, 70, 70) : Color.FromArgb(40, 40, 40);
         }
 
@@ -1184,6 +1129,32 @@ namespace VideoPlayer
             else
             {
                 ((Panel)sender).BackColor = Color.FromArgb(40, 40, 40);
+            }
+        }
+        public void childPictureBoxTogglePanelWhiteSmoke(object sender, EventArgs e)
+        {
+            if (((PictureBox)sender).Parent.BackColor == Color.FromArgb(40, 40, 40))
+            {
+                ((PictureBox)sender).Parent.BackColor = Color.FromArgb(70, 70, 70);
+
+            }
+            else
+            {
+                ((PictureBox)sender).Parent.BackColor = Color.FromArgb(40, 40, 40);
+
+            }
+        }
+        public void childLabelTogglePanelWhiteSmoke(object sender, EventArgs e)
+        {
+            if (((Label)sender).Parent.BackColor == Color.FromArgb(40, 40, 40))
+            {
+                ((Label)sender).Parent.BackColor = Color.FromArgb(70, 70, 70);
+
+            }
+            else
+            {
+                ((Label)sender).Parent.BackColor = Color.FromArgb(40, 40, 40);
+
             }
         }
         public void togglePanelGrey(object sender, EventArgs e)
@@ -1237,7 +1208,6 @@ namespace VideoPlayer
             controlsPanel.Visible = true;
             viewerPanel.Padding = new Padding(3);
             viewerFullscreen = false;
-
         }
 
         private void fullscreenEnter()
@@ -1254,72 +1224,6 @@ namespace VideoPlayer
         {
 
         }
-
-        private void previewBox1_MouseEnter_1(object sender, EventArgs e)
-        {
-            previewLabel1.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox1.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel1.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel1.Visible = true;
-        }
-
-        private void previewBox2_MouseEnter_1(object sender, EventArgs e)
-        {
-            previewLabel2.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox2.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel2.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel2.Visible = true;
-        }
-
-        private void previewBox2_MouseLeave_1(object sender, EventArgs e)
-        {
-            previewLabel2.BackColor = Color.FromArgb(43, 43, 43);
-            previewBox2.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel2.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel2.Visible = false;
-
-        }
-
-        private void previewBox3_MouseEnter_1(object sender, EventArgs e)
-        {
-            previewLabel3.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox3.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel3.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel3.Visible = true;
-        }
-
-        private void pictureBox4_MouseEnter(object sender, EventArgs e)
-        {
-            previewLabel4.BackColor = Color.FromArgb(70, 70, 70);
-            pictureBox4.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel4.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel4.Visible = true;
-        }
-
-        private void pictureBox4_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel4.BackColor = Color.FromArgb(43, 43, 43);
-            pictureBox4.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel4.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel4.Visible = false;
-        }
-
-        private void previewLabel3_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel3.BackColor = Color.FromArgb(43, 43, 43);
-            previewBox3.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel3.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel3.Visible = false;
-        }
-
-        private void previewLabel1_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel1.BackColor = Color.FromArgb(43, 43, 43);
-            previewBox1.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel1.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel1.Visible = false;
-        }
-
 
         private void sliderBackButton_Click_1(object sender, EventArgs e)
         {
@@ -1381,19 +1285,6 @@ namespace VideoPlayer
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.P && e.Shift)
-            {
-                axVLCPlugin21.playlist.stop();
-                playlist.Clear();
-                axVLCPlugin21.playlist.items.clear();
-            }
-
-            else if (viewerPanel.Parent.Controls.GetChildIndex(viewerPanel) == 0)
-            {
-                
-
-
-            }
         }
 
         private void Form1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -1409,16 +1300,18 @@ namespace VideoPlayer
         }
         private void saveQueues()
         {
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
+            timeDictionary[clickedFilePath] = new long[] { media_player.Time, (long)((double)media_player.Time / (double)media_player.Length * 100) };
             try
             {
                 IFormatter formatter = new BinaryFormatter();
                 Stream stream = new FileStream(STORAGEBASE + "Queue.txt", FileMode.Create, FileAccess.Write);
                 Stream stream1 = new FileStream(STORAGEBASE + "time.txt", FileMode.Create, FileAccess.Write);
                 Stream stream2 = new FileStream(STORAGEBASE + "Favourites.txt", FileMode.Create, FileAccess.Write);
+
                 formatter.Serialize(stream, recentlyPlayedFiles);
                 formatter.Serialize(stream1, timeDictionary);
                 formatter.Serialize(stream2, favouriteTimes);
+
                 stream.Close();
                 stream1.Close();
                 stream2.Close();
@@ -1450,31 +1343,40 @@ namespace VideoPlayer
 
         private void secondsTimer_Tick(object sender, EventArgs e)
         {
-            if (!controlsPanel.Visible && axVLCPlugin21.PointToClient(Cursor.Position).Y > 800 && this.WindowState == FormWindowState.Normal || !controlsPanel.Visible && axVLCPlugin21.PointToClient(Cursor.Position).Y > 1010 && this.WindowState == FormWindowState.Maximized)
+            if (!pause && this.WindowState == FormWindowState.Maximized)
             {
-                controlsPanel.Visible = true;
-                fullscreenClicked = false;
-            }
-            else if (!controlsPanel.Visible && axVLCPlugin21.PointToClient(Cursor.Position).X < 40 && this.WindowState == FormWindowState.Normal || !controlsPanel.Visible && axVLCPlugin21.PointToClient(Cursor.Position).X < 40 && this.WindowState == FormWindowState.Maximized)
-            {
-                mainSidePanel.Visible = true;
+                if (!controlsPanel.Visible && mainMediaPlayer.PointToClient(Cursor.Position).Y > 1010)
+                    controlsPanel.Visible = true;
+                else if (controlsPanel.Visible && mainMediaPlayer.PointToClient(Cursor.Position).Y < 920)
+                    controlsPanel.Visible = false;
+                else if (!mainSidePanel.Visible && mainMediaPlayer.PointToClient(Cursor.Position).X < 40)
+                    mainSidePanel.Visible = true;
+                else if (mainSidePanel.Visible && mainMediaPlayer.PointToClient(Cursor.Position).X > 60)
+                    mainSidePanel.Visible = false;
+                else if (!filenameFlowLayoutPanel.Visible && mainMediaPlayer.PointToClient(Cursor.Position).Y < 40)
+                    filenameFlowLayoutPanel.Visible = true;
+                else if (filenameFlowLayoutPanel.Visible && mainMediaPlayer.PointToClient(Cursor.Position).Y > 40)
+                    filenameFlowLayoutPanel.Visible = false;
+                else if (!playlistPanel.Visible && mainMediaPlayer.PointToClient(Cursor.Position).X > 1600)
+                    playlistPanel.Visible = true;
+                else if (playlistPanel.Visible && mainMediaPlayer.PointToClient(Cursor.Position).X < 1600)
+                    playlistPanel.Visible = false;
                 fullscreenClicked = false;
             }
             TimeSpan time;
             systemTime.Text = DateTime.Now.Hour + ":" + DateTime.Now.Minute;
             try
             {
-                time = TimeSpan.FromSeconds(axVLCPlugin21.input.time * 0.001);
+                time = TimeSpan.FromSeconds(media_player.Time * 0.001);
                 currentTime.Text = time.Hours + " : " + time.Minutes + "." + time.Seconds;
-                time = TimeSpan.FromSeconds(axVLCPlugin21.input.length * 0.001);
+                time = TimeSpan.FromSeconds(media_player.Length * 0.001);
                 lengthTime.Text = time.Hours + " : " + time.Minutes + "." + time.Seconds;
-                seekpin.Location = new Point(Convert.ToInt32((((axVLCPlugin21.input.time / axVLCPlugin21.input.length) * 100) * seekBar.Width) / 100), 1);
-                if (goToEnd > 0 && axVLCPlugin21.input.time > goToEnd)
+                seekpin.Location = new Point((int)(((double)media_player.Time / (double)media_player.Length) * seekBar.Width), 1);
+                if (goToEnd > 0 && media_player.Time > goToEnd)
                 {
-                    axVLCPlugin21.input.time = goTo;
+                    media_player.Time = goTo;
                 }
             }
-
             catch { }
             batteryPercent.Text = (SystemInformation.PowerStatus.BatteryLifePercent * 100) + "%";
             if (SystemInformation.PowerStatus.BatteryChargeStatus.ToString().Contains("Charging"))
@@ -1489,15 +1391,10 @@ namespace VideoPlayer
             {
 
                 time = TimeSpan.FromSeconds(SystemInformation.PowerStatus.BatteryLifeRemaining);
-                batteryTimeRemaining.Text = time.Hours + " hours " + time.Minutes + " mins remaining";
+                batteryTimeRemaining.Text = SystemInformation.PowerStatus.BatteryChargeStatus.ToString();
             }
-        }
 
-        private void pictureBox8_Click(object sender, EventArgs e)
-        {
-            axVLCPlugin21.playlist.stop();
         }
-
         private void playlistPanel_Paint(object sender, PaintEventArgs e)
         {
 
@@ -1515,7 +1412,7 @@ namespace VideoPlayer
                 if (MessageBox.Show("Remove from Favourites ?", "Favourites", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     favouriteTimes.Remove(clickedFilePath);
-                    pictureBox5.BackColor = Color.FromArgb(40, 40, 40);
+                    pictureBox5.BackColor = Color.WhiteSmoke;
                     pictureBox5.BorderStyle = BorderStyle.None;
                 }
             }
@@ -1523,204 +1420,15 @@ namespace VideoPlayer
             {
                 if (MessageBox.Show("Add to Favourites ?", "Favourites", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    favouriteTimes[clickedFilePath] = (int)axVLCPlugin21.input.time;
-                    pictureBox5.BackColor = Color.FromArgb(70, 70, 70);
+                    favouriteTimes[clickedFilePath] = media_player.Time;
+                    pictureBox5.BackColor = Color.White;
                     pictureBox5.BorderStyle = BorderStyle.FixedSingle;
                 }
             }
 
         }
 
-        private void previewPanel5_MouseEnter(object sender, EventArgs e)
-        {
-            previewLabel5.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox5.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel5.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel5.Visible = true;
-
-        }
-
-        private void previewBox5_MouseEnter(object sender, EventArgs e)
-        {
-            previewLabel5.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox5.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel5.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel5.Visible = true;
-        }
-
-        private void previewLabel5_MouseEnter(object sender, EventArgs e)
-        {
-            previewLabel5.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox5.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel5.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel5.Visible = true;
-        }
-
-        private void previewLabel5_MouseLeave(object sender, EventArgs e)
-        {
-
-        }
-
-        private void previewPanel5_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel5.BackColor = Color.FromArgb(43, 43, 43);
-            previewBox5.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel5.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel5.Visible = false;
-        }
-
-        private void previewBox5_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel5.BackColor = Color.FromArgb(43, 43, 43);
-            previewBox5.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel5.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel5.Visible = false;
-        }
-
-        private void previewPanel6_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel6.BackColor = Color.FromArgb(43, 43, 43);
-            previewBox6.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel6.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel6.Visible = false;
-        }
-
-        private void previewBox6_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel6.BackColor = Color.FromArgb(43, 43, 43);
-            previewBox6.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel6.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel6.Visible = false;
-        }
-
-        private void previewLabel6_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel6.BackColor = Color.FromArgb(43, 43, 43);
-            previewBox6.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel6.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel6.Visible = false;
-        }
-
-        private void previewLabel6_MouseEnter(object sender, EventArgs e)
-        {
-            previewLabel6.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox6.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel6.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel6.Visible = true;
-        }
-
-        private void previewPanel6_MouseEnter(object sender, EventArgs e)
-        {
-            previewLabel6.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox6.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel6.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel6.Visible = true;
-        }
-
-        private void previewBox6_MouseEnter(object sender, EventArgs e)
-        {
-            previewLabel6.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox6.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel6.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel6.Visible = true;
-        }
-
-        private void previewPanel7_MouseEnter(object sender, EventArgs e)
-        {
-            previewLabel7.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox7.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel7.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel7.Visible = true;
-        }
-
-        private void previewBox7_MouseEnter(object sender, EventArgs e)
-        {
-            previewLabel7.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox7.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel7.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel7.Visible = true;
-        }
-
-        private void previewLabel7_MouseEnter(object sender, EventArgs e)
-        {
-            previewLabel7.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox7.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel7.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel7.Visible = true;
-        }
-
-        private void previewPanel7_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel7.BackColor = Color.FromArgb(43, 43, 43);
-            previewBox7.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel7.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel7.Visible = false;
-        }
-
-        private void previewBox7_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel7.BackColor = Color.FromArgb(43, 43, 43);
-            previewBox7.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel7.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel7.Visible = false;
-        }
-
-        private void previewLabel7_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel7.BackColor = Color.FromArgb(43, 43, 43);
-            previewBox7.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel7.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel7.Visible = false;
-        }
-
-        private void panel16_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel8.BackColor = Color.FromArgb(43, 43, 43);
-            previewBox8.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel8.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel8.Visible = false;
-        }
-
-        private void previewBox8_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel8.BackColor = Color.FromArgb(43, 43, 43);
-            previewBox8.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel8.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel8.Visible = false;
-        }
-
-        private void previewLabel8_MouseLeave(object sender, EventArgs e)
-        {
-            previewLabel8.BackColor = Color.FromArgb(43, 43, 43);
-            previewBox8.BackColor = Color.FromArgb(43, 43, 43);
-            previewPanel8.BackColor = Color.FromArgb(43, 43, 43);
-            previewUnderPanel8.Visible = false;
-        }
-
-        private void previewPanel8_MouseEnter(object sender, EventArgs e)
-        {
-            previewLabel8.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox8.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel8.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel8.Visible = true;
-        }
-
-        private void previewBox8_MouseEnter(object sender, EventArgs e)
-        {
-            previewLabel8.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox8.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel8.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel8.Visible = true;
-        }
-
-        private void previewLabel8_MouseEnter(object sender, EventArgs e)
-        {
-            previewLabel8.BackColor = Color.FromArgb(70, 70, 70);
-            previewBox8.BackColor = Color.FromArgb(70, 70, 70);
-            previewPanel8.BackColor = Color.FromArgb(70, 70, 70);
-            previewUnderPanel8.Visible = true;
-        }
-
+      
         private void descriptionTimer_Tick(object sender, EventArgs e)
         {
             descriptionLabel.Visible = false;
@@ -1730,10 +1438,11 @@ namespace VideoPlayer
         private void seekBar_Click(object sender, EventArgs e)
         {
             int x = seekBar.PointToClient(Cursor.Position).X;
-            seekpin.Location = new Point(seekBar.PointToClient(Cursor.Position).X, 1);
-            axVLCPlugin21.input.time = (x * axVLCPlugin21.input.length) / seekBar.Width;
+            media_player.SeekTo(new TimeSpan(0, 0, 0, 0, (int)(x * (double)media_player.Length / seekBar.Width)));
+            //MessageBox.Show(((int)((int)media_player.Time / (int)media_player.Length * 100 * seekBar.Width / 100)).ToString());
 
         }
+
 
         private void seekBar_MouseEnter(object sender, EventArgs e)
         {
@@ -1777,7 +1486,6 @@ namespace VideoPlayer
 
         private void axVLCPlugin21_ClickEvent(object sender, EventArgs e)
         {
-            axVLCPlugin21.Focus();
             if (fullscreenClicked)
             {
                 mainSidePanel.Visible = true;
@@ -1797,8 +1505,15 @@ namespace VideoPlayer
 
         private void axVLCPlugin21_MediaPlayerEndReached(object sender, EventArgs e)
         {
-            if (loop)
-                axVLCPlugin21.playlist.prev();
+            if (!loop)
+            {
+                ThreadPool.QueueUserWorkItem(_ => nextFile(true));
+            }
+            else
+            {
+                ThreadPool.QueueUserWorkItem(_ => nextFile(false));
+                ThreadPool.QueueUserWorkItem(_ => nextFile(true));
+            }
         }
 
         private void randomPictureBox_Click(object sender, EventArgs e)
@@ -1821,32 +1536,6 @@ namespace VideoPlayer
 
         }
 
-        private void viewerButton_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            if (e.KeyCode == Keys.Up)
-            {
-                axVLCPlugin21.volume += 10;
-                describe("Volume: " + axVLCPlugin21.volume);
-            }
-
-            else if (e.KeyCode == Keys.Down)
-            {
-                axVLCPlugin21.volume -= 10;
-                describe("Volume: " + axVLCPlugin21.volume);
-            }
-
-            else if (e.KeyCode == Keys.Right)
-            {
-                axVLCPlugin21.input.time += 5000;
-                describe("Forward 5s");
-            }
-            else if (e.KeyCode == Keys.Left)
-            {
-                axVLCPlugin21.input.time -= 5000;
-                describe("Backwards 5s");
-            }
-        }
-
         private void playButton_Click(object sender, EventArgs e)
         {
             TogglePause();
@@ -1854,152 +1543,216 @@ namespace VideoPlayer
 
         private void axVLCPlugin21_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            if (e.KeyCode == Keys.Up)
+            //descriptionLabel.BringToFront();
+            //MessageBox.Show("", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            switch (e.KeyCode)
             {
-                axVLCPlugin21.volume += 10;
-                describe("Volume: " + axVLCPlugin21.volume);
+                case Keys.Up:
+                    {
+                        media_player.Volume += 10;
+                        describe("Volume: " + media_player.Volume);
+                        break;
+                    }
+                case Keys.R:
+                    {
+                        randomPictureBox_Click(sender, e);
+                        break;
+                    }
+                case Keys.D:
+                    {
+                        media_player.SeekTo(new TimeSpan(0, 0, 0, (int)(media_player.Time + 10)));
+                        describe("Foreward: 10ms");
+                        break;
+                    }
+                case Keys.W:
+                    {
+                        media_player.Volume += 5;
+                        describe("Volume: " + media_player.Volume.ToString());
+                        break;
+                    }
+                case Keys.S:
+                    {
+                        media_player.Volume -= 5;
+                        describe("Volume: " + media_player.Volume.ToString());
+                        break;
+                    }
+                case Keys.A:
+                    {
+                        media_player.SeekTo(new TimeSpan(0, 0, 0, (int)(media_player.Time - 10)));
+                        describe("Backward: 10ms");
+                        break;
+                    }
+                case Keys.Space:
+                case Keys.MediaPlayPause:
+                    {
+                        TogglePause();
+                        break;
+                    }
+                case Keys.Return:
+                    {
+                        fullscreenButton_Click(sender, e);
+                        break;
+                    }
+                case Keys.Next:
+                case Keys.MediaNextTrack:
+                    {
+                        nextFile(true);
+                        break;
+                    }
+                case Keys.P:
+                    {
+                        playlistButton_Click(sender, e);
+                        break;
+                    }
+                case Keys.PageUp:
+                case Keys.MediaPreviousTrack:
+                    {
+                        nextFile(false);
+                        break;
+                    }
+                case Keys.T:
+                    {
+                        describe(DateTime.Now.ToString());
+                        break;
+                    }
+                case Keys.F:
+                    {
+                        pictureBox5_Click_1(sender, e);
+                        break;
+                    }
+                case Keys.Home:
+                    {
+                        media_player.SeekTo(new TimeSpan(0, 0, 0, 0, 0));
+
+                        describe("Restart");
+                        break;
+                    }
+                case Keys.End:
+                    {
+                        media_player.SeekTo(new TimeSpan(0, 0, 0, 0, (int)media_player.Length - 100));
+                        describe("End");
+                        break;
+                    }
+                case Keys.Z:
+                    {
+                        skipper = (int)media_player.Time;
+                        MessageBox.Show(skipper.ToString());
+                        describe("Set skipper");
+                        break;
+                    }
+                case Keys.L:
+                    {
+                        loopPictureBox(sender, e);
+                        break;
+                    }
+                case Keys.OemOpenBrackets:
+                    {
+                        goTo = (int)media_player.Time;
+                        gotoPanel.Location = new Point(Convert.ToInt32((((goTo / media_player.Length) * 100) * seekBar.Width) / 100), 1);
+                        seekBar.Controls.Add(gotoPanel);
+                        describe("Set GoTO");
+                        break;
+                    }
+                case Keys.Oem6:
+                    {
+                        goToEnd = (int)media_player.Time;
+                        gotoEndPanel.Location = new Point(Convert.ToInt32((((goToEnd / media_player.Length) * 100) * seekBar.Width) / 100), 1);
+                        seekBar.Controls.Add(gotoEndPanel);
+                        describe("Set A-B Repeat");
+                        break;
+                    }
+                case Keys.LWin:
+                    {
+                        appExitButton_Click(sender, e);
+                        break;
+                    }
+                case Keys.Oem5:
+                    {
+                        goTo = 0;
+                        goToEnd = (int)media_player.Length;
+                        if (seekBar.Controls.Contains(gotoPanel))
+                            seekBar.Controls.Remove(gotoPanel);
+                        if (seekBar.Controls.Contains(gotoEndPanel))
+                            seekBar.Controls.Remove(gotoEndPanel);
+                        describe("Clear GoTO");
+                        break;
+                    }
+                case Keys.Down:
+                    {
+                        media_player.Volume -= 10;
+                        describe("Volume: " + media_player.Volume);
+                        break;
+                    }
+                case Keys.Right:
+                    {
+                        media_player.Position += 0.001f;
+                        describe("Forward 5s");
+                        break;
+                    }
+                case Keys.Left:
+                    {
+                        media_player.Position -= 0.001f;
+                        describe("Backwards 5s");
+                        break;
+                    }
+                case Keys.X:
+                    {
+                        customSkipper = Int32.Parse(Interaction.InputBox("Skip by how many seconds?", "Skipper", "3", -1, -1)) * 1000;
+                        useCustomSkipper = true;
+                        break;
+                    }
             }
-            else if (e.KeyCode == Keys.Down)
+            try
             {
-                axVLCPlugin21.volume -= 10;
-                describe("Volume: " + axVLCPlugin21.volume);
+
+                media_player.SeekTo(new TimeSpan(0, 0, 0, 0, (int)((float.Parse(e.KeyCode.ToString()[1].ToString()) / 10) * media_player.Length)));
             }
+            catch { }
+            if (e.KeyCode.ToString() == "P" && e.Shift)
+            {
+                if (MessageBox.Show("Clear Playlist ?", "Playlist", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    media_player.Stop();
+                    playlist.Clear();
+                    renderPlaylist();
+                }
+            }
+
             else if (e.KeyCode == Keys.Right && e.Shift)
             {
-                axVLCPlugin21.input.time += 1000;
+                media_player.Position += 0.003f;
                 describe("Forward 1s");
             }
             else if (e.KeyCode == Keys.Left && e.Shift)
             {
-                axVLCPlugin21.input.time -= 1000;
+                media_player.Position -= 0.003f;
                 describe("Backwards 1s");
             }
 
-            else if (e.KeyCode == Keys.Right)
+            else if (e.KeyCode == Keys.Add && (skipper > 0 || useCustomSkipper.Equals(true)))
             {
-                axVLCPlugin21.input.time += 5000;
-                describe("Forward 5s");
-            }
-            else if (e.KeyCode == Keys.Left)
-            {
-                axVLCPlugin21.input.time -= 5000;
-                describe("Backwards 5s");
-            }
-            
-
-            else if (e.KeyCode.ToString() == "R")
-                randomPictureBox_Click(sender, e);
-            else if (e.KeyCode.ToString() == "P" && e.Shift)
-            {
-                if (MessageBox.Show("Clear Playlist ?", "Playlist", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    axVLCPlugin21.playlist.stop();
-                    playlist.Clear();
-                    axVLCPlugin21.playlist.items.clear();
-                    renderPlaylist("");
-                }
-            }
-
-            else if (e.KeyCode.ToString() == "D")
-            {
-                axVLCPlugin21.input.time = axVLCPlugin21.input.time + 10;
-                describe("Foreward: 10ms");
-            }
-            else if (e.KeyCode.ToString() == "W")
-            {
-                axVLCPlugin21.volume = axVLCPlugin21.volume + 5;
-                describe("Volume: " + axVLCPlugin21.volume.ToString());
-            }
-            else if (e.KeyCode.ToString() == "S")
-            {
-                axVLCPlugin21.volume = axVLCPlugin21.volume - 5;
-                describe("Volume: " + axVLCPlugin21.volume.ToString());
-            }
-            else if (e.KeyCode.ToString() == "A")
-            {
-                axVLCPlugin21.input.time = axVLCPlugin21.input.time - 10;
-                describe("Backward: 10ms");
-            }
-            else if (e.KeyCode.ToString() == "Space")
-                TogglePause();
-            else if (e.KeyCode == Keys.Space)
-                TogglePause();
-            else if (e.KeyCode.ToString() == "Return")
-                fullscreenButton_Click(sender, e);
-            else if (e.KeyCode.ToString() == "Next")
-                nextFile();
-            else if (e.KeyCode.ToString() == "P")
-                playlistButton_Click(sender, e);
-            else if (e.KeyCode.ToString() == "PageUp")
-                prevFile();
-            else if (e.KeyCode.ToString() == "T")
-                describe(DateTime.Now.ToString());
-            else if (e.KeyCode.ToString() == "F")
-                pictureBox5_Click_1(sender, e);
-            else if (e.KeyCode.ToString() == "Home")
-            {
-                axVLCPlugin21.input.time = 0;
-                describe("Restart");
-            }
-            else if (e.KeyCode.ToString() == "End")
-            {
-                axVLCPlugin21.input.time = axVLCPlugin21.input.length;
-                describe("End");
-            }
-            else if (e.KeyCode.ToString() == "Z")
-            {
-                skipper = (int)axVLCPlugin21.input.time;
-                describe("Set skipper");
-            }
-            else if (e.KeyCode.ToString() == "Add" && skipper != 0)
-            {
-                axVLCPlugin21.input.time = skipper;
+                if (useCustomSkipper)
+                    media_player.Time += customSkipper;
+                else
+                    media_player.SeekTo(new TimeSpan(0, 0, 0, 0, skipper));
                 describe("Skipping");
             }
-            else if (e.KeyCode.ToString() == "L")
-            {
-                loopPictureBox(sender, e);
-            }
 
-            else if (e.KeyCode.ToString() == "OemOpenBrackets")
-            {
-                goTo = (int)axVLCPlugin21.input.time;
-                gotoPanel.Location = new Point(Convert.ToInt32((((goTo / axVLCPlugin21.input.length) * 100) * seekBar.Width) / 100), 1);
-                seekBar.Controls.Add(gotoPanel);
-                describe("Set GoTO");
-            }
-            else if (e.KeyCode.ToString() == "Oem6")
-            {
-                goToEnd = (int)axVLCPlugin21.input.time;
-
-                gotoEndPanel.Location = new Point(Convert.ToInt32((((goToEnd / axVLCPlugin21.input.length) * 100) * seekBar.Width) / 100), 1);
-                seekBar.Controls.Add(gotoEndPanel);
-                describe("Set A-B Repeat");
-            }
             else if (e.KeyCode.ToString() == "G" && goTo != 0)
             {
-                axVLCPlugin21.input.time = goTo;
+                media_player.SeekTo(new TimeSpan(0, 0, 0, goTo));
                 describe("GoTO");
             }
-            else if (e.Alt == true && e.KeyCode.ToString() == "LWin")
-                appExitButton_Click(sender, e);
-            else if (e.KeyCode.ToString() == "Oem5")
-            {
-                goTo = 0;
-                goToEnd = (int)axVLCPlugin21.input.length;
-                if (seekBar.Controls.Contains(gotoPanel))
-                    seekBar.Controls.Remove(gotoPanel);
-                if (seekBar.Controls.Contains(gotoEndPanel))
-                    seekBar.Controls.Remove(gotoEndPanel);
-                describe("Clear GoTO");
-            }
+
         }
 
-        public void favouritesButton_Click(object sender, EventArgs e)
+        private void favouritesButton_Click(object sender, EventArgs e)
         {
-            carousel.volume = 0;
+            carousel_media_player.Volume = 0;
             this.FormBorderStyle = FormBorderStyle.Sizable;
-            axVLCPlugin21.playlist.pause();
+            this.Opacity = .9;
+
+            media_player.Pause();
             fullscreenExit();
             favouritesFlowLayoutPanel.Controls.Clear();
             if (!renderedFavourites)
@@ -2016,7 +1769,7 @@ namespace VideoPlayer
                         dockPanel.Dock = DockStyle.Bottom;
                         dockPanel.Height = 1;
                         dockPanel.BackColor = Color.Black;
-                        subpanel.BackColor = Color.FromArgb(70, 70, 70);
+
                         subpanel.MouseEnter += new EventHandler(togglePanelWhiteSmoke);
                         subpanel.MouseLeave += new EventHandler(togglePanelWhiteSmoke);
                         subpanel.Width = 200;
@@ -2034,7 +1787,7 @@ namespace VideoPlayer
                         subpanel.Location = location;
                         /*subpanel.Padding = new Padding(16);*/
                         subpanel.Margin = new Padding(2);
-                        X += subpanel.Width;
+                        X += subpanel.Width + 5;
                         label.Visible = true;
                         label.Click += new EventHandler(file_Click);
                         label1.Dock = DockStyle.Bottom;
@@ -2064,6 +1817,7 @@ namespace VideoPlayer
                         try { ffMpeg.GetVideoThumbnail(_, output, 35); } catch { }
 
                         try { pictureBox.Image = Image.FromFile(output); } catch { }
+                        subpanel.BackColor = Color.FromArgb(252, 250, 250);
                         subpanel.Location = new Point(x, y);
                         subpanel.Controls.Add(pictureBox);
                         subpanel.Controls.Add(label);
@@ -2073,12 +1827,13 @@ namespace VideoPlayer
                         favouritesFlowLayoutPanel.Controls.Add(subpanel);
                     }
                     catch { }
-
                 }
             }
-            renderedFavourites = true;
-            timeDictionary[clickedFilePath] = axVLCPlugin21.input.time;
+
+
             favouritesFlowLayoutPanel.BringToFront();
+            timeDictionary[clickedFilePath] = new long[] { media_player.Time, (long)((double)media_player.Time / (double)media_player.Length * 100) };
+
         }
 
         private void recentlyPlayedFlowLayoutPanel_Paint(object sender, PaintEventArgs e)
@@ -2088,10 +1843,60 @@ namespace VideoPlayer
 
         private void controlsPanel_MouseLeave(object sender, EventArgs e)
         {
-            controlsPanel.Visible = false;
+            controlsPanel.Visible = !viewerFullscreen;
         }
 
         private void axVLCPlugin21_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void carouselLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void axVLCPlugin21_MediaPlayerEncounteredError(object sender, EventArgs e)
+        {
+
+        }
+
+        private void incognitoForm_Load(object sender, EventArgs e)
+        {
+
+        }
+        private void media_player_MediaPlayerEndReached(object sender, EventArgs e)
+        {
+            if (!loop)
+            {
+                ThreadPool.QueueUserWorkItem(_ => nextFile(true));
+            }
+            else
+            {
+                ThreadPool.QueueUserWorkItem(_ => nextFile(true));
+                ThreadPool.QueueUserWorkItem(_ => nextFile(false));
+            }
+        }
+
+
+        private void Form1_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Copy;
+        }
+
+        private void Form1_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            clickedFilePath = files[0];
+            file_Click();
+            viewerButton_Click(sender, e);
+        }
+
+        private void seekBar_MouseMove(object sender, MouseEventArgs e)
+        {
+        }
+
+        private void seekBar_MouseHover(object sender, EventArgs e)
         {
 
         }
