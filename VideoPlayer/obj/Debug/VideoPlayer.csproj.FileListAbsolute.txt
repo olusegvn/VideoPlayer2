@@ -58,7 +58,10 @@ C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\System.Reactive.Linq.
 C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\System.Reactive.PlatformServices.xml
 C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\System.Reactive.Windows.Forms.xml
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
 C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\libvlc\win-x64\libvlc.dll
 C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\libvlc\win-x64\libvlc.lib
 C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\libvlc\win-x64\libvlccore.dll
@@ -1209,4 +1212,7 @@ C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\Xamarin.Forms.Xaml.pd
 C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\Xamarin.Forms.Xaml.xml
 C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\bin\Debug\fr\LibVLCSharp.Forms.resources.dll
 C:\Users\AI\source\repos\VideoPlayer\VideoPlayer\obj\Debug\XamlC.stamp
+<<<<<<< HEAD
 >>>>>>> - Full LibVLC update
+=======
+>>>>>>> 6c67bf427f89bc5a72b8a129a61109cb454ab010
